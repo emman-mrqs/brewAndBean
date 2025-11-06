@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Bean and Brew</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/about.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Animated Background Elements -->
+    <div class="background-animation">
+        <div class="coffee-bean bean-1"></div>
+        <div class="coffee-bean bean-2"></div>
+        <div class="coffee-bean bean-3"></div>
+        <div class="coffee-bean bean-4"></div>
+        <div class="coffee-bean bean-5"></div>
+        <div class="steam steam-1"></div>
+        <div class="steam steam-2"></div>
+        <div class="steam steam-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <%- include('../partials/navbar', { page: 'about' }) %>
+
+    <!-- Hero Section -->
+    <section class="hero hero-about">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>About Us</h1>
+            <div class="hero-accent"></div>
+            <p>Where passion meets perfection in every cup we brew</p>
+        </div>
+        <div class="hero-scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- About Content -->
+    <section class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text" data-aos="fade-right">
+                    <h2>The Bean and Brew Journey</h2>
+                    <p class="lead">Since 2010, we've been on a mission to transform your daily coffee ritual into an extraordinary experience.</p>
+                    <p>What started as a small neighborhood café has blossomed into a beloved community hub where coffee lovers gather to savor exceptional brews, connect with friends, and create lasting memories.</p>
+                    <p>Our founders, Maria and James, traveled the world's finest coffee regions—from the highlands of Ethiopia to the mountains of Colombia—to discover the secrets of perfect coffee. They brought back not just beans, but a philosophy: that every cup should tell a story.</p>
+                    <p>Today, we continue that tradition by sourcing beans directly from sustainable farms, roasting them in-house with precision and care, and serving them with the warmth and expertise that has become our signature.</p>
+                </div>
+
+                <div class="about-visual" data-aos="fade-left">
+                    <div class="coffee-shop-illustration">
+                        <div class="shop-building">
+                            <div class="shop-roof"></div>
+                            <div class="shop-front">
+                                <div class="shop-window left"></div>
+                                <div class="shop-door">
+                                    <div class="door-handle"></div>
+                                </div>
+                                <div class="shop-window right"></div>
+                            </div>
+                            <div class="shop-awning"></div>
+                            <div class="shop-sign">Bean & Brew</div>
+                        </div>
+                        <div class="decoration-plant left">🌿</div>
+                        <div class="decoration-plant right">🌿</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="values">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Our Philosophy</span>
+                <h2 class="section-title" data-aos="fade-up">Our Core Values</h2>
+                <p class="section-description">The principles that guide everything we do</p>
+            </div>
+            <div class="values-grid">
+                <div class="value-card" data-aos="fade-up">
+                    <div class="value-icon">🌱</div>
+                    <h3>Sustainability</h3>
+                    <p>We're committed to environmental responsibility, from direct trade partnerships with eco-conscious farms to compostable packaging and zero-waste initiatives in our cafés.</p>
+                </div>
+
+                <div class="value-card" data-aos="fade-up" data-delay="100">
+                    <div class="value-icon">🤝</div>
+                    <h3>Community</h3>
+                    <p>More than a coffee shop, we're a gathering place. We support local artists, host community events, and create spaces where everyone feels welcome and valued.</p>
+                </div>
+
+                <div class="value-card" data-aos="fade-up" data-delay="200">
+                    <div class="value-icon">⭐</div>
+                    <h3>Excellence</h3>
+                    <p>From bean selection to the final pour, we pursue perfection. Our baristas train continuously, and we never compromise on quality or craft.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements Section -->
+    <section class="achievements">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Our Impact</span>
+                <h2 class="section-title" data-aos="fade-up">Our Journey in Numbers</h2>
+                <p class="section-description">Celebrating milestones and growth</p>
+            </div>
+            <div class="achievements-grid">
+                <div class="achievement-card" data-aos="fade-up">
+                    <div class="achievement-number" data-target="14">0</div>
+                    <p>Years of Excellence</p>
+                </div>
+
+                <div class="achievement-card" data-aos="fade-up" data-delay="100">
+                    <div class="achievement-number" data-target="50000">0</div>
+                    <p>Cups Served Monthly</p>
+                </div>
+
+                <div class="achievement-card" data-aos="fade-up" data-delay="200">
+                    <div class="achievement-number" data-target="25">0</div>
+                    <p>Award-Winning Blends</p>
+                </div>
+
+                <div class="achievement-card" data-aos="fade-up" data-delay="300">
+                    <div class="achievement-number" data-target="12">0</div>
+                    <p>Partner Farms Worldwide</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Developers Section -->
+    <section class="developers">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Meet the Team</span>
+                <h2 class="section-title" data-aos="fade-up">Our Developers</h2>
+                <p class="section-description">The talented individuals behind Bean & Brew</p>
+            </div>
+            <div class="developers-grid">
+                <!-- Developer 1: Redd Vincent Ambong -->
+                <article class="developer-card" data-aos="fade-up">
+                    <figure class="developer-image-wrapper">
+                        <img src="../../Assets/Developers/Ambong.png" alt="Redd Vincent Ambong - Developer" class="developer-image">
+                        <div class="developer-overlay">
+                            <span class="developer-view">View Profile</span>
+                        </div>
+                    </figure>
+                    <div class="developer-info">
+                        <h3 class="developer-name">Redd Vincent Ambong</h3>
+                        <p class="developer-role">Front-End Developer</p>
+                    </div>
+                </article>
+
+                <!-- Developer 2: Luis David Espino -->
+                <article class="developer-card" data-aos="fade-up" data-delay="100">
+                    <figure class="developer-image-wrapper">
+                        <img src="../../Assets/Developers/Espino.png" alt="Luis David Espino - Developer" class="developer-image">
+                        <div class="developer-overlay">
+                            <span class="developer-view">View Profile</span>
+                        </div>
+                    </figure>
+                    <div class="developer-info">
+                        <h3 class="developer-name">Luis David Espino</h3>
+                        <p class="developer-role">Full-Stack Developer</p>
+                    </div>
+                </article>
+
+                <!-- Developer 3: Emmanuel Marqueses -->
+                <article class="developer-card" data-aos="fade-up" data-delay="200">
+                    <figure class="developer-image-wrapper">
+                        <img src="../../Assets/Developers/Marqueses.png" alt="Emmanuel Marqueses - Developer" class="developer-image">
+                        <div class="developer-overlay">
+                            <span class="developer-view">View Profile</span>
+                        </div>
+                    </figure>
+                    <div class="developer-info">
+                        <h3 class="developer-name">Emmanuel Marqueses</h3>
+                        <p class="developer-role">UI/UX Designer</p>
+                    </div>
+                </article>
+
+                <!-- Developer 4: Annil Jairus Timoteo -->
+                <article class="developer-card" data-aos="fade-up" data-delay="300">
+                    <figure class="developer-image-wrapper">
+                        <img src="../../Assets/Developers/Timoteo.png" alt="Annil Jairus Timoteo - Developer" class="developer-image">
+                        <div class="developer-overlay">
+                            <span class="developer-view">View Profile</span>
+                        </div>
+                    </figure>
+                    <div class="developer-info">
+                        <h3 class="developer-name">Annil Jairus Timoteo</h3>
+                        <p class="developer-role">Back-End Developer</p>
+                    </div>
+                </article>
+
+                <!-- Developer 5: Lance Cedrick Fernandez -->
+                <article class="developer-card" data-aos="fade-up" data-delay="400">
+                    <figure class="developer-image-wrapper">
+                        <img src="../../Assets/Developers/Fernandez.png" alt="Lance Cedrick Fernandez - Developer" class="developer-image">
+                        <div class="developer-overlay">
+                            <span class="developer-view">View Profile</span>
+                        </div>
+                    </figure>
+                    <div class="developer-info">
+                        <h3 class="developer-name">Lance Cedrick Fernandez</h3>
+                        <p class="developer-role">Full-Stack Developer</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Footer -->
+    <%- include('../partials/footer') %>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12 19V5M5 12L12 5L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <nav class="bottom-nav" aria-label="Bottom Navigation">
+        <a href="/" class="bn-link" aria-label="Home">
+            <i class="fas fa-house" aria-hidden="true"></i>
+            <span>Home</span>
+        </a>
+        <a href="/menu" class="bn-link" aria-label="Menu">
+            <i class="fas fa-mug-saucer" aria-hidden="true"></i>
+            <span>Menu</span>
+        </a>
+        <a href="/dashboard" class="bn-link" aria-label="Dashboard">
+            <i class="fas fa-gauge" aria-hidden="true"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="/cart" class="bn-link" aria-label="Cart">
+            <i class="fas fa-cart-shopping" aria-hidden="true"></i>
+            <span>Cart</span>
+        </a>
+        <a href="/specialties" class="bn-link" aria-label="Specialties">
+            <i class="fas fa-star" aria-hidden="true"></i>
+            <span>Specialties</span>
+        </a>
+    </nav>
+
+    <script src="../js/shared.js"></script>
+    <script>
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const delay = entry.target.getAttribute('data-delay') || 0;
+                    setTimeout(() => {
+                        entry.target.classList.add('animate-in');
+                    }, parseInt(delay));
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('[data-aos]').forEach(el => observer.observe(el));
+
+        // Counter animation for achievements
+        function animateCounter(element) {
+            const target = parseInt(element.dataset.target);
+            const duration = 2000;
+            const increment = target / (duration / 16);
+            let current = 0;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target.toLocaleString();
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current).toLocaleString();
+                }
+            }, 16);
+        }
+
+        const achievementObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const number = entry.target.querySelector('.achievement-number');
+                    if (number && !number.classList.contains('animated')) {
+                        number.classList.add('animated');
+                        animateCounter(number);
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.achievement-card').forEach(card => {
+            achievementObserver.observe(card);
+        });
+        
+        // Back to top functionality
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Show/hide back to top button based on scroll position
+        window.addEventListener('scroll', function() {
+            const backToTopBtn = document.getElementById('backToTop');
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="theme-color" content="#C67C4E">
+	<title>My Cart - Bean & Brew</title>
+	<link rel="stylesheet" href="../css/styles.css">
+	<link rel="stylesheet" href="../css/cart.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+	<meta name="description" content="Review your selected coffee items, update quantities, apply promo codes, and proceed to checkout.">
+	<meta name="keywords" content="coffee cart, checkout, bean and brew, orders">
+</head>
+<body>
+	<!-- Animated Background Elements -->
+	<div class="background-animation">
+		<div class="coffee-bean bean-1"></div>
+		<div class="coffee-bean bean-2"></div>
+		<div class="coffee-bean bean-3"></div>
+		<div class="coffee-bean bean-4"></div>
+		<div class="coffee-bean bean-5"></div>
+		<div class="steam steam-1"></div>
+		<div class="steam steam-2"></div>
+		<div class="steam steam-3"></div>
+	</div>
+
+	<%- include('../partials/navbar', { page: 'cart' }) %>
+
+	<main class="cart-page">
+		<div class="container">
+            <header class="cart-header">
+                <div class="ch-left">
+                    <h1><span class="ch-icon">🧺</span> Your Cart</h1>
+                    <p class="ch-sub">Warm up your day — review items, adjust quantities, and brew the perfect order.</p>
+                </div>
+            </header>			<section class="cart-grid">
+				<!-- Cart Items -->
+				<div class="cart-items cart-card" id="cartItems">
+					<!-- Items will be rendered here -->
+				</div>
+
+				<!-- Order Summary -->
+				<aside class="order-summary cart-card">
+					<h2 class="os-title">Order Summary</h2>
+
+					<div class="promo-box">
+						<label for="promoCode">Promo Code</label>
+						<div class="promo-row">
+							<input type="text" id="promoCode" placeholder="Enter code (e.g., BREW10)">
+							<button class="apply-promo" id="applyPromo" aria-label="Apply promo code">Apply</button>
+						</div>
+						<div class="promo-msg" id="promoMessage" aria-live="polite"></div>
+					</div>
+
+					<div class="order-totals">
+						<div class="total-row"><span>Subtotal</span><span id="subtotalValue">₱0.00</span></div>
+						<div class="total-row"><span>Shipping</span><span id="shippingValue">₱59.00</span></div>
+						<div class="total-row"><span>Tax (8%)</span><span id="taxValue">₱0.00</span></div>
+						<div class="total-row discount-row" id="discountRow" style="display:none"><span>Discount</span><span id="discountValue">–₱0.00</span></div>
+					</div>
+
+					<div class="total-main">
+						<span>Total</span>
+						<span id="totalValue">₱0.00</span>
+					</div>
+
+				<a href="/checkout" class="checkout-btn" aria-label="Proceed to checkout">Proceed to Checkout - ₱0.00</a>
+
+				<a href="/menu" class="continue-shopping-link"><i class="fas fa-arrow-left"></i> Continue Shopping</a>
+
+				<p class="fine-print">By checking out, you agree to our Terms and Privacy Policy.</p>
+			</aside>
+			</section>
+		</div>
+	</main>
+
+	<!-- Back to Top Button -->
+	<button class="back-to-top" id="backToTop" onclick="scrollToTop()" aria-label="Back to top">
+		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+			<path d="M12 19V5M5 12L12 5L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+		</svg>
+	</button>
+
+	<!-- Bottom Navigation (Mobile) -->
+	<nav class="bottom-nav" aria-label="Bottom Navigation">
+		<a href="/" class="bn-link" aria-label="Home">
+			<i class="fas fa-house" aria-hidden="true"></i>
+			<span>Home</span>
+		</a>
+		<a href="/menu" class="bn-link" aria-label="Menu">
+			<i class="fas fa-mug-saucer" aria-hidden="true"></i>
+			<span>Menu</span>
+		</a>
+		<a href="/dashboard" class="bn-link" aria-label="Dashboard">
+			<i class="fas fa-gauge" aria-hidden="true"></i>
+			<span>Dashboard</span>
+		</a>
+		<a href="/cart" class="bn-link active" aria-label="Cart">
+			<i class="fas fa-cart-shopping" aria-hidden="true"></i>
+			<span>Cart</span>
+		</a>
+		<a href="/specialties" class="bn-link" aria-label="Specialties">
+			<i class="fas fa-star" aria-hidden="true"></i>
+			<span>Specialties</span>
+		</a>
+	</nav>
+
+	<script src="../js/shared.js"></script>
+	<script>
+		// Cart page logic with persistence and promo handling
+		(function() {
+			const CART_KEY = 'bb_cart_items';
+			const PROMO_KEY = 'bb_cart_promo';
+
+			const cartItemsEl = document.getElementById('cartItems');
+			const promoInput = document.getElementById('promoCode');
+			const promoBtn = document.getElementById('applyPromo');
+			const promoMsg = document.getElementById('promoMessage');
+			const discountRow = document.getElementById('discountRow');
+			const discountValueEl = document.getElementById('discountValue');
+			const subtotalEl = document.getElementById('subtotalValue');
+			const shippingEl = document.getElementById('shippingValue');
+			const taxEl = document.getElementById('taxValue');
+			const totalEl = document.getElementById('totalValue');
+			const checkoutBtn = document.querySelector('.checkout-btn');
+
+			// Default shipping and tax
+			const BASE_SHIPPING = 59.00;
+			const TAX_RATE = 0.08;
+
+            // Seed data if empty
+            const seed = [
+                { id: 'caramel-macchiato', name: 'Caramel Macchiato', note: 'Hot | Velvety & sweet', price: 180.00, qty: 2, selected: true, img: '../../../Assets/Coffee/Hot Caramel Macchiato.webp' },
+                { id: 'spanish-latte', name: 'Spanish Latte', note: 'Cold | Smooth & creamy', price: 165.00, qty: 1, selected: true, img: '../../../Assets/Coffee/Cold Spanish Latte.webp' },
+                { id: 'mocha-frappe', name: 'Mocha Frappe', note: 'Special | Rich & refreshing', price: 195.00, qty: 1, selected: true, img: '../../../Assets/Coffee/Special Mocha Frappe.webp' }
+            ];			function loadCart() {
+				try {
+					const data = JSON.parse(localStorage.getItem(CART_KEY));
+					return Array.isArray(data) && data.length ? data : seed;
+				} catch { return seed; }
+			}
+
+			function saveCart(items) {
+				localStorage.setItem(CART_KEY, JSON.stringify(items));
+			}
+
+			function loadPromo() {
+				try { return JSON.parse(localStorage.getItem(PROMO_KEY)) || { code: '', type: null, value: 0 }; }
+				catch { return { code: '', type: null, value: 0 }; }
+			}
+
+			function savePromo(promo) {
+				localStorage.setItem(PROMO_KEY, JSON.stringify(promo));
+			}
+
+			function renderItems(items) {
+				if (!items.length) {
+					cartItemsEl.innerHTML = `
+						<div class="empty-cart">
+							<div class="empty-illustration">☕</div>
+							<h3>Your cart is empty</h3>
+							<p>Add some delicious coffee to get started.</p>
+							<a class="btn btn-primary" href="/menu">Browse Menu</a>
+						</div>
+					`;
+					return;
+				}
+
+			cartItemsEl.innerHTML = items.map((it, idx) => {
+				const isImageUrl = it.img && (it.img.startsWith('http') || it.img.includes('/') || it.img.endsWith('.webp') || it.img.endsWith('.jpg') || it.img.endsWith('.png'));
+				const thumbContent = isImageUrl 
+					? `<img src="${it.img}" alt="${it.name}" loading="lazy">`
+					: it.img || (idx % 3 === 0 ? '☕' : idx % 3 === 1 ? '🥤' : '🧋');
+				
+				return `
+				<div class="cart-item" id="item-${it.id}">
+					<label class="item-check">
+						<input type="checkbox" class="item-checkbox" ${it.selected ? 'checked' : ''} data-id="${it.id}">
+						<span class="check-deco"></span>
+					</label>
+					<div class="item-thumb" aria-hidden="true">${thumbContent}</div>
+					<div class="item-info">
+						<div class="item-title">${it.name}</div>
+						<div class="item-note">${it.note || ''}</div>
+						<button class="item-remove" data-id="${it.id}" aria-label="Remove ${it.name}"><i class="fas fa-trash"></i> Remove</button>
+					</div>
+					<div class="item-price"><span class="item-unit-price">₱${it.price.toFixed(2)}</span></div>
+					<div class="item-qty">
+						<button class="qty-btn" data-action="decrease" data-id="${it.id}" aria-label="Decrease quantity"><i class="fas fa-minus"></i></button>
+						<input type="number" id="qty-${it.id}" min="1" step="1" value="${it.qty}" aria-label="Quantity for ${it.name}">
+						<button class="qty-btn" data-action="increase" data-id="${it.id}" aria-label="Increase quantity"><i class="fas fa-plus"></i></button>
+					</div>
+				</div>
+			`;}).join('');
+		}			// Override global updateCartTotal for this page to include discounts + persistence
+			window.updateCartTotal = function() {
+				// Read DOM state back into model
+				let items = [];
+				document.querySelectorAll('.cart-item').forEach(el => {
+					const id = el.id.replace('item-', '');
+					const checked = !!el.querySelector('.item-checkbox')?.checked;
+					const priceText = el.querySelector('.item-unit-price')?.textContent || '₱0';
+					const price = parseFloat(priceText.replace(/[^\d.]/g, '')) || 0;
+					const qty = Math.max(1, parseInt(el.querySelector('input[type="number"]').value || '1', 10));
+					const name = el.querySelector('.item-title')?.textContent || 'Item';
+					const note = el.querySelector('.item-note')?.textContent || '';
+					const thumbEl = el.querySelector('.item-thumb');
+					const img = thumbEl ? thumbEl.textContent : '☕';
+					items.push({ id, name, note, price, qty, selected: checked, img });
+				});
+
+				saveCart(items);
+
+				// Compute totals
+				const subtotal = items.filter(i => i.selected).reduce((s, i) => s + i.price * i.qty, 0);
+				const promo = loadPromo();
+				const shippingBase = promo.type === 'ship' ? 0 : BASE_SHIPPING;
+				const tax = subtotal * TAX_RATE;
+
+				// Discounts
+				let discount = 0;
+				if (promo.type === 'percent') {
+					discount = subtotal * promo.value; // promo.value is 0.1 for 10%
+				}
+
+				const total = Math.max(0, subtotal - discount) + tax + shippingBase;
+
+				// Update UI
+				subtotalEl.textContent = `₱${subtotal.toFixed(2)}`;
+				shippingEl.textContent = `₱${shippingBase.toFixed(2)}`;
+				taxEl.textContent = `₱${tax.toFixed(2)}`;
+				totalEl.textContent = `₱${total.toFixed(2)}`;
+				checkoutBtn.textContent = `Proceed to Checkout - ₱${total.toFixed(2)}`;
+
+				if (discount > 0) {
+					discountRow.style.display = '';
+					discountValueEl.textContent = `–₱${discount.toFixed(2)}`;
+				} else {
+					discountRow.style.display = 'none';
+					discountValueEl.textContent = '–₱0.00';
+				}
+			};
+
+			function applyPromoHandler() {
+				const raw = (promoInput.value || '').trim().toUpperCase();
+				let promo = { code: '', type: null, value: 0 };
+
+				if (raw === 'BREW10') {
+					promo = { code: raw, type: 'percent', value: 0.10 };
+					promoMsg.textContent = 'Promo applied: 10% off your subtotal.';
+					promoMsg.className = 'promo-msg success';
+				} else if (raw === 'FREESHIP') {
+					promo = { code: raw, type: 'ship', value: 0 };
+					promoMsg.textContent = 'Promo applied: Free shipping.';
+					promoMsg.className = 'promo-msg success';
+				} else if (!raw) {
+					promoMsg.textContent = 'Enter a promo code.';
+					promoMsg.className = 'promo-msg';
+				} else {
+					promoMsg.textContent = 'Invalid code. Try BREW10 or FREESHIP.';
+					promoMsg.className = 'promo-msg error';
+				}
+
+				savePromo(promo);
+				updateCartTotal();
+			}
+
+			function wireEvents() {
+				// Delegated events for cart items
+				cartItemsEl.addEventListener('click', (e) => {
+					const btn = e.target.closest('.qty-btn');
+					const remove = e.target.closest('.item-remove');
+					if (btn) {
+						const id = btn.getAttribute('data-id');
+						const action = btn.getAttribute('data-action');
+						const input = document.getElementById(`qty-${id}`);
+						if (input) {
+							const val = Math.max(1, parseInt(input.value || '1', 10));
+							input.value = action === 'increase' ? val + 1 : Math.max(1, val - 1);
+							updateCartTotal();
+						}
+					}
+					if (remove) {
+						const id = remove.getAttribute('data-id');
+						const el = document.getElementById(`item-${id}`);
+						if (el) {
+							el.classList.add('removing');
+							setTimeout(() => { el.remove(); updateCartTotal(); }, 200);
+						}
+					}
+				});
+
+				cartItemsEl.addEventListener('change', (e) => {
+					if (e.target.matches('.item-checkbox') || e.target.matches('input[type="number"]')) {
+						updateCartTotal();
+					}
+				});
+
+				promoBtn.addEventListener('click', applyPromoHandler);
+				promoInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); applyPromoHandler(); }});
+			}
+
+			// Init
+			const items = loadCart();
+			renderItems(items);
+			const savedPromo = loadPromo();
+			if (savedPromo.code) {
+				promoInput.value = savedPromo.code;
+				promoMsg.textContent = savedPromo.type === 'ship' ? 'Free shipping applied.' : 'Discount applied.';
+				promoMsg.className = 'promo-msg success';
+			}
+			wireEvents();
+			updateCartTotal();
+		})();
+	</script>
+</body>
+</html>

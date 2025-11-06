@@ -1,0 +1,762 @@
+/* SPECIALTIES PAGE - REDESIGNED */
+
+.hero-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    color: var(--brew-text-light);
+}
+
+.hero-breadcrumb a {
+    color: var(--brew-primary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.hero-breadcrumb a:hover {
+    color: var(--brew-primary-dark);
+}
+
+.section-intro {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 4rem;
+}
+
+.section-badge {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: linear-gradient(135deg, var(--brew-primary-10), var(--brew-surface));
+    border: 2px solid var(--brew-primary);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--brew-primary);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+}
+
+.section-intro h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--brew-text);
+    margin-bottom: 1rem;
+}
+
+.section-intro p {
+    font-size: 1.1rem;
+    color: var(--brew-text-light);
+    line-height: 1.8;
+}
+
+.specialties {
+    padding: 6rem 0;
+    background: white;
+}
+
+.specialties-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+}
+
+.specialty-card {
+    padding: 3rem;
+    background: linear-gradient(135deg, var(--brew-surface) 0%, white 100%);
+    border-radius: 20px;
+    border: 2px solid var(--brew-line);
+    position: relative;
+    transition: all 0.4s ease;
+    overflow: hidden;
+}
+
+.specialty-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--brew-primary), var(--brew-primary-light));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+}
+
+.specialty-card:hover::before {
+    transform: scaleX(1);
+}
+
+.specialty-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(198, 124, 78, 0.15);
+    border-color: var(--brew-primary);
+}
+
+.specialty-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.specialty-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, var(--brew-primary), var(--brew-primary-light));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    box-shadow: 0 10px 30px rgba(198, 124, 78, 0.2);
+    transition: transform 0.4s ease;
+}
+
+.specialty-card:hover .specialty-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.specialty-badge {
+    padding: 0.4rem 1rem;
+    background: white;
+    border: 1px solid var(--brew-primary);
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--brew-primary);
+    text-transform: uppercase;
+}
+
+.specialty-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--brew-text);
+    margin-bottom: 1rem;
+}
+
+.specialty-card > p {
+    color: var(--brew-text-light);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+}
+
+.specialty-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.specialty-features li {
+    display: flex;
+    align-items: center;
+    color: var(--brew-text);
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.specialty-features li::before {
+    content: '✓';
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background: var(--brew-primary);
+    color: white;
+    border-radius: 50%;
+    margin-right: 0.75rem;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+}
+
+/* COFFEE JOURNEY TIMELINE */
+.coffee-journey {
+    padding: 6rem 0;
+    background: linear-gradient(to bottom, white, var(--brew-surface));
+}
+
+.journey-timeline {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+.journey-timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--brew-primary), var(--brew-primary-10));
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 4rem;
+    display: flex;
+    align-items: center;
+}
+
+.timeline-item:nth-child(odd) {
+    flex-direction: row;
+}
+
+.timeline-item:nth-child(even) {
+    flex-direction: row-reverse;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-icon {
+    width: 60px;
+    height: 60px;
+    background: white;
+    border: 4px solid var(--brew-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--brew-primary);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    box-shadow: 0 5px 20px rgba(198, 124, 78, 0.2);
+}
+
+.timeline-icon::before {
+    content: attr(data-number);
+}
+
+.timeline-content {
+    width: 45%;
+    padding: 2rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.timeline-item:nth-child(odd) .timeline-content {
+    margin-right: auto;
+}
+
+.timeline-item:nth-child(even) .timeline-content {
+    margin-left: auto;
+}
+
+.timeline-content:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(198, 124, 78, 0.15);
+}
+
+.timeline-content h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--brew-primary);
+    margin-bottom: 0.5rem;
+}
+
+.timeline-content p {
+    color: var(--brew-text-light);
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* SPECIALTIES STATS */
+.specialties-stats {
+    padding: 4rem 0;
+    background: white;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 2rem;
+    background: linear-gradient(135deg, var(--brew-surface), white);
+    border-radius: 15px;
+    border: 2px solid var(--brew-line);
+    transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-5px);
+    border-color: var(--brew-primary);
+    box-shadow: 0 10px 30px rgba(198, 124, 78, 0.15);
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--brew-primary);
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 0.95rem;
+    color: var(--brew-text-light);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 1024px) {
+    .specialties-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding: 6rem 0 4rem;
+    }
+
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+    .section-intro h2 {
+        font-size: 2rem;
+    }
+
+    .section-intro p {
+        font-size: 1rem;
+    }
+
+    .specialty-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .specialty-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 2rem;
+    }
+
+    .specialty-card h3 {
+        font-size: 1.4rem;
+    }
+
+    .specialty-card p {
+        font-size: 0.95rem;
+    }
+
+    .journey-timeline::before {
+        left: 30px;
+    }
+
+    .timeline-icon {
+        left: 30px;
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+
+    .timeline-item {
+        flex-direction: column !important;
+        align-items: flex-start;
+        padding-left: 80px;
+    }
+
+    .timeline-content {
+        width: 100%;
+        margin: 0 !important;
+    }
+
+    .timeline-content h3 {
+        font-size: 1.4rem;
+    }
+
+    .timeline-content p {
+        font-size: 0.95rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+
+    .stat-box {
+        padding: 2rem 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        padding: 5rem 0 3rem;
+    }
+
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero p {
+        font-size: 0.9rem;
+    }
+
+    .section-intro h2 {
+        font-size: 1.8rem;
+    }
+
+    .specialty-card {
+        padding: 1.5rem 1rem;
+    }
+
+    .specialty-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.8rem;
+    }
+
+    .specialty-card h3 {
+        font-size: 1.2rem;
+    }
+
+    .specialty-card p {
+        font-size: 0.9rem;
+    }
+
+    .journey-timeline::before {
+        left: 20px;
+    }
+
+    .timeline-icon {
+        left: 20px;
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .timeline-item {
+        padding-left: 70px;
+    }
+
+    .timeline-number {
+        font-size: 3rem;
+    }
+
+    .timeline-content h3 {
+        font-size: 1.2rem;
+    }
+
+    .timeline-content p {
+        font-size: 0.85rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .stat-box {
+        padding: 1.5rem 1rem;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.85rem;
+    }
+}
+
+/* ============================================
+   SIGNATURE SPECIALTIES SHOWCASE
+   ============================================ */
+
+.signature-specialties {
+    padding: 6rem 0;
+    background: linear-gradient(135deg, var(--brew-white) 0%, var(--brew-surface) 50%, var(--brew-white) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.signature-specialties::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(198, 124, 78, 0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+.signature-specialties .container {
+    position: relative;
+    z-index: 1;
+}
+
+.signature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem;
+    margin-bottom: 4rem;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.signature-card {
+    background: var(--brew-white);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.signature-card:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 20px 40px rgba(198, 124, 78, 0.25);
+}
+
+.signature-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 320px;
+    overflow: hidden;
+}
+
+.signature-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.signature-card:hover .signature-image {
+    transform: scale(1.1) rotate(2deg);
+}
+
+.signature-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        180deg,
+        transparent 0%,
+        transparent 40%,
+        rgba(0, 0, 0, 0.3) 70%,
+        rgba(0, 0, 0, 0.6) 100%
+    );
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 1.5rem;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.signature-card:hover .signature-overlay {
+    opacity: 1;
+}
+
+.signature-tag {
+    background: linear-gradient(135deg, var(--brew-primary), var(--brew-primary-dark));
+    color: var(--brew-white);
+    padding: 0.5rem 1.2rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 15px rgba(198, 124, 78, 0.4);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.signature-info {
+    padding: 2rem 1.5rem;
+    background: linear-gradient(to bottom, var(--brew-white), var(--brew-surface));
+}
+
+.signature-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--brew-text);
+    margin-bottom: 0.8rem;
+    position: relative;
+    display: inline-block;
+}
+
+.signature-info h3::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--brew-primary), var(--brew-primary-light));
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.signature-card:hover .signature-info h3::after {
+    width: 100%;
+}
+
+.signature-info p {
+    color: var(--brew-text-light);
+    line-height: 1.7;
+    margin-bottom: 1.2rem;
+    font-size: 0.95rem;
+}
+
+.signature-meta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 1rem;
+    background: rgba(198, 124, 78, 0.1);
+    border: 1px solid var(--brew-primary);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    color: var(--brew-primary);
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.meta-item i {
+    font-size: 0.75rem;
+}
+
+.signature-card:hover .meta-item {
+    background: var(--brew-primary);
+    color: var(--brew-white);
+    transform: translateY(-2px);
+}
+
+.signature-cta {
+    text-align: center;
+    padding-top: 2rem;
+}
+
+.signature-cta .btn {
+    box-shadow: 0 8px 30px rgba(198, 124, 78, 0.3);
+}
+
+/* ============================================
+   SIGNATURE SPECIALTIES - RESPONSIVE
+   ============================================ */
+
+@media (max-width: 1024px) {
+    .signature-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+
+    .signature-image-wrapper {
+        height: 280px;
+    }
+}
+
+@media (max-width: 768px) {
+    .signature-specialties {
+        padding: 4rem 0;
+    }
+
+    .signature-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .signature-image-wrapper {
+        height: 260px;
+    }
+
+    .signature-info {
+        padding: 1.2rem 1rem;
+    }
+
+    .signature-info h3 {
+        font-size: 1.2rem;
+    }
+
+    .signature-info p {
+        font-size: 0.85rem;
+    }
+
+    .signature-overlay {
+        opacity: 1;
+    }
+}
+
+@media (max-width: 480px) {
+    .signature-specialties {
+        padding: 3rem 0;
+    }
+
+    .signature-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .signature-image-wrapper {
+        height: 250px;
+    }
+
+    .signature-info {
+        padding: 1.2rem 1rem;
+    }
+
+    .signature-info h3 {
+        font-size: 1.2rem;
+    }
+
+    .meta-item {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.8rem;
+    }
+}

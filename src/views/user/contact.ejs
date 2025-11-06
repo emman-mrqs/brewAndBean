@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Bean and Brew</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/contact.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Animated Background Elements -->
+    <div class="background-animation">
+        <div class="coffee-bean bean-1"></div>
+        <div class="coffee-bean bean-2"></div>
+        <div class="coffee-bean bean-3"></div>
+        <div class="coffee-bean bean-4"></div>
+        <div class="coffee-bean bean-5"></div>
+        <div class="steam steam-1"></div>
+        <div class="steam steam-2"></div>
+        <div class="steam steam-3"></div>
+    </div>
+
+    <%- include('../partials/navbar', { page: 'contact' }) %>
+
+    <!-- Hero Section -->
+    <section class="hero hero-contact">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Contact Us</h1>
+            <div class="hero-accent"></div>
+            <p>We'd love to hear from you - let's start a conversation over coffee</p>
+        </div>
+        <div class="hero-scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact">
+        <div class="container">
+            <div class="contact-grid">
+                <!-- Contact Form -->
+                <div class="contact-form-wrapper" data-aos="fade-right">
+                    <div class="section-header">
+                        <span class="section-label">Send Message</span>
+                        <h2 class="section-title">Send Us a Message</h2>
+                        <p class="section-description">Have questions or feedback? We're here to help!</p>
+                    </div>
+                    <form class="contact-form" id="contactForm">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" required>
+                            <label for="name">Your Name</label>
+                            <div class="form-line"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" required>
+                            <label for="email">Email Address</label>
+                            <div class="form-line"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="tel" id="phone" name="phone">
+                            <label for="phone">Phone Number (Optional)</label>
+                            <div class="form-line"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <select id="subject" name="subject" required>
+                                <option value="">Select Subject</option>
+                                <option value="general">General Inquiry</option>
+                                <option value="catering">Catering Request</option>
+                                <option value="wholesale">Wholesale Inquiry</option>
+                                <option value="feedback">Feedback</option>
+                                <option value="careers">Careers</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <label for="subject" class="select-label">Subject</label>
+                            <div class="form-line"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                            <label for="message">Your Message</label>
+                            <div class="form-line"></div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <span>Send Message</span>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M2.5 10H17.5M17.5 10L11.25 3.75M17.5 10L11.25 16.25" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="contact-info" data-aos="fade-left">
+                    <div class="section-header">
+                        <span class="section-label">Contact Info</span>
+                        <h2 class="section-title">Visit or Call Us</h2>
+                        <p class="section-description">Multiple ways to reach our team</p>
+                    </div>
+                    
+                    <div class="info-cards">
+                        <div class="info-card">
+                            <div class="info-icon">📍</div>
+                            <div class="info-content">
+                                <h3>Visit Us</h3>
+                                <p>123 Coffee Street<br>Brew City, BC 12345</p>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <div class="info-icon">📞</div>
+                            <div class="info-content">
+                                <h3>Call Us</h3>
+                                <p>Phone: (555) 123-4567<br>Fax: (555) 123-4568</p>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <div class="info-icon">✉️</div>
+                            <div class="info-content">
+                                <h3>Email Us</h3>
+                                <p>info@beanandbrew.com<br>support@beanandbrew.com</p>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <div class="info-icon">🕐</div>
+                            <div class="info-content">
+                                <h3>Opening Hours</h3>
+                                <p>Monday - Friday: 6am - 8pm<br>Saturday - Sunday: 7am - 9pm</p>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- ✅ properly closed contact-info -->
+            </div> <!-- ✅ closed contact-grid -->
+        </div> <!-- ✅ closed container -->
+    </section> <!-- ✅ closed contact section -->
+
+    <!-- Map Section -->
+    <section class="map-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Location</span>
+                <h2 class="section-title">Find Our Café</h2>
+                <p class="section-description">Visit us at our convenient downtown location</p>
+            </div>
+            <div class="map-placeholder" data-aos="fade-up">
+                <div class="map-content">
+                    <div class="map-icon">🗺️</div>
+                    <h3>Find Us on the Map</h3>
+                    <p>123 Coffee Street, Brew City, BC 12345</p>
+                    <a href="https://maps.google.com" target="_blank" class="btn btn-secondary">
+                        <span>Open in Google Maps</span>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M11 3H15.2C15.48 3 15.62 3 15.727 3.055C15.821 3.104 15.896 3.179 15.945 3.273C16 3.38 16 3.52 16 3.8V16.2C16 16.48 16 16.62 15.945 16.727C15.896 16.821 15.821 16.896 15.727 16.945C15.62 17 15.48 17 15.2 17H4.8C4.52 17 4.38 17 4.273 16.945C4.179 16.896 4.104 16.821 4.055 16.727C4 16.62 4 16.48 4 16.2V12M13 7L7 13M7 7H13.4C13.76 7 13.94 7 14.054 6.891C14.167 6.782 14.167 6.598 14.167 6.23V2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <%- include('../partials/footer') %>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12 19V5M5 12L12 5L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <nav class="bottom-nav" aria-label="Bottom Navigation">
+        <a href="/" class="bn-link" aria-label="Home">
+            <i class="fas fa-house" aria-hidden="true"></i>
+            <span>Home</span>
+        </a>
+        <a href="/menu" class="bn-link" aria-label="Menu">
+            <i class="fas fa-mug-saucer" aria-hidden="true"></i>
+            <span>Menu</span>
+        </a>
+        <a href="/dashboard" class="bn-link" aria-label="Dashboard">
+            <i class="fas fa-gauge" aria-hidden="true"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="/cart" class="bn-link" aria-label="Cart">
+            <i class="fas fa-cart-shopping" aria-hidden="true"></i>
+            <span>Cart</span>
+        </a>
+        <a href="/specialties" class="bn-link" aria-label="Specialties">
+            <i class="fas fa-star" aria-hidden="true"></i>
+            <span>Specialties</span>
+        </a>
+    </nav>
+
+    <script src="../js/shared.js"></script>
+    <script>
+        // Form handling
+        const contactForm = document.getElementById('contactForm');
+        
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(contactForm);
+            const data = Object.fromEntries(formData);
+            console.log('Form submitted:', data);
+            alert("Thank you for your message! We'll get back to you soon.");
+            contactForm.reset();
+            resetFormLabels();
+        });
+
+        // Floating label behavior
+        const formGroups = document.querySelectorAll('.form-group');
+        function resetFormLabels() {
+            formGroups.forEach(group => group.classList.remove('focused', 'has-value'));
+        }
+        formGroups.forEach(group => {
+            const input = group.querySelector('input, textarea, select');
+            if (!input) return;
+            input.addEventListener('focus', () => group.classList.add('focused'));
+            input.addEventListener('blur', () => { if (!input.value) group.classList.remove('focused'); });
+            input.addEventListener('input', () => group.classList.toggle('has-value', !!input.value));
+            if (input.value) group.classList.add('has-value');
+        });
+
+        // Scroll animations
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const delay = entry.target.getAttribute('data-delay') || 0;
+                    setTimeout(() => entry.target.classList.add('animate-in'), parseInt(delay));
+                }
+            });
+        }, { threshold: 0.2, rootMargin: '0px 0px -50px 0px' });
+        document.querySelectorAll('[data-aos]').forEach(el => observer.observe(el));
+
+        // Back to top
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        window.addEventListener('scroll', () => {
+            const backToTopBtn = document.getElementById('backToTop');
+            backToTopBtn.classList.toggle('visible', window.scrollY > 300);
+        });
+    </script>
+</body>
+</html>

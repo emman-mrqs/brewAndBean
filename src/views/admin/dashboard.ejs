@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Bean & Brew Admin</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <%- include('../partials/adminSidebar', { page: 'admin-dashboard' }) %>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="header-actions">
+                <button class="notification-btn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <div class="user-profile">
+                    <div class="user-avatar">A</div>
+                    <div class="user-info">
+                        <span class="user-name">Admin</span>
+                    </div>
+                    <i class="fas fa-chevron-down user-dropdown-icon"></i>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="page-content">
+            <div class="page-header">
+                <h1>Dashboard</h1>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-title">Total Orders</span>
+                        <div class="stat-card-icon orders">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card-value">1,247</div>
+                    <div class="stat-card-change positive">
+                        <i class="fas fa-arrow-up"></i> +12% from last month
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-title">Total Payments</span>
+                        <div class="stat-card-icon revenue">
+                            <i class="fas fa-peso-sign"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card-value">&#8369;28,450.75</div>
+                    <div class="stat-card-change positive">
+                        <i class="fas fa-arrow-up"></i> +8% from last month
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-title">Cash Orders</span>
+                        <div class="stat-card-icon spend">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card-value">312</div>
+                    <div class="stat-card-change negative">
+                        <i class="fas fa-arrow-down"></i> -3% from last month
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-title">PayPal Orders</span>
+                        <div class="stat-card-icon paypal">
+                            <i class="fab fa-paypal"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card-value">935</div>
+                    <div class="stat-card-change positive">
+                        <i class="fas fa-arrow-up"></i> +10% from last month
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-title">Low Stock Alerts</span>
+                        <div class="stat-card-icon alert">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card-value">2</div>
+                    <div class="stat-card-change">
+                        Items below 5 units
+                    </div>
+                </div>
+            </div>
+
+            <!-- Low Stock Products -->
+            <div class="data-table-container">
+                <div class="table-header">
+                    <h2 class="table-title">Low Stock Products</h2>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Category</th>
+                            <th>Stock Level</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="product-cell">
+                                    <div class="product-image">☕</div>
+                                    <span>French Roast</span>
+                                </div>
+                            </td>
+                            <td>Dark Roast</td>
+                            <td>3 units left</td>
+                            <td>&#8369;21.99</td>
+                            <td><span class="status-badge warning">Low Stock</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = '../LogIn/LogIn.html';
+            }
+        }
+
+        // Mobile sidebar toggle
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const userAvatar = document.querySelector('.user-avatar');
+        
+        userAvatar.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+        });
+        
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+        });
+
+        // Close sidebar when clicking a link on mobile
+        const sidebarLinks = document.querySelectorAll('.sidebar-menu a');
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 1024) {
+                    sidebar.classList.remove('active');
+                    sidebarOverlay.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

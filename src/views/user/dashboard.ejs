@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Bean & Brew Customer Dashboard - Manage your orders, rewards, and preferences">
+    <meta name="author" content="Bean & Brew">
+    <meta name="theme-color" content="#C67C4E">
+    
+    <title>My Dashboard - Bean & Brew</title>
+    <link rel="stylesheet" href="../css/Dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../css/bottom-nav.css">
+</head>
+<body>
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu">
+        <i class="fas fa-mug-hot"></i>
+    </button>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <!-- Brand Logo -->
+        <div class="sidebar-brand">
+            <div class="brand-logo-container">
+                <div class="brand-icon">☕</div>
+                <div class="brand-text-group">
+                    <span class="brand-name">Bean & Brew</span>
+                    <span class="brand-tagline">PREMIUM COFFEE</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Profile Summary -->
+        <div class="sidebar-profile">
+            <div class="profile-avatar">
+                <img src="https://ui-avatars.com/api/?name=Luis+Martinez&background=C67C4E&color=fff&size=80" alt="Luis Martinez">
+            </div>
+            <h3 class="profile-username">Eldi Tutunog</h3>
+            <span class="profile-membership">Gold Member</span>
+            <div class="profile-quick-stats">
+                <div class="quick-stat">
+                    <span class="stat-value">47</span>
+                    <span class="stat-label">Orders</span>
+                </div>
+                <div class="quick-stat">
+                    <span class="stat-value">1,250</span>
+                    <span class="stat-label">Points</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="sidebar-menu">
+            <a href="/dashboard" class="menu-item active">
+                <i class="menu-icon fas fa-home"></i>
+                <span class="menu-text">Dashboard</span>
+            </a>
+            <a href="/order-history" class="menu-item">
+                <i class="menu-icon fas fa-clock"></i>
+                <span class="menu-text">Order History</span>
+            </a>
+            <a href="/order-preview" class="menu-item">
+                <i class="menu-icon fas fa-shopping-cart"></i>
+                <span class="menu-text">Current Order</span>
+            </a>
+            <a href="/rewards" class="menu-item">
+                <i class="menu-icon fas fa-gift"></i>
+                <span class="menu-text">Rewards</span>
+            </a>
+            <a href="/favorites" class="menu-item">
+                <i class="menu-icon fas fa-heart"></i>
+                <span class="menu-text">Favorites</span>
+            </a>
+            <a href="/payment" class="menu-item">
+                <i class="menu-icon fas fa-credit-card"></i>
+                <span class="menu-text">Payment</span>
+            </a>
+            <a href="/settings" class="menu-item">
+                <i class="menu-icon fas fa-cog"></i>
+                <span class="menu-text">Settings</span>
+            </a>
+        </nav>
+
+        <!-- Sidebar Footer -->
+        <div class="sidebar-footer">
+            <a href="/menu" class="btn-order">
+                <i class="fas fa-coffee"></i> Order Now
+            </a>
+            <button class="btn-logout" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <!-- Page Header -->
+        <header class="content-header">
+            <h1 class="page-title">Dashboard Overview</h1>
+            <p class="page-subtitle" id="greetingText">Good Morning, Luis!</p>
+        </header>
+
+        <!-- Stats Overview -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #C67C4E 0%, #A66438 100%);">
+                    <i class="fas fa-shopping-bag"></i>
+                </div>
+                <div class="stat-info">
+                    <p class="stat-label">Total Orders</p>
+                    <h3 class="stat-number">47</h3>
+                    <span class="stat-change positive"><i class="fas fa-arrow-up"></i> +3 this week</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="stat-info">
+                    <p class="stat-label">Reward Points</p>
+                    <h3 class="stat-number">1,250</h3>
+                    <span class="stat-change positive"><i class="fas fa-arrow-up"></i> +150 earned</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <div class="stat-info">
+                    <p class="stat-label">Total Spent</p>
+                    <h3 class="stat-number">&#8369;8,540</h3>
+                    <span class="stat-change neutral">&#8369;285 avg order</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div class="stat-info">
+                    <p class="stat-label">Favorite Items</p>
+                    <h3 class="stat-number">0</h3>
+                    <span class="stat-change neutral">Add favorites</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Current Order Card -->
+            <section class="card current-order-card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-shopping-cart"></i> Current Order
+                    </h2>
+                    <a href="/order-preview" class="btn-link">View Details</a>
+                </div>
+                <div class="card-body">
+                    <div class="order-widget">
+                        <div class="order-status-badge preparing">
+                            <i class="fas fa-clock"></i> Preparing
+                        </div>
+                        <div class="order-items-with-images">
+                            <div class="order-product-mini">
+                                <img src="../../Assets/Coffee/Cold Caramel Macchiato.webp" alt="Caramel Macchiato" class="mini-product-image">
+                                <div class="mini-product-details">
+                                    <h4>Caramel Macchiato (L)</h4>
+                                    <p>Iced, Extra Caramel</p>
+                                    <span class="mini-product-price">&#8369;175</span>
+                                </div>
+                            </div>
+                            <div class="order-product-mini">
+                                <img src="../../Assets/Coffee/Hot Cappuccino.webp" alt="Cappuccino" class="mini-product-image">
+                                <div class="mini-product-details">
+                                    <h4>Cappuccino (Reg)</h4>
+                                    <p>Hot, Regular</p>
+                                    <span class="mini-product-price">&#8369;110</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-total-mini">
+                            <strong>Total:</strong>
+                            <strong>&#8369;285</strong>
+                        </div>
+                        <button class="btn-primary-action" onclick="window.location.href='/order-preview'">
+                            <i class="fas fa-eye"></i> Track Order
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Reorder Card -->
+            <section class="card quick-reorder-card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-redo"></i> Quick Reorder
+                    </h2>
+                    <a href="/favorites" class="btn-link">View All</a>
+                </div>
+                <div class="card-body">
+                    <div class="quick-reorder-list">
+                        <div class="reorder-item">
+                            <img src="../../Assets/Coffee/Cold Caramel Macchiato.webp" alt="Caramel Macchiato" class="reorder-image">
+                            <div class="item-info">
+                                <h4>Caramel Macchiato</h4>
+                                <p>Ordered 12 times</p>
+                            </div>
+                            <button class="btn-reorder">Reorder</button>
+                        </div>
+                        <div class="reorder-item">
+                            <img src="../../Assets/Coffee/Cold Spanish Latte.webp" alt="Spanish Latte" class="reorder-image">
+                            <div class="item-info">
+                                <h4>Spanish Latte</h4>
+                                <p>Ordered 8 times</p>
+                            </div>
+                            <button class="btn-reorder">Reorder</button>
+                        </div>
+                        <div class="reorder-item">
+                            <img src="../../Assets/Coffee/Hot Cappuccino.webp" alt="Cappuccino" class="reorder-image">
+                            <div class="item-info">
+                                <h4>Cappuccino</h4>
+                                <p>Ordered 15 times</p>
+                            </div>
+                            <button class="btn-reorder">Reorder</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Rewards Widget -->
+            <section class="card rewards-widget-card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-gift"></i> Your Rewards
+                    </h2>
+                    <a href="/rewards" class="btn-link">See All</a>
+                </div>
+                <div class="card-body">
+                    <div class="rewards-summary">
+                        <div class="points-circle">
+                            <div class="points-value">1,250</div>
+                            <div class="points-label">Points</div>
+                        </div>
+                        <div class="rewards-info">
+                            <p class="rewards-status"><i class="fas fa-crown"></i> Gold Member Status</p>
+                            <div class="next-reward">
+                                <div class="progress-mini">
+                                    <div class="progress-fill-mini" style="width: 83%"></div>
+                                </div>
+                                <p class="progress-text-mini">250 points to next free coffee</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rewards-message">
+                        <i class="fas fa-info-circle"></i> Keep earning points with every purchase!
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Activity Widget -->
+            <section class="card activity-widget-card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-clock"></i> Recent Activity
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <div class="activity-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-icon" style="background: #C67C4E;">
+                                <i class="fas fa-shopping-bag"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <p class="timeline-text">Order placed for &#8369;285</p>
+                                <span class="timeline-time">2 hours ago</span>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon" style="background: #F59E0B;">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <p class="timeline-text">Earned 50 reward points</p>
+                                <span class="timeline-time">5 hours ago</span>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon" style="background: #10B981;">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <p class="timeline-text">Added new favorite item</p>
+                                <span class="timeline-time">Yesterday</span>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon" style="background: #6366F1;">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <p class="timeline-text">Reached Gold Member status</p>
+                                <span class="timeline-time">3 days ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Special Offers Card -->
+            <section class="card offers-card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-tags"></i> Special Offers
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <div class="offers-list">
+                        <div class="offer-item" style="background: linear-gradient(135deg, #C67C4E 0%, #A66438 100%);">
+                            <img src="../../Assets/Coffee/Special Affogato.webp" alt="Gold Exclusive" class="offer-image">
+                            <div class="offer-content">
+                                <h4>Gold Member Exclusive</h4>
+                                <p>Get 2x points on all orders this week!</p>
+                            </div>
+                        </div>
+                        <div class="offer-item" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">
+                            <img src="../../Assets/Coffee/Hot Cafe Mocha.webp" alt="Buy 1 Get 1" class="offer-image">
+                            <div class="offer-content">
+                                <h4>Buy 1 Get 1 Free</h4>
+                                <p>On all medium-sized coffees today</p>
+                            </div>
+                        </div>
+                        <div class="offer-item" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
+                            <img src="../../Assets/Coffee/Cold Vanilla Latte.webp" alt="Iced Special" class="offer-image">
+                            <div class="offer-content">
+                                <h4>Iced Coffee Special</h4>
+                                <p>20% off all cold beverages before 2 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <nav class="bottom-nav" role="navigation" aria-label="Primary">
+        <a href="/order-history" class="bottom-nav__item" data-page="history">
+            <i class="fas fa-clock icon" aria-hidden="true"></i>
+            <span>History</span>
+        </a>
+        <a href="/order-preview" class="bottom-nav__item" data-page="current">
+            <i class="fas fa-shopping-cart icon" aria-hidden="true"></i>
+            <span>Current</span>
+        </a>
+        <a href="/rewards" class="bottom-nav__item" data-page="rewards">
+            <i class="fas fa-gift icon" aria-hidden="true"></i>
+            <span>Rewards</span>
+        </a>
+        <a href="/favorites" class="bottom-nav__item" data-page="favorites">
+            <i class="fas fa-heart icon" aria-hidden="true"></i>
+            <span>Favorites</span>
+        </a>
+        <a href="/settings" class="bottom-nav__item" data-page="settings">
+            <i class="fas fa-cog icon" aria-hidden="true"></i>
+            <span>Settings</span>
+        </a>
+    </nav>
+
+    <script>
+        // Dynamic Greeting
+        function updateGreeting() {
+            const hour = new Date().getHours();
+            const greetingElement = document.getElementById('greetingText');
+            const userName = 'Luis';
+            
+            let greeting;
+            if (hour < 12) {
+                greeting = `Good Morning, ${userName}!`;
+            } else if (hour < 18) {
+                greeting = `Good Afternoon, ${userName}!`;
+            } else {
+                greeting = `Good Evening, ${userName}!`;
+            }
+            
+            if (greetingElement) {
+                greetingElement.textContent = greeting;
+            }
+        }
+
+        // Mobile Menu Toggle
+        function initMobileMenu() {
+            const menuToggle = document.getElementById('mobileMenuToggle');
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.querySelector('.main-content');
+
+            if (menuToggle && sidebar) {
+                menuToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('open');
+                });
+
+                // Close sidebar when clicking outside on mobile
+                if (mainContent) {
+                    mainContent.addEventListener('click', function() {
+                        if (sidebar.classList.contains('open')) {
+                            sidebar.classList.remove('open');
+                        }
+                    });
+                }
+            }
+        }
+
+        // Logout
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = '/login';
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateGreeting();
+            initMobileMenu();
+            setInterval(updateGreeting, 60000);
+        });
+    </script>
+    <script src="../js/bottom-nav.js"></script>
+</body>
+</html>
+
+
+

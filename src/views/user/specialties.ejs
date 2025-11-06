@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Specialties - Bean & Brew</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/specialties.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Animated Background Elements -->
+    <div class="background-animation">
+        <div class="coffee-bean bean-1"></div>
+        <div class="coffee-bean bean-2"></div>
+        <div class="coffee-bean bean-3"></div>
+        <div class="coffee-bean bean-4"></div>
+        <div class="coffee-bean bean-5"></div>
+        <div class="steam steam-1"></div>
+        <div class="steam steam-2"></div>
+        <div class="steam steam-3"></div>
+    </div>
+
+    <%- include('../partials/navbar', { page: 'specialties' }) %>
+
+    <!-- Hero Section -->
+    <section class="hero hero-specialties">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Our Specialties</h1>
+            <div class="hero-accent"></div>
+            <p>The art and science behind every exceptional cup of coffee we craft</p>
+        </div>
+        <div class="hero-scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Specialties Section -->
+    <section class="specialties">
+        <div class="container">
+            <div class="section-intro">
+                <span class="section-badge">What Makes Us Different</span>
+                <h2>Crafted With Passion & Precision</h2>
+                <p>Every cup tells a story of dedication, expertise, and uncompromising quality. Discover the pillars that make Bean & Brew your trusted coffee destination.</p>
+            </div>
+            
+            <div class="specialties-grid">
+                <div class="specialty-card" data-aos="fade-up">
+                    <div class="specialty-header">
+                        <div class="specialty-icon">☕</div>
+                        <span class="specialty-badge">Master Craft</span>
+                    </div>
+                    <h3>Artisan Roasting</h3>
+                    <p>Our master roasters use traditional small-batch techniques combined with modern precision to unlock the unique character of each bean origin. Temperature, timing, and careful monitoring ensure optimal flavor development in every roast.</p>
+                    <ul class="specialty-features">
+                        <li>Small-batch roasting</li>
+                        <li>Precision temperature control</li>
+                        <li>Flavor profile optimization</li>
+                    </ul>
+                </div>
+
+                <div class="specialty-card" data-aos="fade-up" data-delay="100">
+                    <div class="specialty-header">
+                        <div class="specialty-icon">🌿</div>
+                        <span class="specialty-badge">Ethical</span>
+                    </div>
+                    <h3>Sustainable Sourcing</h3>
+                    <p>We build lasting relationships with coffee farmers through direct trade partnerships. By visiting farms regularly and paying fair prices, we ensure quality beans while supporting sustainable farming practices and community development.</p>
+                    <ul class="specialty-features">
+                        <li>Direct trade partnerships</li>
+                        <li>Fair farmer compensation</li>
+                        <li>Environmental responsibility</li>
+                    </ul>
+                </div>
+
+                <div class="specialty-card" data-aos="fade-up" data-delay="200">
+                    <div class="specialty-header">
+                        <div class="specialty-icon">🎯</div>
+                        <span class="specialty-badge">Expert</span>
+                    </div>
+                    <h3>Expert Brewing</h3>
+                    <p>Our certified baristas undergo extensive training in multiple brewing methods and extraction techniques. Whether it's pour-over, espresso, or French press, every cup is crafted with expertise and attention to detail.</p>
+                    <ul class="specialty-features">
+                        <li>Certified baristas</li>
+                        <li>Multiple brewing methods</li>
+                        <li>Precise extraction techniques</li>
+                    </ul>
+                </div>
+
+                <div class="specialty-card" data-aos="fade-up" data-delay="300">
+                    <div class="specialty-header">
+                        <div class="specialty-icon">💎</div>
+                        <span class="specialty-badge">Premium</span>
+                    </div>
+                    <h3>Quality Selection</h3>
+                    <p>We exclusively source the finest arabica beans from renowned coffee-growing regions. From the highlands of Ethiopia to the mountains of Colombia, each origin is carefully selected for its distinctive flavor profile and exceptional quality.</p>
+                    <ul class="specialty-features">
+                        <li>100% Arabica beans</li>
+                        <li>Single-origin options</li>
+                        <li>Curated flavor profiles</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coffee Journey Section -->
+    <section class="coffee-journey">
+        <div class="container">
+            <div class="section-intro centered">
+                <span class="section-badge">Our Process</span>
+                <h2>From Farm to Cup</h2>
+                <p>Follow the careful journey each bean takes to become your perfect coffee</p>
+            </div>
+            
+            <div class="journey-timeline">
+                <div class="timeline-item" data-aos="fade-right">
+                    <div class="timeline-icon" data-number="1"></div>
+                    <div class="timeline-content">
+                        <h3>Sourcing & Selection</h3>
+                        <p>We partner directly with sustainable farms in premium coffee-growing regions. Our team personally visits farms to select the finest beans, ensuring quality and ethical practices from the very beginning.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item" data-aos="fade-left">
+                    <div class="timeline-icon" data-number="2"></div>
+                    <div class="timeline-content">
+                        <h3>Expert Roasting</h3>
+                        <p>Beans are small-batch roasted by our master roasters who carefully monitor every stage. Temperature profiles are adjusted for each origin to highlight unique flavors and achieve the perfect roast level.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item" data-aos="fade-right">
+                    <div class="timeline-icon" data-number="3"></div>
+                    <div class="timeline-content">
+                        <h3>Quality Control</h3>
+                        <p>Every batch undergoes rigorous cupping sessions to ensure consistency and quality. Our Q-graders evaluate aroma, flavor, acidity, body, and aftertaste before beans reach your cup.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item" data-aos="fade-left">
+                    <div class="timeline-icon" data-number="4"></div>
+                    <div class="timeline-content">
+                        <h3>Precise Brewing</h3>
+                        <p>Our expert baristas craft each drink with precision and care. From grind size to water temperature and extraction time, every variable is controlled to deliver a consistently exceptional experience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="specialties-stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item" data-aos="fade-up">
+                    <div class="stat-icon">🌍</div>
+                    <div class="stat-number">12+</div>
+                    <div class="stat-label">Partner Farms Worldwide</div>
+                </div>
+                <div class="stat-item" data-aos="fade-up" data-delay="100">
+                    <div class="stat-icon">☕</div>
+                    <div class="stat-number">25+</div>
+                    <div class="stat-label">Award-Winning Blends</div>
+                </div>
+                <div class="stat-item" data-aos="fade-up" data-delay="200">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-number">48hrs</div>
+                    <div class="stat-label">Roast to Cup Freshness</div>
+                </div>
+                <div class="stat-item" data-aos="fade-up" data-delay="300">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-number">15+</div>
+                    <div class="stat-label">Expert Baristas</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Signature Specialties Showcase -->
+    <section class="signature-specialties">
+        <div class="container">
+            <div class="section-intro centered">
+                <span class="section-badge">Exclusive Creations</span>
+                <h2>Our Signature Specialties</h2>
+                <p>Experience our most beloved specialty drinks, crafted with innovation and passion</p>
+            </div>
+            
+            <div class="signature-grid">
+                <div class="signature-card" data-aos="zoom-in">
+                    <div class="signature-image-wrapper">
+                        <img src="../../Assets/Coffee/Special Affogato.webp" alt="Affogato" class="signature-image">
+                        <div class="signature-overlay">
+                            <span class="signature-tag">Signature</span>
+                        </div>
+                    </div>
+                    <div class="signature-info">
+                        <h3>Affogato</h3>
+                        <p>A decadent Italian dessert coffee featuring a shot of hot espresso poured over creamy vanilla gelato</p>
+                        <div class="signature-meta">
+                            <span class="meta-item"><i class="fas fa-fire"></i> Hot</span>
+                            <span class="meta-item"><i class="fas fa-star"></i> Premium</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="signature-card" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="signature-image-wrapper">
+                        <img src="../../Assets/Coffee/Special Greek Coffee Frappe.webp" alt="Greek Coffee Frappe" class="signature-image">
+                        <div class="signature-overlay">
+                            <span class="signature-tag">Signature</span>
+                        </div>
+                    </div>
+                    <div class="signature-info">
+                        <h3>Greek Coffee Frappé</h3>
+                        <p>Authentic Greek-style iced coffee with a thick, frothy foam, perfectly balanced and refreshingly smooth</p>
+                        <div class="signature-meta">
+                            <span class="meta-item"><i class="fas fa-snowflake"></i> Cold</span>
+                            <span class="meta-item"><i class="fas fa-star"></i> Classic</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="signature-card" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="signature-image-wrapper">
+                        <img src="../../Assets/Coffee/Special Java Chip Frappe.webp" alt="Java Chip Frappe" class="signature-image">
+                        <div class="signature-overlay">
+                            <span class="signature-tag">Signature</span>
+                        </div>
+                    </div>
+                    <div class="signature-info">
+                        <h3>Java Chip Frappé</h3>
+                        <p>A blended coffee indulgence with chocolate chips, rich mocha flavors, and topped with whipped cream</p>
+                        <div class="signature-meta">
+                            <span class="meta-item"><i class="fas fa-snowflake"></i> Cold</span>
+                            <span class="meta-item"><i class="fas fa-heart"></i> Favorite</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="signature-card" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="signature-image-wrapper">
+                        <img src="../../Assets/Coffee/Special Mocha Frappe.webp" alt="Mocha Frappe" class="signature-image">
+                        <div class="signature-overlay">
+                            <span class="signature-tag">Signature</span>
+                        </div>
+                    </div>
+                    <div class="signature-info">
+                        <h3>Mocha Frappé</h3>
+                        <p>The perfect marriage of espresso and chocolate, blended with ice and finished with velvety whipped cream</p>
+                        <div class="signature-meta">
+                            <span class="meta-item"><i class="fas fa-snowflake"></i> Cold</span>
+                            <span class="meta-item"><i class="fas fa-star"></i> Bestseller</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="signature-card" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="signature-image-wrapper">
+                        <img src="../../Assets/Coffee/Special Nitro Coffee.webp" alt="Nitro Coffee" class="signature-image">
+                        <div class="signature-overlay">
+                            <span class="signature-tag">Signature</span>
+                        </div>
+                    </div>
+                    <div class="signature-info">
+                        <h3>Nitro Coffee</h3>
+                        <p>Cold brew coffee infused with nitrogen for a smooth, creamy texture with cascading bubbles</p>
+                        <div class="signature-meta">
+                            <span class="meta-item"><i class="fas fa-snowflake"></i> Cold</span>
+                            <span class="meta-item"><i class="fas fa-bolt"></i> Energizing</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="signature-cta" data-aos="fade-up">
+                <a href="menu.html" class="btn btn-primary">
+                    <span>View Full Menu</span>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+
+    <%- include('../partials/footer') %>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12 19V5M5 12L12 5L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <nav class="bottom-nav" aria-label="Bottom Navigation">
+        <a href="index.html" class="bn-link" aria-label="Home">
+            <i class="fas fa-house" aria-hidden="true"></i>
+            <span>Home</span>
+        </a>
+        <a href="menu.html" class="bn-link" aria-label="Menu">
+            <i class="fas fa-mug-saucer" aria-hidden="true"></i>
+            <span>Menu</span>
+        </a>
+        <a href="../../User Dashboard/html/Dashboard.html" class="bn-link" aria-label="Dashboard">
+            <i class="fas fa-gauge" aria-hidden="true"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="cart.html" class="bn-link" aria-label="Cart">
+            <i class="fas fa-cart-shopping" aria-hidden="true"></i>
+            <span>Cart</span>
+        </a>
+        <a href="specialties.html" class="bn-link" aria-label="Specialties">
+            <i class="fas fa-star" aria-hidden="true"></i>
+            <span>Specialties</span>
+        </a>
+    </nav>
+
+    <script src="../js/shared.js"></script>
+    <script>
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const delay = entry.target.getAttribute('data-delay') || 0;
+                    setTimeout(() => {
+                        entry.target.classList.add('animate-in');
+                    }, parseInt(delay));
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements
+        document.querySelectorAll('[data-aos]').forEach(el => observer.observe(el));
+        
+        // Back to top functionality
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Show/hide back to top button based on scroll position
+        window.addEventListener('scroll', function() {
+            const backToTopBtn = document.getElementById('backToTop');
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+
+        // Newsletter form handler
+        function handleNewsletterSubmit(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input[type="email"]').value;
+            
+            // In a real implementation, you would send this to your backend
+            console.log('Newsletter subscription:', email);
+            
+            // Show success message
+            alert('Thank you for subscribing to our newsletter!');
+            event.target.reset();
+            
+            return false;
+        }
+    </script>
+</body>
+</html>

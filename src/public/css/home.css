@@ -1,0 +1,471 @@
+/* ============================================
+   HOME PAGE STYLES
+   ============================================ */
+
+/* Override hero styles for home page - Use background image from styles.css */
+.hero-home {
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 8rem 0 4rem;
+    /* background-image is set in styles.css */
+}
+
+.hero-home .hero-background {
+    display: none; /* Remove the old background div */
+}
+
+.hero-home .hero-pattern {
+    display: none; /* Remove the pattern */
+}
+
+/* Quick Links Section */
+.quick-links {
+    padding: 6rem 0;
+    background: white;
+    position: relative;
+    z-index: 1;
+}
+
+.quick-links .container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.section-label {
+    display: inline-block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--brew-primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+}
+
+.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--brew-text);
+    margin-bottom: 1rem;
+}
+
+.section-description {
+    font-size: 1.1rem;
+    color: var(--brew-text-light);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.quick-links-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2.5rem;
+}
+
+.quick-link-card {
+    padding: 3rem 2rem;
+    background: var(--brew-surface);
+    border-radius: 20px;
+    border: 2px solid var(--brew-line);
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--brew-text);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.quick-link-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--brew-primary), var(--brew-primary-light));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+}
+
+.quick-link-card:hover::before {
+    transform: scaleX(1);
+}
+
+.quick-link-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--brew-shadow-lg);
+    border-color: var(--brew-primary);
+}
+
+.quick-link-icon {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+}
+
+.quick-link-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--brew-text);
+    margin-bottom: 1rem;
+}
+
+.quick-link-card p {
+    color: var(--brew-text-light);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    flex: 1;
+}
+
+.quick-link-arrow {
+    font-size: 1.5rem;
+    color: var(--brew-primary);
+    align-self: flex-start;
+    transition: transform 0.3s ease;
+}
+
+.quick-link-card:hover .quick-link-arrow {
+    transform: translateX(5px);
+}
+
+/* Newsletter Section */
+.newsletter-section {
+    padding: 4rem 0;
+    background: linear-gradient(135deg, var(--brew-primary), var(--brew-primary-dark));
+    position: relative;
+    z-index: 1;
+}
+
+.newsletter-section .container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.newsletter-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+}
+
+.newsletter-text {
+    flex: 1;
+    min-width: 300px;
+}
+
+.newsletter-text h3 {
+    font-family: 'Playfair Display', serif;
+    color: white;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.newsletter-text p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.05rem;
+}
+
+.newsletter-form {
+    flex: 1;
+    display: flex;
+    gap: 1rem;
+    min-width: 300px;
+    flex-wrap: wrap;
+}
+
+.newsletter-form input {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    min-width: 200px;
+}
+
+.newsletter-form input:focus {
+    outline: none;
+}
+
+.newsletter-form button {
+    white-space: nowrap;
+    background: white;
+    color: var(--brew-primary);
+}
+
+.newsletter-form button:hover {
+    background: var(--brew-surface);
+}
+
+/* =========================================
+   NEW FOOTER DESIGN - Bean & Brew
+   ========================================= */
+
+.footer {
+  background: linear-gradient(135deg, var(--brew-surface), var(--brew-primary-10));
+  padding: 5rem 0 2rem;
+  border-top: 1px solid var(--brew-line);
+  color: var(--brew-text);
+  position: relative;
+  overflow: hidden;
+}
+
+.footer::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(198, 124, 78, 0.15) 0%, transparent 70%);
+  z-index: 0;
+}
+
+.footer .container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* === TOP SECTION === */
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.footer-brand {
+  flex: 1.2;
+  min-width: 280px;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  color: var(--brew-primary);
+  margin-bottom: 1rem;
+}
+
+.footer-tagline {
+  color: var(--brew-text-light);
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* === NEWSLETTER === */
+.footer-newsletter {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.footer-newsletter input {
+  flex: 1;
+  padding: 0.8rem 1.2rem;
+  border: 1px solid var(--brew-line);
+  border-radius: 30px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  color: var(--brew-text);
+  transition: border 0.3s ease;
+}
+
+.footer-newsletter input:focus {
+  outline: none;
+  border-color: var(--brew-primary);
+}
+
+.btn-newsletter {
+  background: var(--brew-primary);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 0.8rem 1.5rem;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn-newsletter:hover {
+  background: var(--brew-primary-dark);
+  transform: translateY(-2px);
+}
+
+/* === LINKS === */
+.footer-links {
+  flex: 2;
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.footer-column {
+  min-width: 160px;
+}
+
+.footer-column h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  color: var(--brew-text);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.footer-column h4::after {
+  content: '';
+  display: block;
+  width: 30px;
+  height: 2px;
+  background: var(--brew-primary);
+  margin-top: 0.3rem;
+  border-radius: 2px;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-column a {
+  color: var(--brew-text-light);
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.footer-column a:hover {
+  color: var(--brew-primary);
+  transform: translateX(4px);
+}
+
+/* === SOCIAL ICONS === */
+.footer-social {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--brew-primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.social-icon:hover {
+  background: var(--brew-primary-dark);
+  transform: scale(1.1);
+}
+
+/* === BOTTOM SECTION === */
+.footer-bottom {
+  text-align: center;
+  border-top: 1px solid var(--brew-line);
+  padding-top: 1.5rem;
+  color: var(--brew-text-light);
+  font-size: 0.9rem;
+}
+
+/* Back to Top Button */
+.back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--brew-primary);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover {
+    background: var(--brew-primary-dark);
+    transform: translateY(-3px);
+}
+
+/* Mobile Responsive - 2x2 Grid */
+@media (max-width: 768px) {
+    .quick-links-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .quick-link-card {
+        padding: 2rem 1.5rem;
+    }
+    
+    .quick-link-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .quick-link-card h3 {
+        font-size: 1.2rem;
+    }
+    
+    .quick-link-card p {
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+}
+
+@media (max-width: 480px) {
+    .quick-links-grid {
+        gap: 1rem;
+    }
+    
+    .quick-link-card {
+        padding: 1.5rem 1.25rem;
+    }
+}
+

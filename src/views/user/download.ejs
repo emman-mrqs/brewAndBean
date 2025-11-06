@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Our App - Bean and Brew</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/Download.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Animated Background Elements -->
+    <div class="background-animation">
+        <div class="coffee-bean bean-1"></div>
+        <div class="coffee-bean bean-2"></div>
+        <div class="coffee-bean bean-3"></div>
+        <div class="coffee-bean bean-4"></div>
+        <div class="coffee-bean bean-5"></div>
+        <div class="steam steam-1"></div>
+        <div class="steam steam-2"></div>
+        <div class="steam steam-3"></div>
+    </div>
+
+    <%- include('../partials/navbar', { page: 'download' }) %>
+
+    <!-- Hero Section -->
+    <section class="hero hero-download">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-badge">GET THE APP</div>
+            <h1>Download Bean & Brew</h1>
+            <div class="hero-accent"></div>
+            <p>Order ahead, earn rewards, and enjoy exclusive perks with our mobile app. Your perfect coffee is just a tap away!</p>
+        </div>
+        <div class="hero-scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section class="download-section">
+        <div class="container">
+            <div class="download-content">
+                <div class="download-info">
+                    <span class="section-label">Mobile Experience</span>
+                    <h2 class="section-title">Your Coffee, Your Way</h2>
+                    <p class="download-description">Experience Bean & Brew like never before with our intuitive mobile app. Order ahead, skip the line, and customize every detail of your perfect coffee.</p>
+                    
+                    <div class="features-list">
+                        <div class="feature-item">
+                            <div class="feature-icon">🚀</div>
+                            <div class="feature-content">
+                                <h3>Quick Order</h3>
+                                <p>Order ahead and skip the wait. Your coffee will be ready when you arrive.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">⭐</div>
+                            <div class="feature-content">
+                                <h3>Rewards Program</h3>
+                                <p>Earn points with every purchase and unlock exclusive rewards and discounts.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🎯</div>
+                            <div class="feature-content">
+                                <h3>Personalized Menu</h3>
+                                <p>Save your favorites and get personalized recommendations based on your taste.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🔔</div>
+                            <div class="feature-content">
+                                <h3>Special Offers</h3>
+                                <p>Get notified about limited-time offers, new menu items, and exclusive deals.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="download-buttons">
+                        <a href="#" class="store-button app-store">
+                            <i class="fab fa-apple"></i>
+                            <div class="store-text">
+                                <span class="store-label">Download on the</span>
+                                <span class="store-name">App Store</span>
+                            </div>
+                        </a>
+                        <a href="#" class="store-button google-play">
+                            <i class="fab fa-google-play"></i>
+                            <div class="store-text">
+                                <span class="store-label">Get it on</span>
+                                <span class="store-name">Google Play</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="download-visual">
+                    <div class="phone-mockup">
+                        <div class="phone-frame">
+                            <div class="phone-screen">
+                                <div class="app-preview">
+                                    <div class="app-header">
+                                        <div class="app-logo">☕</div>
+                                        <h3>Bean & Brew</h3>
+                                    </div>
+                                    <div class="app-content">
+                                        <div class="preview-item">
+                                            <div class="preview-icon">📱</div>
+                                            <p>Order Ahead</p>
+                                        </div>
+                                        <div class="preview-item">
+                                            <div class="preview-icon">🎁</div>
+                                            <p>Earn Rewards</p>
+                                        </div>
+                                        <div class="preview-item">
+                                            <div class="preview-icon">⚡</div>
+                                            <p>Fast Checkout</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" data-count="50000">0</div>
+                    <div class="stat-label">Active Users</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-count="4.8">0</div>
+                    <div class="stat-label">App Rating</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-count="100000">0</div>
+                    <div class="stat-label">Orders Placed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-count="99">0</div>
+                    <div class="stat-label">Satisfaction Rate</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- App Features Section -->
+    <section class="app-features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Features</span>
+                <h2 class="section-title">Why Download Our App?</h2>
+                <p class="section-description">Discover all the amazing features that make ordering coffee easier and more rewarding</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-card-icon">💳</div>
+                    <h3>Easy Payment</h3>
+                    <p>Save your payment methods and checkout in seconds with secure mobile payments.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon">📍</div>
+                    <h3>Location Finder</h3>
+                    <p>Find the nearest Bean & Brew location and get directions with one tap.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon">🎨</div>
+                    <h3>Customize Orders</h3>
+                    <p>Personalize every aspect of your drink, from milk type to sweetness level.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon">📜</div>
+                    <h3>Order History</h3>
+                    <p>Access your past orders and reorder your favorites with a single tap.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon">🏆</div>
+                    <h3>Loyalty Tiers</h3>
+                    <p>Unlock higher tiers for better rewards as you continue to enjoy our coffee.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon">🎉</div>
+                    <h3>Birthday Rewards</h3>
+                    <p>Celebrate your special day with exclusive birthday treats and offers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Get Started?</h2>
+                <p>Join thousands of coffee lovers who are already enjoying the convenience of our app</p>
+                <div class="cta-buttons">
+                    <a href="#" class="store-button app-store">
+                        <i class="fab fa-apple"></i>
+                        <div class="store-text">
+                            <span class="store-label">Download on the</span>
+                            <span class="store-name">App Store</span>
+                        </div>
+                    </a>
+                    <a href="#" class="store-button google-play">
+                        <i class="fab fa-google-play"></i>
+                        <div class="store-text">
+                            <span class="store-label">Get it on</span>
+                            <span class="store-name">Google Play</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <%- include('../partials/footer') %>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12 19V5M5 12L12 5L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <nav class="bottom-nav" aria-label="Bottom Navigation">
+        <a href="index.html" class="bn-link" aria-label="Home">
+            <i class="fas fa-house" aria-hidden="true"></i>
+            <span>Home</span>
+        </a>
+        <a href="menu.html" class="bn-link" aria-label="Menu">
+            <i class="fas fa-mug-saucer" aria-hidden="true"></i>
+            <span>Menu</span>
+        </a>
+        <a href="../../User Dashboard/html/Dashboard.html" class="bn-link" aria-label="Dashboard">
+            <i class="fas fa-gauge" aria-hidden="true"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="cart.html" class="bn-link" aria-label="Cart">
+            <i class="fas fa-cart-shopping" aria-hidden="true"></i>
+            <span>Cart</span>
+        </a>
+        <a href="specialties.html" class="bn-link" aria-label="Specialties">
+            <i class="fas fa-star" aria-hidden="true"></i>
+            <span>Specialties</span>
+        </a>
+    </nav>
+
+    <script src="../js/shared.js"></script>
+    <script>
+        // Back to top functionality
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Show/hide back to top button based on scroll position
+        window.addEventListener('scroll', function() {
+            const backToTopBtn = document.getElementById('backToTop');
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+
+        // Animate counter numbers
+        function animateCounter(element) {
+            const target = parseFloat(element.getAttribute('data-count'));
+            const isDecimal = target % 1 !== 0;
+            const duration = 2000;
+            const increment = target / (duration / 16);
+            let current = 0;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    if (isDecimal) {
+                        element.textContent = target.toFixed(1) + '★';
+                    } else if (element.parentElement.querySelector('.stat-label').textContent.includes('Rate')) {
+                        element.textContent = target + '%';
+                    } else {
+                        element.textContent = target.toLocaleString() + '+';
+                    }
+                    clearInterval(timer);
+                } else {
+                    if (isDecimal) {
+                        element.textContent = current.toFixed(1);
+                    } else {
+                        element.textContent = Math.floor(current).toLocaleString();
+                    }
+                }
+            }, 16);
+        }
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                    
+                    // Animate counters in stats section
+                    if (entry.target.classList.contains('stats-section')) {
+                        entry.target.querySelectorAll('[data-count]').forEach(counter => {
+                            animateCounter(counter);
+                        });
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Observe sections
+        document.querySelectorAll('.stats-section, .download-section, .app-features, .cta-section').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

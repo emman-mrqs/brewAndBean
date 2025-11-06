@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Reviews - Bean and Brew</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/reviews.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Animated Background Elements -->
+    <div class="background-animation">
+        <div class="coffee-bean bean-1"></div>
+        <div class="coffee-bean bean-2"></div>
+        <div class="coffee-bean bean-3"></div>
+        <div class="coffee-bean bean-4"></div>
+        <div class="coffee-bean bean-5"></div>
+        <div class="steam steam-1"></div>
+        <div class="steam steam-2"></div>
+        <div class="steam steam-3"></div>
+    </div>
+
+    <%- include('../partials/navbar', { page: 'reviews' }) %>
+
+    <!-- Hero Section -->
+    <section class="hero hero-reviews">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Customer Reviews</h1>
+            <div class="hero-accent"></div>
+            <p>Real stories from coffee lovers who've discovered their perfect brew</p>
+        </div>
+        <div class="hero-scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Testimonials</span>
+                <h2 class="section-title">Hear From Our Community</h2>
+                <p class="section-description">Discover why coffee lovers choose Bean & Brew</p>
+            </div>
+            
+            <div class="testimonials-slider">
+                <button class="slider-btn prev" aria-label="Previous review">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <button class="slider-btn next" aria-label="Next review">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+
+                <div class="testimonials-track">
+                    <div class="testimonial-card active">
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-text">"Bean and Brew has become my second home. The quality of their coffee is unmatched, and the baristas remember my order every single time. It's the little things that make this place so special."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">SK</div>
+                            <div class="author-info">
+                                <h4>Sarah Kim</h4>
+                                <p>Regular Customer</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-text">"As a coffee connoisseur, I'm extremely picky about my beans. Bean and Brew's single-origin selection is phenomenal. You can taste the care they put into sourcing and roasting every batch."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">MJ</div>
+                            <div class="author-info">
+                                <h4>Michael Johnson</h4>
+                                <p>Coffee Enthusiast</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-text">"The atmosphere here is perfect for getting work done. Great WiFi, comfortable seating, and the best cold brew in town. Plus, the staff is incredibly friendly and accommodating."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">EP</div>
+                            <div class="author-info">
+                                <h4>Emily Parker</h4>
+                                <p>Freelancer</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-text">"I've tried coffee shops all over the city, and Bean and Brew stands out. Their commitment to sustainability and supporting local farmers shows in every cup. Delicious coffee with a conscience!"</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">DT</div>
+                            <div class="author-info">
+                                <h4>David Thompson</h4>
+                                <p>Environmental Advocate</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slider-dots">
+                    <span class="dot active" data-index="0"></span>
+                    <span class="dot" data-index="1"></span>
+                    <span class="dot" data-index="2"></span>
+                    <span class="dot" data-index="3"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="review-stats">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Our Impact</span>
+                <h2 class="section-title">By The Numbers</h2>
+                <p class="section-description">Trusted by thousands of coffee lovers</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card" data-aos="fade-up">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-number">4.9</div>
+                    <p>Average Rating</p>
+                </div>
+
+                <div class="stat-card" data-aos="fade-up" data-delay="100">
+                    <div class="stat-icon">💬</div>
+                    <div class="stat-number" data-target="2500">0</div>
+                    <p>Customer Reviews</p>
+                </div>
+
+                <div class="stat-card" data-aos="fade-up" data-delay="200">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-number">98%</div>
+                    <p>Would Recommend</p>
+                </div>
+
+                <div class="stat-card" data-aos="fade-up" data-delay="300">
+                    <div class="stat-icon">❤️</div>
+                    <div class="stat-number" data-target="15000">0</div>
+                    <p>Happy Customers</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Review CTA -->
+    <section class="review-cta">
+        <div class="container">
+            <div class="cta-content" data-aos="fade-up">
+                <h2>Share Your Experience</h2>
+                <p>We'd love to hear about your visit! Your feedback helps us serve you better and guides other coffee lovers to discover Bean and Brew.</p>
+                <a href="contact.html" class="btn btn-primary">Leave a Review</a>
+            </div>
+        </div>
+    </section>
+
+    <%- include('../partials/footer') %>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12 19V5M5 12L12 5L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <nav class="bottom-nav" aria-label="Bottom Navigation">
+        <a href="index.html" class="bn-link" aria-label="Home">
+            <i class="fas fa-house" aria-hidden="true"></i>
+            <span>Home</span>
+        </a>
+        <a href="menu.html" class="bn-link" aria-label="Menu">
+            <i class="fas fa-mug-saucer" aria-hidden="true"></i>
+            <span>Menu</span>
+        </a>
+        <a href="../../User Dashboard/html/Dashboard.html" class="bn-link" aria-label="Dashboard">
+            <i class="fas fa-gauge" aria-hidden="true"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="cart.html" class="bn-link" aria-label="Cart">
+            <i class="fas fa-cart-shopping" aria-hidden="true"></i>
+            <span>Cart</span>
+        </a>
+        <a href="specialties.html" class="bn-link" aria-label="Specialties">
+            <i class="fas fa-star" aria-hidden="true"></i>
+            <span>Specialties</span>
+        </a>
+    </nav>
+
+    <script src="../js/shared.js"></script>
+    <script>
+        // Testimonial Slider
+        const track = document.querySelector('.testimonials-track');
+        const cards = document.querySelectorAll('.testimonial-card');
+        const dots = document.querySelectorAll('.dot');
+        const prevBtn = document.querySelector('.slider-btn.prev');
+        const nextBtn = document.querySelector('.slider-btn.next');
+        
+        let currentIndex = 0;
+        const totalCards = cards.length;
+        let isAnimating = false;
+
+        function updateSlider() {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            cards.forEach((card, index) => {
+                card.classList.remove('active', 'prev', 'next');
+                if (index === currentIndex) {
+                    card.classList.add('active');
+                }
+            });
+
+            dots.forEach((dot, index) => {
+                dot.classList.remove('active');
+                if (index === currentIndex) {
+                    dot.classList.add('active');
+                }
+            });
+
+            setTimeout(() => {
+                isAnimating = false;
+            }, 500);
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % totalCards;
+            updateSlider();
+        }
+
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + totalCards) % totalCards;
+            updateSlider();
+        }
+
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                if (isAnimating) return;
+                currentIndex = parseInt(dot.dataset.index);
+                updateSlider();
+            });
+        });
+
+        // Auto-advance slider
+        let autoSlide = setInterval(nextSlide, 5000);
+
+        // Pause auto-slide on hover
+        track.addEventListener('mouseenter', () => {
+            clearInterval(autoSlide);
+        });
+
+        track.addEventListener('mouseleave', () => {
+            autoSlide = setInterval(nextSlide, 5000);
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const delay = entry.target.getAttribute('data-delay') || 0;
+                    setTimeout(() => {
+                        entry.target.classList.add('animate-in');
+                    }, parseInt(delay));
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('[data-aos]').forEach(el => observer.observe(el));
+
+        // Counter animation
+        function animateCounter(element) {
+            const target = parseInt(element.dataset.target);
+            const duration = 2000;
+            const increment = target / (duration / 16);
+            let current = 0;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target.toLocaleString();
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current).toLocaleString();
+                }
+            }, 16);
+        }
+
+        const statObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const number = entry.target.querySelector('.stat-number[data-target]');
+                    if (number && !number.classList.contains('animated')) {
+                        number.classList.add('animated');
+                        animateCounter(number);
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.stat-card').forEach(card => {
+            statObserver.observe(card);
+        });
+        
+        // Back to top functionality
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Show/hide back to top button based on scroll position
+        window.addEventListener('scroll', function() {
+            const backToTopBtn = document.getElementById('backToTop');
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+    </script>
+</body>
+</html>

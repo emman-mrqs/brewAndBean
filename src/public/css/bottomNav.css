@@ -1,0 +1,77 @@
+/* Bottom navigation for User Dashboard (mobile only) */
+:root {
+  --bb-brand: #C67C4E;
+  --bb-text: #4b5563; /* gray-600 */
+  --bb-muted: #9ca3af; /* gray-400 */
+  --bb-bg: #ffffff;
+  --bb-border: #e5e7eb; /* gray-200 */
+}
+
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 64px;
+  background: var(--bb-bg);
+  border-top: 1px solid var(--bb-border);
+  display: flex;
+  align-items: stretch;
+  justify-content: space-around;
+  z-index: 1000;
+  padding-bottom: env(safe-area-inset-bottom);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.bottom-nav__item {
+  flex: 1 1 20%;
+  text-align: center;
+  color: var(--bb-text);
+  text-decoration: none;
+  font-size: 12px;
+  line-height: 1.1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.bottom-nav__item .icon {
+  font-size: 18px;
+  display: block;
+}
+
+.bottom-nav__item span {
+  display: block;
+}
+
+.bottom-nav__item.active,
+.bottom-nav__item:focus,
+.bottom-nav__item:hover {
+  color: var(--bb-brand);
+}
+
+/* Provide safe space so content isn't hidden behind the fixed bar */
+.with-bottom-nav .main-content,
+.with-bottom-nav main {
+  padding-bottom: calc(64px + env(safe-area-inset-bottom));
+}
+
+/* Ensure the slide-out sidebar/content on mobile isn't covered */
+.with-bottom-nav .sidebar {
+  padding-bottom: calc(64px + env(safe-area-inset-bottom));
+}
+.with-bottom-nav .sidebar .sidebar-footer {
+  margin-bottom: 12px; /* breathing room above the nav */
+}
+
+/* If the sidebar is open on mobile, hide the bottom nav to avoid overlap */
+.sidebar.open ~ .bottom-nav {
+  display: none;
+}
+
+/* Only show on small screens; hide on tablet/desktop where sidebar exists */
+@media (min-width: 992px) {
+  .bottom-nav { display: none; }
+}

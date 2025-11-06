@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Bean & Brew - Premium coffee experience with artisan roasting, sustainable sourcing, and expert brewing. Discover exceptional coffee from around the world.">
+    <meta name="keywords" content="coffee shop, premium coffee, artisan roasting, bean and brew, specialty coffee, coffee near me">
+    <meta name="author" content="Bean & Brew">
+    <meta name="theme-color" content="#C67C4E">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Bean & Brew - Premium Coffee Experience">
+    <meta property="og:description" content="Crafting exceptional coffee experiences with passion, precision, and the finest beans from around the world.">
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <title>Bean & Brew - Premium Coffee Experience</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="../css/home.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Animated Background Elements -->
+    <div class="background-animation">
+        <div class="coffee-bean bean-1"></div>
+        <div class="coffee-bean bean-2"></div>
+        <div class="coffee-bean bean-3"></div>
+        <div class="coffee-bean bean-4"></div>
+        <div class="coffee-bean bean-5"></div>
+        <div class="steam steam-1"></div>
+        <div class="steam steam-2"></div>
+        <div class="steam steam-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <%- include('../partials/navbar', { page: 'home' }) %>
+
+    <!-- Hero Section -->
+    <section class="hero hero-home">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-badge">EST. 2020</div>
+            <h1>Welcome to Bean & Brew</h1>
+            <div class="hero-accent"></div>
+            <p>Your destination for exceptional coffee experiences. From farm to cup, we craft every brew with passion, precision, and the finest beans from around the world. Discover the perfect blend of tradition and innovation in every sip.</p>
+            <div class="hero-buttons">
+                <a href="/menu" class="btn btn-primary">
+                    <span>Explore Our Menu</span>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+                <a href="/about" class="btn btn-secondary">
+                    <span>Discover Our Story</span>
+                </a>
+            </div>
+        </div>
+        <div class="hero-scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Welcome Section -->
+    <section class="welcome-section">
+        <div class="container">
+            <div class="welcome-content">
+                <div class="section-header">
+                    <span class="section-label">Welcome</span>
+                    <h2 class="section-title">Where Every Cup Tells a Story</h2>
+                    <p class="section-description">At Bean & Brew, we believe coffee is more than just a beverage—it's an experience, a ritual, and a journey of flavors.</p>
+                </div>
+                <div class="welcome-grid">
+                    <div class="welcome-card">
+                        <div class="welcome-icon">🌍</div>
+                        <h3>Global Origins</h3>
+                        <p>We source premium beans from 15+ countries, ensuring each cup captures the unique essence of its origin.</p>
+                    </div>
+                    <div class="welcome-card">
+                        <div class="welcome-icon">🔥</div>
+                        <h3>Artisan Roasting</h3>
+                        <p>Our master roasters carefully craft small batches to unlock the perfect balance of flavor and aroma.</p>
+                    </div>
+                    <div class="welcome-card">
+                        <div class="welcome-icon">☕</div>
+                        <h3>Expert Brewing</h3>
+                        <p>From classic espresso to innovative cold brews, our skilled baristas create coffee perfection.</p>
+                    </div>
+                    <div class="welcome-card">
+                        <div class="welcome-icon">❤️</div>
+                        <h3>Community Love</h3>
+                        <p>Join our coffee-loving community where every visit feels like coming home to great coffee and warm smiles.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Links Section -->
+    <section class="quick-links">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Discover More</span>
+                <h2 class="section-title">Explore Bean & Brew</h2>
+                <p class="section-description">Find out what makes us special</p>
+            </div>
+            <div class="quick-links-grid">
+                <a href="/specialties" class="quick-link-card">
+                    <div class="quick-link-icon">☕</div>
+                    <h3>Our Specialties</h3>
+                    <p>Discover our artisan roasting and brewing expertise</p>
+                    <span class="quick-link-arrow">→</span>
+                </a>
+                <a href="/menu" class="quick-link-card">
+                    <div class="quick-link-icon">📋</div>
+                    <h3>Full Menu</h3>
+                    <p>Browse our signature beverages and seasonal specials</p>
+                    <span class="quick-link-arrow">→</span>
+                </a>
+                <a href="/about" class="quick-link-card">
+                    <div class="quick-link-icon">📖</div>
+                    <h3>Our Story</h3>
+                    <p>Learn about our journey and commitment to quality</p>
+                    <span class="quick-link-arrow">→</span>
+                </a>
+                <a href="/reviews" class="quick-link-card">
+                    <div class="quick-link-icon">⭐</div>
+                    <h3>Reviews</h3>
+                    <p>See what our customers are saying about us</p>
+                    <span class="quick-link-arrow">→</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <%- include('../partials/footer') %>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12 19V5M5 12L12 5L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <nav class="bottom-nav" aria-label="Bottom Navigation">
+        <a href="/" class="bn-link" aria-label="Home">
+            <i class="fas fa-house" aria-hidden="true"></i>
+            <span>Home</span>
+        </a>
+        <a href="/menu" class="bn-link" aria-label="Menu">
+            <i class="fas fa-mug-saucer" aria-hidden="true"></i>
+            <span>Menu</span>
+        </a>
+        <a href="/dashboard" class="bn-link" aria-label="Dashboard">
+            <i class="fas fa-gauge" aria-hidden="true"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="/cart" class="bn-link" aria-label="Cart">
+            <i class="fas fa-cart-shopping" aria-hidden="true"></i>
+            <span>Cart</span>
+        </a>
+        <a href="/specialties" class="bn-link" aria-label="Specialties">
+            <i class="fas fa-star" aria-hidden="true"></i>
+            <span>Specialties</span>
+        </a>
+    </nav>
+
+    <script src="../js/shared.js"></script>
+    <script>
+        // Animated counter for stats
+        function animateCounter(element) {
+            const target = parseInt(element.getAttribute('data-count'));
+            const duration = 2000;
+            const increment = target / (duration / 16);
+            let current = 0;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target + (element.parentElement.querySelector('.stat-label').textContent.includes('%') ? '%' : '+');
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current);
+                }
+            }, 16);
+        }
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                    
+                    // Animate counters
+                    if (entry.target.querySelector('[data-count]')) {
+                        entry.target.querySelectorAll('[data-count]').forEach(counter => {
+                            animateCounter(counter);
+                        });
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements
+        document.querySelectorAll('.hero-stats').forEach(el => observer.observe(el));
+        
+        // Newsletter form handler
+        function handleNewsletterSubmit(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input[type="email"]').value;
+            
+            // In a real implementation, you would send this to your backend
+            console.log('Newsletter subscription:', email);
+            
+            // Show success message
+            alert('Thank you for subscribing to our newsletter!');
+            event.target.reset();
+            
+            return false;
+        }
+        
+        // Back to top functionality
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Show/hide back to top button based on scroll position
+        window.addEventListener('scroll', function() {
+            const backToTopBtn = document.getElementById('backToTop');
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+    </script>
+</body>
+</html>

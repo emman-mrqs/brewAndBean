@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit Logs - Bean & Brew Admin</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <%- include('../partials/adminSidebar', { page: 'admin-audit' }) %>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="header-actions">
+                <button class="notification-btn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <div class="user-profile">
+                    <div class="user-avatar">A</div>
+                    <div class="user-info">
+                        <span class="user-name">Admin</span>
+                    </div>
+                    <i class="fas fa-chevron-down user-dropdown-icon"></i>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="page-content">
+            <div class="page-header">
+                <h1>Audit Logs</h1>
+                <p>Track all system activities and user actions</p>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 32px;">
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-title">Successful Actions</span>
+                        <div class="stat-card-icon" style="background: rgba(16, 185, 129, 0.1); color: #10B981;">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card-value">11</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-title">Failed Actions</span>
+                        <div class="stat-card-icon" style="background: rgba(239, 68, 68, 0.1); color: #EF4444;">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card-value">2</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-title">Warning Actions</span>
+                        <div class="stat-card-icon" style="background: rgba(251, 146, 60, 0.1); color: #FB923C;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card-value">2</div>
+                </div>
+            </div>
+
+            <!-- Audit Logs Table -->
+            <div class="data-table-container">
+                <div class="filters-bar">
+                    <div class="filter-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search logs by actor, action, or resource...">
+                    </div>
+                    <select class="filter-select">
+                        <option>All Status</option>
+                        <option>Success</option>
+                        <option>Failed</option>
+                        <option>Warning</option>
+                    </select>
+                    <button class="btn-secondary">
+                        <i class="fas fa-download"></i> Export Logs
+                    </button>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Actor</th>
+                            <th>Action</th>
+                            <th>Resource</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="user-cell">
+                                    <div class="user-avatar-sm" style="background: #3B82F6;">JS</div>
+                                    <span>John Smith</span>
+                                </div>
+                            </td>
+                            <td>Updated Product</td>
+                            <td>Ethiopian Yirgacheffe</td>
+                            <td>1/11/2024 2:45:02 PM</td>
+                            <td><span class="status-badge success">Success</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-cell">
+                                    <div class="user-avatar-sm" style="background: #10B981;">SJ</div>
+                                    <span>Sarah Johnson</span>
+                                </div>
+                            </td>
+                            <td>Deleted User</td>
+                            <td>user@example.com</td>
+                            <td>1/11/2024 2:38:15 PM</td>
+                            <td><span class="status-badge success">Success</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-cell">
+                                    <div class="user-avatar-sm" style="background: #EF4444;">MW</div>
+                                    <span>Mike Wilson</span>
+                                </div>
+                            </td>
+                            <td>Created Order</td>
+                            <td>Order #12345</td>
+                            <td>1/11/2024 2:30:48 PM</td>
+                            <td><span class="status-badge success">Success</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-cell">
+                                    <div class="user-avatar-sm" style="background: #F59E0B;">AU</div>
+                                    <span>Admin User</span>
+                                </div>
+                            </td>
+                            <td>Login Attempt</td>
+                            <td>Admin Panel</td>
+                            <td>1/11/2024 2:25:33 PM</td>
+                            <td><span class="status-badge failed">Failed</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-cell">
+                                    <div class="user-avatar-sm" style="background: #8B5CF6;">ED</div>
+                                    <span>Emma Davis</span>
+                                </div>
+                            </td>
+                            <td>Updated Inventory</td>
+                            <td>Colombian Supremo</td>
+                            <td>1/11/2024 2:14:02 PM</td>
+                            <td><span class="status-badge success">Success</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-cell">
+                                    <div class="user-avatar-sm" style="background: #EC4899;">TB</div>
+                                    <span>Tom Brown</span>
+                                </div>
+                            </td>
+                            <td>Exported Data</td>
+                            <td>Sales Report</td>
+                            <td>1/11/2024 2:05:25 PM</td>
+                            <td><span class="status-badge success">Success</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-cell">
+                                    <div class="user-avatar-sm" style="background: #14B8A6;">UG</div>
+                                    <span>Lisa Garcia</span>
+                                </div>
+                            </td>
+                            <td>Changed Password</td>
+                            <td>User Account</td>
+                            <td>1/11/2024 2:00:50 PM</td>
+                            <td><span class="status-badge success">Success</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-cell">
+                                    <div class="user-avatar-sm" style="background: #6366F1;">DL</div>
+                                    <span>David Lee</span>
+                                </div>
+                            </td>
+                            <td>Deleted Product</td>
+                            <td>House Blend</td>
+                            <td>1/11/2024 1:58:41 PM</td>
+                            <td><span class="status-badge warning">Warning</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-cell">
+                                    <div class="user-avatar-sm" style="background: #F97316;">AW</div>
+                                    <span>Anna White</span>
+                                </div>
+                            </td>
+                            <td>Created Category</td>
+                            <td>Seasonal Blends</td>
+                            <td>1/11/2024 1:50:07 PM</td>
+                            <td><span class="status-badge success">Success</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-cell">
+                                    <div class="user-avatar-sm" style="background: #A855F7;">CT</div>
+                                    <span>Chris Taylor</span>
+                                </div>
+                            </td>
+                            <td>Updated Settings</td>
+                            <td>System Configuration</td>
+                            <td>1/11/2024 1:40:03 PM</td>
+                            <td><span class="status-badge success">Success</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="pagination">
+                    <div class="pagination-info">1-10 of 16 logs</div>
+                    <div class="pagination-buttons">
+                        <button class="pagination-btn" disabled>Previous</button>
+                        <button class="pagination-btn active">1</button>
+                        <button class="pagination-btn">2</button>
+                        <button class="pagination-btn">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = '../LogIn/LogIn.html';
+            }
+        }
+
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const userAvatar = document.querySelector('.user-avatar');
+        
+        userAvatar.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+        });
+        
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+        });
+
+        const sidebarLinks = document.querySelectorAll('.sidebar-menu a');
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 1024) {
+                    sidebar.classList.remove('active');
+                    sidebarOverlay.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

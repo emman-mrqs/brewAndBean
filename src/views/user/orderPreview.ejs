@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Current Order - Bean & Brew</title>
+    <link rel="stylesheet" href="../css/Order Preview.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../css/bottom-nav.css">
+</head>
+<body>
+    <button class="mobile-menu-toggle" id="mobileMenuToggle"><i class="fas fa-mug-hot"></i></button>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand"><div class="brand-logo-container"><div class="brand-icon">☕</div><div class="brand-text-group"><span class="brand-name">Bean & Brew</span><span class="brand-tagline">PREMIUM COFFEE</span></div></div></div>
+        <div class="sidebar-profile">
+            <div class="profile-avatar"><img src="https://ui-avatars.com/api/?name=Eldi+Tutunog&background=C67C4E&color=fff&size=80" alt="Eldi Tutunog"></div>
+            <h3 class="profile-username">Eldi Tutunog</h3>
+            <span class="profile-membership">Gold Member</span>
+            <div class="profile-quick-stats">
+                <div class="quick-stat"><span class="stat-value">47</span><span class="stat-label">Orders</span></div>
+                <div class="quick-stat"><span class="stat-value">1,250</span><span class="stat-label">Points</span></div>
+            </div>
+        </div>
+        <nav class="sidebar-menu">
+            <a href="Dashboard.html" class="menu-item"><i class="menu-icon fas fa-home"></i><span class="menu-text">Dashboard</span></a>
+            <a href="Order History.html" class="menu-item"><i class="menu-icon fas fa-clock"></i><span class="menu-text">Order History</span></a>
+            <a href="Order Preview.html" class="menu-item active"><i class="menu-icon fas fa-shopping-cart"></i><span class="menu-text">Current Order</span></a>
+            <a href="Rewards.html" class="menu-item"><i class="menu-icon fas fa-gift"></i><span class="menu-text">Rewards</span></a>
+            <a href="Favorites.html" class="menu-item"><i class="menu-icon fas fa-heart"></i><span class="menu-text">Favorites</span></a>
+            <a href="Payment.html" class="menu-item"><i class="menu-icon fas fa-credit-card"></i><span class="menu-text">Payment</span></a>
+            <a href="Settings.html" class="menu-item"><i class="menu-icon fas fa-cog"></i><span class="menu-text">Settings</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="../../User Page/html/menu.html" class="btn-order"><i class="fas fa-coffee"></i> Order Now</a>
+            <button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="content-header"><h1 class="page-title">Current Order</h1><p class="page-subtitle">Track your active order</p></header>
+        <div class="dashboard-cards">
+            <section class="card"><div class="card-header"><h2 class="card-title"><i class="fas fa-shopping-cart"></i> Order #ORD-2024-1087</h2></div>
+                <div class="card-body">
+                    <div class="order-item">
+                        <div class="order-header">
+                            <div class="order-number">#ORD-2024-1087</div>
+                            <span class="status-badge preparing">⏱️ Preparing</span>
+                        </div>
+                        <div class="order-date">📅 Today, 10:45 AM</div>
+                        
+                        <div class="order-items-with-images">
+                            <div class="order-product">
+                                <img src="../../Assets/Coffee/Cold Caramel Macchiato.webp" alt="Caramel Macchiato" class="product-image">
+                                <div class="product-details">
+                                    <h4>Caramel Macchiato</h4>
+                                    <p>Large, Iced</p>
+                                    <span class="product-price">&#8369;175</span>
+                                </div>
+                            </div>
+                            <div class="order-product">
+                                <img src="../../Assets/Coffee/Hot Cappuccino.webp" alt="Cappuccino" class="product-image">
+                                <div class="product-details">
+                                    <h4>Cappuccino</h4>
+                                    <p>Hot, Regular</p>
+                                    <span class="product-price">&#8369;110</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="order-total-section">
+                            <span>Total:</span>
+                            <span class="order-total">&#8369;285</span>
+                        </div>
+                    </div>
+                    <p class="order-note">Your order is being prepared. Expected ready time: <strong>15 minutes</strong></p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <nav class="bottom-nav" role="navigation" aria-label="Primary">
+        <a href="Order History.html" class="bottom-nav__item" data-page="history">
+            <i class="fas fa-clock icon" aria-hidden="true"></i>
+            <span>History</span>
+        </a>
+        <a href="Order Preview.html" class="bottom-nav__item" data-page="current">
+            <i class="fas fa-shopping-cart icon" aria-hidden="true"></i>
+            <span>Current</span>
+        </a>
+        <a href="Rewards.html" class="bottom-nav__item" data-page="rewards">
+            <i class="fas fa-gift icon" aria-hidden="true"></i>
+            <span>Rewards</span>
+        </a>
+        <a href="Favorites.html" class="bottom-nav__item" data-page="favorites">
+            <i class="fas fa-heart icon" aria-hidden="true"></i>
+            <span>Favorites</span>
+        </a>
+        <a href="Settings.html" class="bottom-nav__item" data-page="settings">
+            <i class="fas fa-cog icon" aria-hidden="true"></i>
+            <span>Settings</span>
+        </a>
+    </nav>
+
+    <script>
+        function initMobileMenu(){const t=document.getElementById("mobileMenuToggle"),e=document.getElementById("sidebar"),n=document.querySelector(".main-content");t&&e&&(t.addEventListener("click",function(){e.classList.toggle("open")}),n&&n.addEventListener("click",function(){e.classList.contains("open")&&e.classList.remove("open")}))}function logout(){confirm("Are you sure you want to logout?")&&(window.location.href="../../LogIn/LogIn.html")}document.addEventListener("DOMContentLoaded",function(){initMobileMenu()});
+    </script>
+    <script src="../js/bottom-nav.js"></script>
+</body>
+</html>
+

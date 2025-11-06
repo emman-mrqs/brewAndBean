@@ -1,0 +1,667 @@
+/* ============================================
+   DOWNLOAD PAGE STYLES
+   ============================================ */
+
+/* Hero Download Background */
+.hero-download {
+    background-image: linear-gradient(135deg, rgba(198, 124, 78, 0.9), rgba(44, 44, 44, 0.85)), 
+                      url('../../Assets/Hero Sections/Home.png');
+    background-size: cover;
+    background-position: center;
+    min-height: 70vh;
+}
+
+/* Download Section */
+.download-section {
+    padding: 6rem 0;
+    background: linear-gradient(135deg, var(--brew-surface) 0%, var(--brew-white) 50%, var(--brew-surface) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.download-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.download-info {
+    animation: fadeInLeft 1s ease-out;
+}
+
+.download-description {
+    font-size: 1.1rem;
+    color: var(--brew-text-light);
+    line-height: 1.8;
+    margin: 2rem 0;
+}
+
+/* Features List */
+.features-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin: 3rem 0;
+}
+
+.feature-item {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    padding: 1.5rem;
+    background: var(--brew-white);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    border: 1px solid var(--brew-line);
+}
+
+.feature-item:hover {
+    transform: translateX(10px);
+    box-shadow: var(--brew-shadow-md);
+    border-color: var(--brew-primary);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    flex-shrink: 0;
+}
+
+.feature-content h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--brew-text);
+    margin-bottom: 0.5rem;
+}
+
+.feature-content p {
+    color: var(--brew-text-light);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* Download Buttons */
+.download-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.store-button {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 2rem;
+    background: var(--brew-black);
+    color: white;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 2px solid var(--brew-black);
+    min-width: 180px;
+}
+
+.store-button:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--brew-shadow-lg);
+    background: var(--brew-primary);
+    border-color: var(--brew-primary);
+}
+
+.store-button i {
+    font-size: 2rem;
+}
+
+.store-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.store-label {
+    font-size: 0.7rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.store-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* Phone Mockup */
+.download-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeInRight 1s ease-out;
+}
+
+.phone-mockup {
+    position: relative;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.phone-frame {
+    width: 280px;
+    height: 560px;
+    background: var(--brew-black);
+    border-radius: 40px;
+    padding: 15px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.phone-frame::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 6px;
+    background: #333;
+    border-radius: 3px;
+}
+
+.phone-screen {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--brew-primary-10) 0%, var(--brew-white) 100%);
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+.app-preview {
+    padding: 3rem 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.app-header {
+    text-align: center;
+}
+
+.app-logo {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.app-header h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--brew-primary);
+}
+
+.app-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    flex: 1;
+    justify-content: center;
+}
+
+.preview-item {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: var(--brew-shadow-sm);
+}
+
+.preview-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.preview-item p {
+    font-weight: 600;
+    color: var(--brew-text);
+}
+
+/* Stats Section */
+.stats-section {
+    padding: 4rem 0;
+    background: white;
+    position: relative;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 2rem;
+    background: var(--brew-surface);
+    border-radius: 15px;
+    border: 2px solid var(--brew-line);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--brew-shadow-lg);
+    border-color: var(--brew-primary);
+}
+
+.stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--brew-primary);
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: var(--brew-text-light);
+    font-weight: 500;
+}
+
+/* App Features Section */
+.app-features {
+    padding: 6rem 0;
+    background: var(--brew-surface);
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.feature-card {
+    background: white;
+    padding: 2.5rem 2rem;
+    border-radius: 20px;
+    text-align: center;
+    border: 2px solid var(--brew-line);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--brew-primary), var(--brew-primary-light));
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.feature-card:hover::before {
+    transform: scaleX(1);
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--brew-shadow-lg);
+    border-color: var(--brew-primary);
+}
+
+.feature-card-icon {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+.feature-card:nth-child(1) .feature-card-icon {
+    animation-delay: 0s;
+}
+
+.feature-card:nth-child(2) .feature-card-icon {
+    animation-delay: 0.3s;
+}
+
+.feature-card:nth-child(3) .feature-card-icon {
+    animation-delay: 0.6s;
+}
+
+.feature-card:nth-child(4) .feature-card-icon {
+    animation-delay: 0.9s;
+}
+
+.feature-card:nth-child(5) .feature-card-icon {
+    animation-delay: 1.2s;
+}
+
+.feature-card:nth-child(6) .feature-card-icon {
+    animation-delay: 1.5s;
+}
+
+.feature-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--brew-text);
+    margin-bottom: 1rem;
+}
+
+.feature-card p {
+    color: var(--brew-text-light);
+    line-height: 1.7;
+}
+
+/* CTA Section */
+.cta-section {
+    padding: 5rem 0;
+    background: linear-gradient(135deg, var(--brew-primary), var(--brew-primary-dark));
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    animation: pulse 8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+    }
+}
+
+.cta-content {
+    position: relative;
+    z-index: 2;
+}
+
+.cta-content h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.cta-content p {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 2.5rem;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.cta-section .store-button {
+    background: white;
+    color: var(--brew-black);
+    border-color: white;
+}
+
+.cta-section .store-button:hover {
+    background: var(--brew-surface);
+    transform: translateY(-5px);
+}
+
+/* Animations */
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-in {
+    animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 1024px) {
+    .download-content {
+        gap: 3rem;
+    }
+
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .download-content {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    .download-visual {
+        order: -1;
+    }
+
+    .phone-frame {
+        width: 240px;
+        height: 480px;
+    }
+
+    .download-section {
+        padding: 4rem 0;
+    }
+
+    .features-list {
+        gap: 1rem;
+    }
+
+    .feature-item {
+        padding: 1rem;
+    }
+
+    .feature-icon {
+        font-size: 2rem;
+    }
+
+    .feature-content h3 {
+        font-size: 1.1rem;
+    }
+
+    .download-buttons {
+        flex-direction: column;
+    }
+
+    .store-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .stats-section {
+        padding: 3rem 0;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .stat-card {
+        padding: 1.5rem;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+    }
+
+    .app-features {
+        padding: 4rem 0;
+    }
+
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .feature-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .feature-card-icon {
+        font-size: 2.5rem;
+    }
+
+    .cta-section {
+        padding: 4rem 0;
+    }
+
+    .cta-content h2 {
+        font-size: 2.2rem;
+    }
+
+    .cta-content p {
+        font-size: 1rem;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cta-section .store-button {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-download {
+        min-height: 50vh;
+    }
+
+    .download-section {
+        padding: 3rem 0;
+    }
+
+    .section-title {
+        font-size: 2rem;
+    }
+
+    .download-description {
+        font-size: 1rem;
+    }
+
+    .phone-frame {
+        width: 200px;
+        height: 400px;
+        padding: 12px;
+    }
+
+    .app-preview {
+        padding: 2rem 1rem;
+        gap: 1.5rem;
+    }
+
+    .app-logo {
+        font-size: 2.5rem;
+    }
+
+    .app-header h3 {
+        font-size: 1.2rem;
+    }
+
+    .preview-item {
+        padding: 1rem;
+    }
+
+    .preview-icon {
+        font-size: 1.5rem;
+    }
+
+    .feature-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .feature-icon {
+        font-size: 2.5rem;
+    }
+
+    .store-button {
+        padding: 0.8rem 1.5rem;
+        min-width: 160px;
+    }
+
+    .store-button i {
+        font-size: 1.5rem;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+    }
+
+    .cta-content h2 {
+        font-size: 1.8rem;
+    }
+
+    .cta-content p {
+        font-size: 0.95rem;
+    }
+}

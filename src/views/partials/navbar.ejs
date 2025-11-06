@@ -1,0 +1,45 @@
+<!-- Navigation -->
+<nav class="navbar" id="navbar">
+    <div class="container">
+        <a href="/" class="logo">
+            <span class="logo-icon">☕</span>
+            <span class="logo-text">Bean & Brew</span>
+        </a>
+        <div class="nav-toggle" id="navToggle">
+            <i class="fas fa-mug-hot"></i>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <div class="mobile-sidebar-header">
+                <div class="mobile-logo">
+                    <span class="mobile-logo-icon">☕</span>
+                    <div class="mobile-logo-text">
+                        <span class="mobile-brand-name">Bean & Brew</span>
+                        <span class="mobile-brand-tagline">PREMIUM COFFEE</span>
+                    </div>
+                </div>
+                <div class="guest-profile-section">
+                    <div class="guest-avatar">BB</div>
+                    <div class="guest-info">
+                        <div class="guest-title">Welcome, Tang ina mo</div>
+                        <div class="guest-badge">Join & Earn Rewards</div>
+                    </div>
+                </div>
+            </div>
+            <li><a href="/" class="nav-link <%= page === 'home' ? 'active' : '' %>">Home</a></li>
+            <li><a href="/specialties" class="nav-link <%= page === 'specialties' ? 'active' : '' %>">Specialties</a></li>
+            <li><a href="/menu" class="nav-link <%= page === 'menu' ? 'active' : '' %>">Menu</a></li>
+            <li><a href="/about" class="nav-link <%= page === 'about' ? 'active' : '' %>">About</a></li>
+            <li><a href="/reviews" class="nav-link <%= page === 'reviews' ? 'active' : '' %>">Reviews</a></li>
+            <li><a href="/contact" class="nav-link <%= page === 'contact' ? 'active' : '' %>">Contact</a></li>
+            <li><a href="/download" class="nav-link <%= page === 'download' ? 'active' : '' %>">Download</a></li>
+            <li><a href="/cart" class="nav-link">
+                <i class="fas fa-mug-hot"></i>
+                <span class="mobile-only">My Orders</span>
+            </a></li>
+            <li><a href="/dashboard" class="nav-btn">Dashboard</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Mobile Menu Backdrop -->
+<div class="mobile-backdrop" id="mobileBackdrop"></div>
