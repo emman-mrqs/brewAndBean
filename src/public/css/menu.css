@@ -670,50 +670,8 @@
 }
 
 /* ============================================
-   NEW ACTION BUTTONS STYLES
+   ACTION BUTTONS STYLES
    ============================================ */
-
-/* Favorite Button (on image) */
-.favorite-btn {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.95);
-    border: 2px solid rgba(198, 124, 78, 0.2);
-    color: var(--brew-primary);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-    z-index: 3;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.favorite-btn:hover {
-    transform: scale(1.1);
-    background: rgba(255, 255, 255, 1);
-    border-color: var(--brew-primary);
-    box-shadow: 0 4px 12px rgba(198, 124, 78, 0.3);
-}
-
-.favorite-btn.active {
-    background: linear-gradient(135deg, #ff6b6b, #c92a2a);
-    border-color: #c92a2a;
-    color: white;
-    animation: heartPulse 0.3s ease;
-}
-
-@keyframes heartPulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
-}
 
 /* View Button */
 .view-btn {
@@ -773,12 +731,20 @@
     transform: translateX(-50%) translateY(0);
 }
 
+/* Product Counter Styles */
+.product-counter {
+    animation: fadeIn 0.5s ease-in;
+}
+
 /* Mobile adjustments for new buttons */
 @media (max-width: 768px) {
-    .favorite-btn {
-        width: 38px;
-        height: 38px;
-        font-size: 1rem;
+    .product-counter {
+        margin: 15px 0 !important;
+        padding: 10px !important;
+    }
+
+    .product-counter p {
+        font-size: 0.85rem !important;
     }
 
     .menu-item-actions {
@@ -799,12 +765,13 @@
 }
 
 @media (max-width: 480px) {
-    .favorite-btn {
-        width: 36px;
-        height: 36px;
-        font-size: 0.95rem;
-        top: 10px;
-        right: 10px;
+    .product-counter {
+        margin: 12px 0 !important;
+        padding: 8px !important;
+    }
+
+    .product-counter p {
+        font-size: 0.8rem !important;
     }
 
     .menu-item-actions button {

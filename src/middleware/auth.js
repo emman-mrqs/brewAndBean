@@ -2,6 +2,7 @@
 import session from 'express-session';
 import jwt from 'jsonwebtoken';
 import { parse as parseCookie } from 'cookie';
+import db from '../database/db.js';
 
 // Session configuration
 export const sessionConfig = {
@@ -31,6 +32,48 @@ export function requireAuth(req, res, next) {
     req.session.messageType = 'info';
     
     res.redirect('/login');
+}
+
+// Middleware to check if user is suspended (use after requireAuth)
+export async function checkSuspension(req, res, next) {
+    // Only check if user is authenticated
+    if (!req.session || !req.session.isAuthenticated || !req.session.user) {
+        return next();
+    }
+
+    try {
+        // Check user's suspension status from database
+        const result = await db.query(
+            'SELECT is_suspended FROM users WHERE id = $1',
+            [req.session.user.id]
+        );
+
+        if (result.rows.length === 0) {
+            // User not found, set message and redirect to login
+            req.session.message = 'Account not found. Please log in again.';
+            req.session.messageType = 'error';
+            req.session.isAuthenticated = false;
+            delete req.session.user;
+            return res.redirect('/login');
+        }
+
+        const user = result.rows[0];
+
+        if (user.is_suspended) {
+            // User is suspended, set message and redirect to login
+            req.session.message = 'Your account has been suspended. Please contact support for assistance.';
+            req.session.messageType = 'error';
+            req.session.isAuthenticated = false;
+            delete req.session.user;
+            return res.redirect('/login');
+        }
+
+        // User is not suspended, continue
+        next();
+    } catch (error) {
+        console.error('Error checking suspension status:', error);
+        next(); // Continue on error to avoid blocking legitimate users
+    }
 }
 
 // Guest middleware (redirect authenticated users)

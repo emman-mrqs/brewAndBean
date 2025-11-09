@@ -239,3 +239,180 @@ export async function sendPasswordResetEmail(email, resetCode, firstName) {
         return { success: false, error: error.message };
     }
 }
+
+// Send suspension notification email
+export async function sendSuspensionEmail(email, firstName, reason, suspensionType, endDate, customMessage) {
+    const isPermanent = suspensionType === 'permanent';
+    const suspensionDuration = isPermanent 
+        ? 'permanently' 
+        : `until ${new Date(endDate).toLocaleString('en-US', { dateStyle: 'long', timeStyle: 'short' })}`;
+
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Account Suspension Notice - Bean & Brew',
+        html: `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <style>
+                    body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; background-color: #f5f5f5; }
+                    .container { max-width: 600px; margin: 0 auto; background-color: white; }
+                    .header { background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); color: white; text-align: center; padding: 30px; }
+                    .logo { font-size: 2.5rem; margin-bottom: 10px; }
+                    .brand { font-size: 1.8rem; font-weight: bold; letter-spacing: 2px; }
+                    .content { padding: 40px 30px; }
+                    .alert-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 20px; margin: 20px 0; }
+                    .reason-box { background: #f8f9fa; border-radius: 10px; padding: 20px; margin: 20px 0; }
+                    .info-row { display: flex; justify-content: space-between; margin: 10px 0; padding: 10px 0; border-bottom: 1px solid #dee2e6; }
+                    .info-label { font-weight: bold; color: #666; }
+                    .info-value { color: #333; }
+                    .footer { background: #333; color: white; text-align: center; padding: 20px; }
+                    .warning { color: #dc3545; font-weight: bold; }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <div class="logo">⚠️</div>
+                        <div class="brand">BEAN & BREW</div>
+                        <p>Account Suspension Notice</p>
+                    </div>
+                    
+                    <div class="content">
+                        <h2>Hello${firstName ? `, ${firstName}` : ''},</h2>
+                        
+                        <div class="alert-box">
+                            <h3 style="margin-top: 0; color: #856404;">
+                                <i class="fas fa-exclamation-triangle"></i> Your account has been suspended
+                            </h3>
+                            <p style="margin-bottom: 0;">Your Bean & Brew account has been suspended ${suspensionDuration}.</p>
+                        </div>
+
+                        <div class="reason-box">
+                            <div class="info-row">
+                                <span class="info-label">Suspension Type:</span>
+                                <span class="info-value">${isPermanent ? 'Permanent' : 'Temporary'}</span>
+                            </div>
+                            ${!isPermanent ? `
+                            <div class="info-row">
+                                <span class="info-label">End Date:</span>
+                                <span class="info-value">${new Date(endDate).toLocaleString('en-US', { dateStyle: 'long', timeStyle: 'short' })}</span>
+                            </div>
+                            ` : ''}
+                            <div class="info-row" style="border-bottom: none;">
+                                <span class="info-label">Reason:</span>
+                            </div>
+                            <p style="color: #333; margin: 10px 0;">${reason}</p>
+                        </div>
+
+                        ${customMessage ? `
+                        <div style="margin: 20px 0; padding: 15px; background: #e7f3ff; border-radius: 8px;">
+                            <strong>Additional Information:</strong>
+                            <p style="margin: 10px 0 0 0;">${customMessage}</p>
+                        </div>
+                        ` : ''}
+
+                        <p><strong>What this means:</strong></p>
+                        <ul>
+                            <li>You will not be able to log in to your account</li>
+                            <li>Your active orders and data remain secure</li>
+                            <li>You cannot place new orders during the suspension period</li>
+                            ${!isPermanent ? '<li>Your account will be automatically restored after the suspension period</li>' : ''}
+                        </ul>
+
+                        <p class="warning">If you believe this is a mistake or would like to appeal this decision, please contact our support team.</p>
+                    </div>
+                    
+                    <div class="footer">
+                        <p>&copy; 2024 Bean & Brew. All rights reserved.</p>
+                        <p>Support: ${process.env.EMAIL_USER}</p>
+                    </div>
+                </div>
+            </body>
+            </html>
+        `
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        return { success: true };
+    } catch (error) {
+        console.error('Suspension email error:', error);
+        return { success: false, error: error.message };
+    }
+}
+
+// Send suspension lifted email
+export async function sendSuspensionLiftedEmail(email, firstName) {
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Account Suspension Lifted - Bean & Brew',
+        html: `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <style>
+                    body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; background-color: #f5f5f5; }
+                    .container { max-width: 600px; margin: 0 auto; background-color: white; }
+                    .header { background: linear-gradient(135deg, #28a745 0%, #218838 100%); color: white; text-align: center; padding: 30px; }
+                    .logo { font-size: 2.5rem; margin-bottom: 10px; }
+                    .brand { font-size: 1.8rem; font-weight: bold; letter-spacing: 2px; }
+                    .content { padding: 40px 30px; }
+                    .success-box { background: #d4edda; border-left: 4px solid #28a745; padding: 20px; margin: 20px 0; }
+                    .footer { background: #333; color: white; text-align: center; padding: 20px; }
+                    .btn { display: inline-block; padding: 12px 30px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <div class="logo">✅</div>
+                        <div class="brand">BEAN & BREW</div>
+                        <p>Account Restored</p>
+                    </div>
+                    
+                    <div class="content">
+                        <h2>Great News${firstName ? `, ${firstName}` : ''}!</h2>
+                        
+                        <div class="success-box">
+                            <h3 style="margin-top: 0; color: #155724;">
+                                Your account suspension has been lifted
+                            </h3>
+                            <p style="margin-bottom: 0;">You can now access your Bean & Brew account and enjoy our services again.</p>
+                        </div>
+
+                        <p><strong>What you can do now:</strong></p>
+                        <ul>
+                            <li>Log in to your account</li>
+                            <li>Browse our menu and place orders</li>
+                            <li>Access all premium features</li>
+                            <li>Enjoy your favorite coffee</li>
+                        </ul>
+
+                        <p>We're happy to have you back! If you have any questions, feel free to reach out to our support team.</p>
+
+                        <div style="text-align: center;">
+                            <a href="${process.env.APP_URL || 'http://localhost:3000'}/login" class="btn">Login to Your Account</a>
+                        </div>
+                    </div>
+                    
+                    <div class="footer">
+                        <p>&copy; 2024 Bean & Brew. All rights reserved.</p>
+                        <p>Brewing excellence, one cup at a time ☕</p>
+                    </div>
+                </div>
+            </body>
+            </html>
+        `
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        return { success: true };
+    } catch (error) {
+        console.error('Suspension lifted email error:', error);
+        return { success: false, error: error.message };
+    }
+}

@@ -53,373 +53,62 @@
                 <button class="tab-btn" data-tab="special">Special</button>
             </div>
 
+            <!-- Product Counter -->
+            <div class="product-counter" style="text-align: center; margin: 20px 0; padding: 12px; background: rgba(198, 124, 78, 0.05); border-radius: 8px;">
+                <p style="margin: 0; color: #666; font-size: 0.95rem; font-weight: 500;">
+                    <span id="productCounter">Loading...</span>
+                </p>
+            </div>
+
             <!-- All -->
             <div class="menu-content active" id="all">
                 <div class="menu-grid">
-                    <!-- This will contain all items, to be populated via JavaScript -->
+                    <!-- Loading indicator -->
+                    <div class="loading-indicator" style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 48px; color: var(--brew-primary); margin-bottom: 16px;"></i>
+                        <p style="color: #999; font-size: 1.1rem;">Loading products...</p>
+                    </div>
+                </div>
+                <!-- Pagination Container -->
+                <div class="pagination-container" style="margin-top: 40px; display: flex; justify-content: center;">
+                    <!-- Pagination buttons will be inserted here by JavaScript -->
                 </div>
             </div>
 
             <!-- Hot -->
             <div class="menu-content" id="hot">
                 <div class="menu-grid">
-                    <div class="menu-item" data-aos="fade-up" data-name="Barako" data-price="4.50" data-category="hot" data-img="../../Assets/Coffee/Hot Barako.webp">
-                        <div class="menu-item-visual">
-                            <img src="../../Assets/Coffee/Hot Barako.webp" alt="Barako" class="menu-item-image">
-                            <button class="favorite-btn" aria-label="Add to favorites">
-                                <i class="far fa-heart"></i>
-                            </button>
-                        </div>
-                        <div class="menu-item-info">
-                            <div class="menu-item-header">
-                                <h3>Barako</h3>
-                                <span class="price">$4.50</span>
-                            </div>
-                            <p>Strong and bold Filipino coffee with robust flavor</p>
-                            <div class="menu-item-actions">
-                                <button class="view-btn" title="View Details">
-                                    <i class="fas fa-eye"></i> View
-                                </button>
-                                <button class="add-to-cart-btn" title="Add to Cart">
-                                    <i class="fas fa-cart-plus"></i> Add to Cart
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="menu-item" data-aos="fade-up" data-delay="100" data-name="Cafe Mocha" data-price="5.50" data-category="hot" data-img="../../Assets/Coffee/Hot Cafe Mocha.webp">
-                        <div class="menu-item-visual">
-                            <img src="../../Assets/Coffee/Hot Cafe Mocha.webp" alt="Cafe Mocha" class="menu-item-image">
-                            <button class="favorite-btn" aria-label="Add to favorites">
-                                <i class="far fa-heart"></i>
-                            </button>
-                        </div>
-                        <div class="menu-item-info">
-                            <div class="menu-item-header">
-                                <h3>Cafe Mocha</h3>
-                                <span class="price">$5.50</span>
-                            </div>
-                            <p>Rich chocolate and espresso with whipped cream</p>
-                            <div class="menu-item-actions">
-                                <button class="view-btn" title="View Details">
-                                    <i class="fas fa-eye"></i> View
-                                </button>
-                                <button class="add-to-cart-btn" title="Add to Cart">
-                                    <i class="fas fa-cart-plus"></i> Add to Cart
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="menu-item" data-aos="fade-up" data-delay="200">
-                        <div class="menu-item-visual">
-                            <img src="../../Assets/Coffee/Hot Caffè Americano.webp" alt="Caffè Americano" class="menu-item-image">
-                        </div>
-                        <div class="menu-item-info">
-                            <div class="menu-item-header">
-                                <h3>Caffè Americano</h3>
-                                <span class="price">$3.75</span>
-                            </div>
-                            <p>Rich espresso with hot water for a smooth finish</p>
-                        </div>
-                    </div>
-
-                    <div class="menu-item" data-aos="fade-up" data-delay="300">
-                        <div class="menu-item-visual">
-                            <img src="../../Assets/Coffee/Hot Cappuccino.webp" alt="Cappuccino" class="menu-item-image">
-                        </div>
-                        <div class="menu-item-info">
-                            <div class="menu-item-header">
-                                <h3>Cappuccino</h3>
-                                <span class="price">$4.50</span>
-                            </div>
-                            <p>Perfect balance of espresso, steamed milk, and foam</p>
-                        </div>
-                    </div>
-
-                    <div class="menu-item" data-aos="fade-up">
-                        <div class="menu-item-visual">
-                            <img src="../../Assets/Coffee/Hot Caramel Macchiato.webp" alt="Caramel Macchiato" class="menu-item-image">
-                        </div>
-                        <div class="menu-item-info">
-                            <div class="menu-item-header">
-                                <h3>Caramel Macchiato</h3>
-                                <span class="price">$5.75</span>
-                            </div>
-                            <p>Vanilla-flavored latte with caramel drizzle</p>
-                        </div>
-                    </div>
-
-                    <div class="menu-item" data-aos="fade-up" data-delay="100">
-                        <div class="menu-item-visual">
-                            <img src="../../Assets/Coffee/Hot Dalgona Coffee.webp" alt="Dalgona Coffee" class="menu-item-image">
-                        </div>
-                        <div class="menu-item-info">
-                            <div class="menu-item-header">
-                                <h3>Dalgona Coffee</h3>
-                                <span class="price">$5.25</span>
-                            </div>
-                            <p>Whipped coffee foam over steamed milk</p>
-                        </div>
-                    </div>
-
-                    <div class="menu-item" data-aos="fade-up" data-delay="200">
-                        <div class="menu-item-visual">
-                            <img src="../../Assets/Coffee/Hot Dirty Matcha Latte.webp" alt="Dirty Matcha Latte" class="menu-item-image">
-                        </div>
-                        <div class="menu-item-info">
-                            <div class="menu-item-header">
-                                <h3>Dirty Matcha Latte</h3>
-                                <span class="price">$5.75</span>
-                            </div>
-                            <p>Matcha green tea with a shot of espresso</p>
-                        </div>
-                    </div>
-
-                    <div class="menu-item" data-aos="fade-up" data-delay="300">
-                        <div class="menu-item-visual">
-                            <img src="../../Assets/Coffee/Hot Flat white.webp" alt="Flat White" class="menu-item-image">
-                        </div>
-                        <div class="menu-item-info">
-                            <div class="menu-item-header">
-                                <h3>Flat White</h3>
-                                <span class="price">$4.75</span>
-                            </div>
-                            <p>Velvety microfoam with double ristretto espresso</p>
-                        </div>
-                    </div>
-
-                    <div class="menu-item" data-aos="fade-up">
-                        <div class="menu-item-visual">
-                            <img src="../../Assets/Coffee/Hot Spanish Latte.webp" alt="Spanish Latte" class="menu-item-image">
-                        </div>
-                        <div class="menu-item-info">
-                            <div class="menu-item-header">
-                                <h3>Spanish Latte</h3>
-                                <span class="price">$5.25</span>
-                            </div>
-                            <p>Espresso with sweetened condensed milk</p>
-                        </div>
-                    </div>
-
-                    <div class="menu-item" data-aos="fade-up" data-delay="100">
-                        <div class="menu-item-visual">
-                            <img src="../../Assets/Coffee/Hot Vanilla Latte.webp" alt="Vanilla Latte" class="menu-item-image">
-                        </div>
-                        <div class="menu-item-info">
-                            <div class="menu-item-header">
-                                <h3>Vanilla Latte</h3>
-                                <span class="price">$5.00</span>
-                            </div>
-                            <p>Smooth espresso with vanilla and steamed milk</p>
-                        </div>
+                    <!-- Loading indicator -->
+                    <div class="loading-indicator" style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 48px; color: var(--brew-primary); margin-bottom: 16px;"></i>
+                        <p style="color: #999; font-size: 1.1rem;">Loading hot beverages...</p>
                     </div>
                 </div>
+                <!-- No pagination for Hot category -->
             </div>
 
             <!-- Cold -->
             <div class="menu-content" id="cold">
                 <div class="menu-grid">
-                    <div class="menu-item" data-aos="fade-up">
-                        <div class="menu-item-visual">
-                            <img src="../../Assets/Coffee/Cold Barako.webp" alt="Cold Barako" class="menu-item-image">
-                        </div>
-                        <div class="menu-item-info">
-                            <div class="menu-item-header">
-                                <h3>Cold Barako</h3>
-                                <span class="price">$5.00</span>
-                            </div>
-                            <p>Iced Filipino coffee with intense flavor</p>
-                        </div>
-                    </div>
-
-                    <div class="menu-item" data-aos="fade-up" data-delay="100">
-                        <div class="menu-item-visual">
-                            <img src="../../Assets/Coffee/Cold Cafe Mocha.webp" alt="Cold Cafe Mocha" class="menu-item-image">
-                        </div>
-                        <div class="menu-item-info">
-                            <div class="menu-item-header">
-                                <h3>Cold Cafe Mocha</h3>
-                                <span class="price">$5.75</span>
-                            </div>
-                            <p>Iced chocolate espresso with cold milk</p>
-                        </div>
-                    </div>
-
-                    <div class="menu-item" data-aos="fade-up" data-delay="200">
-                        <div class="menu-item-visual">
-                            <img src="../../Assets/Coffee/Cold Caffè Americano.webp" alt="Cold Caffè Americano" class="menu-item-image">
-                        </div>
-                        <div class="menu-item-info">
-                            <div class="menu-item-header">
-                                <h3>Cold Caffè Americano</h3>
-                                <span class="price">$4.00</span>
-                            </div>
-                            <p>Chilled espresso with cold water over ice</p>
-                        </div>
-                    </div>
-
-                    <div class="menu-item" data-aos="fade-up" data-delay="300">
-                        <div class="menu-item-visual">
-                            <img src="../../Assets/Coffee/Cold Cappuccino.webp" alt="Cold Cappuccino" class="menu-item-image">
-                        </div>
-                        <div class="menu-item-info">
-                            <div class="menu-item-header">
-                                <h3>Cold Cappuccino</h3>
-                                <span class="price">$4.75</span>
-                            </div>
-                            <p>Iced cappuccino with cold foam</p>
-                        </div>
-                    </div>
-
-                    <div class="menu-item" data-aos="fade-up">
-                        <div class="menu-item-visual">
-                            <img src="../../Assets/Coffee/Cold Caramel Macchiato.webp" alt="Cold Caramel Macchiato" class="menu-item-image">
-                        </div>
-                        <div class="menu-item-info">
-                            <div class="menu-item-header">
-                                <h3>Cold Caramel Macchiato</h3>
-                                <span class="price">$6.00</span>
-                            </div>
-                            <p>Iced vanilla latte with caramel drizzle</p>
-                        </div>
-                    </div>
-
-                    <div class="menu-item" data-aos="fade-up" data-delay="100">
-                        <div class="menu-item-visual">
-                            <img src="../../Assets/Coffee/Cold Dalgona Coffee.webp" alt="Cold Dalgona Coffee" class="menu-item-image">
-                        </div>
-                        <div class="menu-item-info">
-                            <div class="menu-item-header">
-                                <h3>Cold Dalgona Coffee</h3>
-                                <span class="price">$5.50</span>
-                            </div>
-                            <p>Whipped coffee foam over cold milk and ice</p>
-                        </div>
-                    </div>
-
-                    <div class="menu-item" data-aos="fade-up" data-delay="200">
-                        <div class="menu-item-visual">
-                            <img src="../../Assets/Coffee/Cold Dirty Matcha Latte.webp" alt="Cold Dirty Matcha Latte" class="menu-item-image">
-                        </div>
-                        <div class="menu-item-info">
-                            <div class="menu-item-header">
-                                <h3>Cold Dirty Matcha Latte</h3>
-                                <span class="price">$6.00</span>
-                            </div>
-                            <p>Iced matcha with espresso shot</p>
-                        </div>
-                    </div>
-
-                    <div class="menu-item" data-aos="fade-up" data-delay="300">
-                        <div class="menu-item-visual">
-                            <img src="../../Assets/Coffee/Cold Flat White.webp" alt="Cold Flat White" class="menu-item-image">
-                        </div>
-                        <div class="menu-item-info">
-                            <div class="menu-item-header">
-                                <h3>Cold Flat White</h3>
-                                <span class="price">$5.00</span>
-                            </div>
-                            <p>Iced double ristretto with cold microfoam</p>
-                        </div>
-                    </div>
-
-                    <div class="menu-item" data-aos="fade-up">
-                        <div class="menu-item-visual">
-                            <img src="../../Assets/Coffee/Cold Spanish Latte.webp" alt="Cold Spanish Latte" class="menu-item-image">
-                        </div>
-                        <div class="menu-item-info">
-                            <div class="menu-item-header">
-                                <h3>Cold Spanish Latte</h3>
-                                <span class="price">$5.50</span>
-                            </div>
-                            <p>Iced espresso with sweetened condensed milk</p>
-                        </div>
-                    </div>
-
-                    <div class="menu-item" data-aos="fade-up" data-delay="100">
-                        <div class="menu-item-visual">
-                            <img src="../../Assets/Coffee/Cold Vanilla Latte.webp" alt="Cold Vanilla Latte" class="menu-item-image">
-                        </div>
-                        <div class="menu-item-info">
-                            <div class="menu-item-header">
-                                <h3>Cold Vanilla Latte</h3>
-                                <span class="price">$5.25</span>
-                            </div>
-                            <p>Iced vanilla espresso with cold milk</p>
-                        </div>
+                    <!-- Loading indicator -->
+                    <div class="loading-indicator" style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 48px; color: var(--brew-primary); margin-bottom: 16px;"></i>
+                        <p style="color: #999; font-size: 1.1rem;">Loading cold beverages...</p>
                     </div>
                 </div>
+                <!-- No pagination for Cold category -->
             </div>
 
             <!-- Special -->
             <div class="menu-content" id="special">
                 <div class="menu-grid">
-                    <div class="menu-item" data-aos="fade-up">
-                        <div class="menu-item-visual">
-                            <img src="../../Assets/Coffee/Special Affogato.webp" alt="Affogato" class="menu-item-image">
-                        </div>
-                        <div class="menu-item-info">
-                            <div class="menu-item-header">
-                                <h3>Affogato</h3>
-                                <span class="price">$6.00</span>
-                            </div>
-                            <p>Vanilla gelato drowned in hot espresso</p>
-                        </div>
-                    </div>
-
-                    <div class="menu-item" data-aos="fade-up" data-delay="100">
-                        <div class="menu-item-visual">
-                            <img src="../../Assets/Coffee/Special Greek Coffee Frappe.webp" alt="Greek Coffee Frappe" class="menu-item-image">
-                        </div>
-                        <div class="menu-item-info">
-                            <div class="menu-item-header">
-                                <h3>Greek Coffee Frappe</h3>
-                                <span class="price">$5.75</span>
-                            </div>
-                            <p>Frothy iced coffee with foam topping</p>
-                        </div>
-                    </div>
-
-                    <div class="menu-item" data-aos="fade-up" data-delay="200">
-                        <div class="menu-item-visual">
-                            <img src="../../Assets/Coffee/Special Java Chip Frappe.webp" alt="Java Chip Frappe" class="menu-item-image">
-                        </div>
-                        <div class="menu-item-info">
-                            <div class="menu-item-header">
-                                <h3>Java Chip Frappe</h3>
-                                <span class="price">$6.25</span>
-                            </div>
-                            <p>Blended coffee with chocolate chips and whipped cream</p>
-                        </div>
-                    </div>
-
-                    <div class="menu-item" data-aos="fade-up" data-delay="300">
-                        <div class="menu-item-visual">
-                            <img src="../../Assets/Coffee/Special Mocha Frappe.webp" alt="Mocha Frappe" class="menu-item-image">
-                        </div>
-                        <div class="menu-item-info">
-                            <div class="menu-item-header">
-                                <h3>Mocha Frappe</h3>
-                                <span class="price">$6.00</span>
-                            </div>
-                            <p>Blended mocha with ice and whipped topping</p>
-                        </div>
-                    </div>
-
-                    <div class="menu-item" data-aos="fade-up">
-                        <div class="menu-item-visual">
-                            <img src="../../Assets/Coffee/Special Nitro Coffee.webp" alt="Nitro Coffee" class="menu-item-image">
-                        </div>
-                        <div class="menu-item-info">
-                            <div class="menu-item-header">
-                                <h3>Nitro Coffee</h3>
-                                <span class="price">$6.50</span>
-                            </div>
-                            <p>Cold brew infused with nitrogen for a creamy texture</p>
-                        </div>
+                    <!-- Loading indicator -->
+                    <div class="loading-indicator" style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 48px; color: var(--brew-primary); margin-bottom: 16px;"></i>
+                        <p style="color: #999; font-size: 1.1rem;">Loading special items...</p>
                     </div>
                 </div>
+                <!-- No pagination for Special category -->
             </div>
         </div>
     </section>

@@ -1,11 +1,259 @@
-/* ===== MENU PAGE SCRIPT =====
- * Order of execution:
- * 1. Tab switching setup (immediately)
- * 2. Scroll animations setup (immediately)
- * 3. Auto-inject buttons into all menu items (immediately)
- * 4. Populate "All" tab with cloned items (immediately after injection)
- * 5. Load favorites and re-populate All tab (on window.load)
- * ============================= */
+/* ===== MENU PAGE SCRIPT WITH DATABASE INTEGRATION =====
+ * Features:
+ * - Load products from database
+ * - Category filtering (All, Hot, Cold, Special)
+ * - Pagination (12 products per page for All category only)
+ * ===================================================== */
+
+let allProducts = [];
+let filteredProducts = [];
+let currentCategory = 'all';
+let currentPage = 1;
+const productsPerPage = 12;
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadProducts();
+    initTabSwitching();
+    initScrollAnimations();
+    initBackToTop();
+    initImagePreview();
+    initViewButtons();
+    initAddToCartButtons();
+});
+
+// Load products from database
+async function loadProducts() {
+    try {
+        const response = await fetch('/api/products');
+        const data = await response.json();
+
+        if (data.success) {
+            allProducts = data.products;
+            filteredProducts = allProducts;
+            currentPage = 1;
+            displayCurrentPage();
+        } else {
+            console.error('Failed to load products:', data.message);
+            showToast('❌ Failed to load products');
+        }
+    } catch (error) {
+        console.error('Error loading products:', error);
+        showToast('❌ Error loading products');
+    }
+}
+
+// Display current page of products
+function displayCurrentPage() {
+    // Only use pagination for 'all' category
+    if (currentCategory === 'all') {
+        const startIndex = (currentPage - 1) * productsPerPage;
+        const endIndex = startIndex + productsPerPage;
+        const productsToDisplay = filteredProducts.slice(startIndex, endIndex);
+        displayProducts(productsToDisplay);
+        updatePagination();
+        updateProductCounter();
+    } else {
+        // Show all products for other categories (no pagination)
+        displayProducts(filteredProducts);
+        updatePagination();
+        updateProductCounter();
+    }
+}
+
+// Display products in the current tab
+function displayProducts(products) {
+    const activeTab = document.querySelector('.menu-content.active');
+    const menuGrid = activeTab ? activeTab.querySelector('.menu-grid') : null;
+    
+    if (!menuGrid) return;
+
+    if (!products || products.length === 0) {
+        menuGrid.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
+                <i class="fas fa-coffee" style="font-size: 48px; color: #ccc; margin-bottom: 16px;"></i>
+                <p style="color: #999; font-size: 1.1rem;">No products found</p>
+            </div>
+        `;
+        return;
+    }
+
+    menuGrid.innerHTML = products.map((product, index) => {
+        const imageUrl = product.img_url || '/uploads/products/default-product.jpg';
+        const price = product.price || 0;
+        
+        return `
+            <div class="menu-item" data-aos="fade-up" data-delay="${index * 50}" 
+                 data-product-id="${product.id}" data-name="${product.name}" 
+                 data-price="${price}"
+                 data-img="${imageUrl}">
+                <div class="menu-item-visual">
+                    <img src="${imageUrl}" alt="${product.name}" class="menu-item-image" 
+                         onerror="this.src='/uploads/products/default-product.jpg'">
+                </div>
+                <div class="menu-item-info">
+                    <div class="menu-item-header">
+                        <h3>${product.name}</h3>
+                        <span class="price">₱${parseFloat(price).toFixed(2)}</span>
+                    </div>
+                    <p>${product.description || 'Delicious coffee beverage'}</p>
+                    ${renderVariants(product.variants)}
+                    <div class="menu-item-actions">
+                        <button class="view-btn" title="View Details">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                        <button class="add-to-cart-btn" title="Add to Cart">
+                            <i class="fas fa-cart-plus"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    // Re-initialize scroll animations for new items
+    initScrollAnimations();
+}
+
+// Render variants if available
+function renderVariants(variants) {
+    if (!variants || variants.length === 0) return '';
+    
+    return `
+        <div class="product-variants" style="margin: 8px 0; display: flex; flex-wrap: wrap; gap: 6px;">
+            ${variants.map(variant => `
+                <span class="variant-badge" style="background: rgba(198, 124, 78, 0.1); padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; color: var(--brew-primary);">
+                    ${variant.name}
+                </span>
+            `).join('')}
+        </div>
+    `;
+}
+
+// Update pagination controls
+function updatePagination() {
+    const activeTab = document.querySelector('.menu-content.active');
+    
+    if (!activeTab) return;
+    
+    // Get pagination container (now exists in HTML)
+    const paginationContainer = activeTab.querySelector('.pagination-container');
+    
+    if (!paginationContainer) return;
+    
+    // Only show pagination for 'all' category
+    if (currentCategory !== 'all') {
+        paginationContainer.innerHTML = '';
+        return;
+    }
+    
+    const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+    
+    if (totalPages <= 1) {
+        paginationContainer.innerHTML = '';
+        return;
+    }
+    
+    let paginationHTML = '<div class="pagination" style="display: flex; gap: 8px; align-items: center;">';
+    
+    // Previous button «
+    paginationHTML += `
+        <button class="pagination-btn" onclick="changePage(${currentPage - 1})" 
+                ${currentPage === 1 ? 'disabled' : ''}
+                style="width: 40px; height: 40px; border: 2px solid var(--brew-primary); background: white; color: var(--brew-primary); border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s;">
+            &laquo;
+        </button>
+    `;
+    
+    // Page numbers
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage < maxVisiblePages - 1) {
+        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+    
+    // First page and ellipsis
+    if (startPage > 1) {
+        paginationHTML += `<button class="pagination-btn" onclick="changePage(1)" 
+            style="width: 40px; height: 40px; border: 2px solid var(--brew-primary); background: white; color: var(--brew-primary); border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s;">1</button>`;
+        if (startPage > 2) {
+            paginationHTML += `<span style="padding: 0 8px; color: #999;">...</span>`;
+        }
+    }
+    
+    // Page number buttons
+    for (let i = startPage; i <= endPage; i++) {
+        const isActive = i === currentPage;
+        paginationHTML += `
+            <button class="pagination-btn ${isActive ? 'active' : ''}" onclick="changePage(${i})"
+                    style="width: 40px; height: 40px; border: 2px solid var(--brew-primary); background: ${isActive ? 'var(--brew-primary)' : 'white'}; color: ${isActive ? 'white' : 'var(--brew-primary)'}; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s;">
+                ${i}
+            </button>
+        `;
+    }
+    
+    // Ellipsis and last page
+    if (endPage < totalPages) {
+        if (endPage < totalPages - 1) {
+            paginationHTML += `<span style="padding: 0 8px; color: #999;">...</span>`;
+        }
+        paginationHTML += `<button class="pagination-btn" onclick="changePage(${totalPages})" 
+            style="width: 40px; height: 40px; border: 2px solid var(--brew-primary); background: white; color: var(--brew-primary); border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s;">${totalPages}</button>`;
+    }
+    
+    // Next button »
+    paginationHTML += `
+        <button class="pagination-btn" onclick="changePage(${currentPage + 1})" 
+                ${currentPage === totalPages ? 'disabled' : ''}
+                style="width: 40px; height: 40px; border: 2px solid var(--brew-primary); background: white; color: var(--brew-primary); border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s;">
+            &raquo;
+        </button>
+    `;
+    
+    paginationHTML += '</div>';
+    paginationContainer.innerHTML = paginationHTML;
+}
+
+// Update product counter
+function updateProductCounter() {
+    const counterElement = document.getElementById('productCounter');
+    if (!counterElement) return;
+
+    const totalProducts = filteredProducts.length;
+    
+    if (totalProducts === 0) {
+        counterElement.textContent = 'No products found';
+        return;
+    }
+
+    if (currentCategory === 'all') {
+        // For 'all' category with pagination
+        const startIndex = (currentPage - 1) * productsPerPage + 1;
+        const endIndex = Math.min(currentPage * productsPerPage, totalProducts);
+        counterElement.textContent = `Showing ${startIndex}-${endIndex} of ${totalProducts} ${totalProducts === 1 ? 'product' : 'products'}`;
+    } else {
+        // For other categories without pagination
+        counterElement.textContent = `Showing ${totalProducts} ${totalProducts === 1 ? 'product' : 'products'}`;
+    }
+}
+
+// Change page
+function changePage(page) {
+    // Only allow page change for 'all' category
+    if (currentCategory !== 'all') return;
+    
+    const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+    
+    if (page < 1 || page > totalPages) return;
+    
+    currentPage = page;
+    displayCurrentPage();
+    
+    // Scroll to top of menu section
+    document.querySelector('.menu')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
 // Tab switching functionality
 function initTabSwitching() {
@@ -15,6 +263,7 @@ function initTabSwitching() {
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const targetTab = btn.dataset.tab;
+            currentCategory = targetTab;
             
             // Remove active class from all buttons and contents
             tabBtns.forEach(b => b.classList.remove('active'));
@@ -26,8 +275,33 @@ function initTabSwitching() {
             if (targetContent) {
                 targetContent.classList.add('active');
             }
+            
+            // Filter products by category
+            filterByCategory(targetTab);
         });
     });
+}
+
+// Filter products by category
+function filterByCategory(category) {
+    if (category === 'all') {
+        filteredProducts = allProducts;
+    } else {
+        // Filter by variant name (Hot, Cold, Special)
+        filteredProducts = allProducts.filter(product => {
+            // Check if product has variants with matching name
+            if (product.variants && product.variants.length > 0) {
+                return product.variants.some(variant => 
+                    variant.name.toLowerCase().includes(category.toLowerCase())
+                );
+            }
+            // Fallback to product category
+            return product.category && product.category.toLowerCase() === category.toLowerCase();
+        });
+    }
+    
+    currentPage = 1;
+    displayCurrentPage();
 }
 
 // Scroll animations
@@ -59,7 +333,6 @@ function scrollToTop() {
     });
 }
 
-// Show/hide back to top button based on scroll position
 function initBackToTop() {
     window.addEventListener('scroll', function() {
         const backToTopBtn = document.getElementById('backToTop');
@@ -78,20 +351,8 @@ function initImagePreview() {
     const previewOverlay = document.getElementById('imagePreviewOverlay');
     const previewImage = document.getElementById('previewImage');
     const closePreview = document.getElementById('closePreview');
-    const menuImages = document.querySelectorAll('.menu-item-image');
 
     if (!previewOverlay || !previewImage || !closePreview) return;
-
-    // Add click event to all menu images
-    menuImages.forEach(img => {
-        img.style.cursor = 'pointer';
-        img.addEventListener('click', function() {
-            previewImage.src = this.src;
-            previewImage.alt = this.alt;
-            previewOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        });
-    });
 
     // Close preview on button click
     closePreview.addEventListener('click', function() {
@@ -112,140 +373,6 @@ function initImagePreview() {
         if (e.key === 'Escape' && previewOverlay.classList.contains('active')) {
             previewOverlay.classList.remove('active');
             document.body.style.overflow = '';
-        }
-    });
-}
-
-// Auto-inject buttons into all menu items that don't have them
-function injectMenuButtons() {
-    document.querySelectorAll('.menu-item').forEach(item => {
-        const visual = item.querySelector('.menu-item-visual');
-        const info = item.querySelector('.menu-item-info');
-        const img = visual ? visual.querySelector('img') : null;
-        const h3 = info ? info.querySelector('h3') : null;
-        const price = info ? info.querySelector('.price') : null;
-        
-        // Add data attributes if missing
-        if (!item.dataset.name && h3) item.dataset.name = h3.textContent.trim();
-        if (!item.dataset.price && price) item.dataset.price = price.textContent.replace('$', '').trim();
-        if (!item.dataset.img && img) item.dataset.img = img.src;
-        if (!item.dataset.category) {
-            const tab = item.closest('[id]');
-            item.dataset.category = tab ? tab.id : 'all';
-        }
-
-        // Add favorite button if not exists
-        if (visual && !visual.querySelector('.favorite-btn')) {
-            const favBtn = document.createElement('button');
-            favBtn.className = 'favorite-btn';
-            favBtn.setAttribute('aria-label', 'Add to favorites');
-            favBtn.innerHTML = '<i class="far fa-heart"></i>';
-            visual.appendChild(favBtn);
-        }
-
-        // Add action buttons if not exists
-        if (info && !info.querySelector('.menu-item-actions')) {
-            const actions = document.createElement('div');
-            actions.className = 'menu-item-actions';
-            actions.innerHTML = `
-                <button class="view-btn" title="View Details">
-                    <i class="fas fa-eye"></i> View
-                </button>
-                <button class="add-to-cart-btn" title="Add to Cart">
-                    <i class="fas fa-cart-plus"></i> Add to Cart
-                </button>
-            `;
-            info.appendChild(actions);
-        }
-    });
-}
-
-// Populate "All" tab with items from all categories (after buttons are injected)
-function populateAllTab() {
-    const allGrid = document.querySelector('#all .menu-grid');
-    const hotItems = document.querySelectorAll('#hot .menu-item');
-    const coldItems = document.querySelectorAll('#cold .menu-item');
-    const specialItems = document.querySelectorAll('#special .menu-item');
-    
-    console.log('Populating All tab...');
-    console.log('Hot items:', hotItems.length);
-    console.log('Cold items:', coldItems.length);
-    console.log('Special items:', specialItems.length);
-    console.log('All grid element:', allGrid);
-    
-    if (!allGrid) {
-        console.error('All grid not found!');
-        return;
-    }
-    
-    // Clear any existing content
-    allGrid.innerHTML = '';
-    
-    // Clone and append all items
-    const allItems = [...hotItems, ...coldItems, ...specialItems];
-    console.log('Total items to add:', allItems.length);
-    
-    allItems.forEach((item, index) => {
-        const clone = item.cloneNode(true);
-        allGrid.appendChild(clone);
-        console.log('Added item', index + 1);
-    });
-    
-    console.log('All tab populated with', allGrid.children.length, 'items');
-}
-
-// Favorite button functionality
-function initFavoriteButtons() {
-    document.addEventListener('click', function(e) {
-        if (e.target.closest('.favorite-btn')) {
-            const btn = e.target.closest('.favorite-btn');
-            const icon = btn.querySelector('i');
-            const item = btn.closest('.menu-item');
-            const itemName = item.dataset.name;
-            
-            if (icon.classList.contains('far')) {
-                icon.classList.remove('far');
-                icon.classList.add('fas');
-                btn.classList.add('active');
-                
-                // Save to localStorage
-                let favorites = JSON.parse(localStorage.getItem('bb_favorites') || '[]');
-                if (!favorites.includes(itemName)) {
-                    favorites.push(itemName);
-                    localStorage.setItem('bb_favorites', JSON.stringify(favorites));
-                }
-                
-                showToast(`❤️ ${itemName} added to favorites!`);
-            } else {
-                icon.classList.remove('fas');
-                icon.classList.add('far');
-                btn.classList.remove('active');
-                
-                // Remove from localStorage
-                let favorites = JSON.parse(localStorage.getItem('bb_favorites') || '[]');
-                favorites = favorites.filter(f => f !== itemName);
-                localStorage.setItem('bb_favorites', JSON.stringify(favorites));
-                
-                showToast(`${itemName} removed from favorites`);
-            }
-        }
-    });
-}
-
-// Load favorites on page load
-function loadFavorites() {
-    const favorites = JSON.parse(localStorage.getItem('bb_favorites') || '[]');
-    document.querySelectorAll('.menu-item').forEach(item => {
-        if (favorites.includes(item.dataset.name)) {
-            const btn = item.querySelector('.favorite-btn');
-            if (btn) {
-                const icon = btn.querySelector('i');
-                if (icon) {
-                    icon.classList.remove('far');
-                    icon.classList.add('fas');
-                    btn.classList.add('active');
-                }
-            }
         }
     });
 }
@@ -277,7 +404,7 @@ function initAddToCartButtons() {
             const item = btn.closest('.menu-item');
             
             const cartItem = {
-                id: item.dataset.name.toLowerCase().replace(/\\s+/g, '-'),
+                id: item.dataset.productId,
                 name: item.dataset.name,
                 note: item.dataset.category.charAt(0).toUpperCase() + item.dataset.category.slice(1),
                 price: parseFloat(item.dataset.price),
@@ -329,23 +456,3 @@ function showToast(message) {
         setTimeout(() => toast.remove(), 300);
     }, 3000);
 }
-
-// Initialize everything when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    initTabSwitching();
-    initScrollAnimations();
-    initBackToTop();
-    initImagePreview();
-    injectMenuButtons();
-    populateAllTab();
-    initFavoriteButtons();
-    initViewButtons();
-    initAddToCartButtons();
-});
-
-// Load favorites when window loads
-window.addEventListener('load', function() {
-    // Re-populate All tab to ensure it has all the buttons and data
-    populateAllTab();
-    loadFavorites();
-});

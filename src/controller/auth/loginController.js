@@ -30,7 +30,7 @@ export async function handleLogin(req, res) {
         }
         
         // Find user by email and compare credentials
-        const query = 'SELECT id, first_name, last_name, email, password, is_verified, phone FROM users WHERE email = $1';
+        const query = 'SELECT id, first_name, last_name, email, password, is_verified, is_suspended, phone FROM users WHERE email = $1';
         const result = await db.query(query, [email]);
         
         if (result.rows.length === 0) {
@@ -41,6 +41,14 @@ export async function handleLogin(req, res) {
         }
         
         const user = result.rows[0];
+        
+        // Check if user is suspended
+        if (user.is_suspended) {
+            req.session.message = 'Your account has been suspended. Please contact support for assistance.';
+            req.session.messageType = 'error';
+            req.session.formData = { email };
+            return res.redirect('/login');
+        }
         
         // Check password using bcrypt
         const passwordMatch = await bcrypt.compare(password, user.password);

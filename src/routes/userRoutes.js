@@ -15,9 +15,12 @@ import PaymentController from "../controller/user/paymentController.js";
 import UserSettingsController from "../controller/user/userSettingsController.js";
 
 // Import Authentication Middleware
-import { requireAuth, requireVerification } from "../middleware/auth.js";
+import { requireAuth, requireVerification, checkSuspension } from "../middleware/auth.js";
 
 const router = express.Router();
+
+// Apply suspension check middleware to all routes
+router.use(checkSuspension);
 
 // Home routes
 router.get("/", HomeController.getHome);
@@ -25,6 +28,7 @@ router.get("/home", HomeController.getHome);
 
 // Main pages routes
 router.get("/menu", MenuController.getMenu);
+router.get("/api/products", MenuController.getProducts);
 router.get("/about", AboutController.getAbout);
 router.get("/specialties", SpecialtiesController.getSpecialties);
 router.get("/reviews", ReviewsController.getReviews);

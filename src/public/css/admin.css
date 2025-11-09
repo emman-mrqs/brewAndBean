@@ -352,24 +352,73 @@ body {
     width: 32px;
     height: 32px;
     border: none;
-    background: var(--brew-surface);
+    background: transparent;
     border-radius: 8px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
-    color: var(--brew-text-light);
+    transition: all 0.2s ease;
+    color: #64748b;
 }
 
 .btn-icon:hover {
-    background: var(--brew-primary);
-    color: white;
-    transform: scale(1.1);
+    background: #f1f5f9;
+    color: #334155;
+}
+
+/* Edit button */
+.btn-icon.btn-edit-mode:hover {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+/* Save button */
+.btn-icon.btn-save-mode {
+    color: #64748b;
+}
+
+.btn-icon.btn-save-mode:hover {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+/* Cancel button */
+.btn-icon.btn-cancel-mode {
+    color: #64748b;
+}
+
+.btn-icon.btn-cancel-mode:hover {
+    background: #fef3c7;
+    color: #ca8a04;
+}
+
+/* Suspend button - ban icon */
+.btn-icon .fa-ban {
+    color: #64748b;
+}
+
+.btn-icon:hover .fa-ban {
+    color: #dc2626;
+}
+
+/* Unlock/Lift suspension button */
+.btn-icon .fa-unlock {
+    color: #64748b;
+}
+
+.btn-icon:hover .fa-unlock {
+    color: #16a34a;
+}
+
+/* Delete button */
+.btn-icon.delete {
+    color: #64748b;
 }
 
 .btn-icon.delete:hover {
-    background: #EF4444;
+    background: #fee2e2;
+    color: #dc2626;
 }
 
 .product-cell {
@@ -525,4 +574,245 @@ body {
 .sidebar-overlay.active {
     opacity: 1;
     pointer-events: auto;
+}
+
+/* Hide sidebar overlay when modal is open to prevent conflicts */
+body.modal-open .sidebar-overlay {
+    display: none !important;
+}
+
+/* ============================================
+   MOBILE RESPONSIVE STYLES
+   ============================================ */
+
+@media (max-width: 768px) {
+    /* Table container with horizontal scroll */
+    .data-table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 12px;
+    }
+
+    /* Reduce table padding on mobile */
+    .data-table th,
+    .data-table td {
+        padding: 12px 16px;
+        font-size: 0.85rem;
+    }
+
+    /* Make table headers smaller */
+    .data-table th {
+        font-size: 0.75rem;
+        white-space: nowrap;
+    }
+
+    /* Ensure minimum column widths for readability */
+    .data-table th:nth-child(1), /* ID */
+    .data-table td:nth-child(1) {
+        min-width: 60px;
+    }
+
+    .data-table th:nth-child(2), /* NAME */
+    .data-table td:nth-child(2) {
+        min-width: 180px;
+    }
+
+    .data-table th:nth-child(3), /* EMAIL */
+    .data-table td:nth-child(3) {
+        min-width: 200px;
+    }
+
+    .data-table th:nth-child(4), /* STATUS */
+    .data-table td:nth-child(4) {
+        min-width: 100px;
+    }
+
+    .data-table th:nth-child(5), /* ACTIONS */
+    .data-table td:nth-child(5) {
+        min-width: 140px;
+        position: sticky;
+        right: 0;
+        background: var(--brew-white);
+        box-shadow: -4px 0 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .data-table thead th:nth-child(5) {
+        position: sticky;
+        right: 0;
+        background: var(--brew-surface);
+        box-shadow: -4px 0 8px rgba(0, 0, 0, 0.05);
+        z-index: 2;
+    }
+
+    /* User cell adjustments */
+    .user-cell {
+        gap: 8px;
+    }
+
+    .user-avatar-sm {
+        width: 32px;
+        height: 32px;
+        font-size: 0.75rem;
+        flex-shrink: 0;
+    }
+
+    .user-name-display {
+        font-size: 0.85rem;
+    }
+
+    /* Edit mode inputs */
+    .user-name-edit input {
+        font-size: 0.8rem;
+        padding: 6px 8px;
+        width: 100px !important;
+        margin-right: 4px !important;
+    }
+
+    /* Action buttons - make them smaller */
+    .btn-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 0.85rem;
+    }
+
+    .action-buttons {
+        gap: 6px;
+        flex-wrap: nowrap;
+    }
+
+    /* Status badges */
+    .status-badge {
+        padding: 4px 10px;
+        font-size: 0.75rem;
+        white-space: nowrap;
+    }
+
+    /* Search bar */
+    .filter-search input {
+        font-size: 0.85rem;
+        padding: 10px 16px 10px 36px;
+    }
+
+    /* Pagination */
+    .pagination {
+        padding: 16px 20px;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .pagination-info {
+        font-size: 0.8rem;
+        width: 100%;
+        text-align: center;
+        order: -1;
+    }
+
+    .pagination-buttons {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .pagination-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 0.85rem;
+    }
+
+    /* Table header */
+    .table-header {
+        padding: 20px;
+    }
+
+    .table-title {
+        font-size: 1.3rem;
+    }
+
+    .table-subtitle {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Further reduce padding for very small screens */
+    .data-table th,
+    .data-table td {
+        padding: 10px 12px;
+        font-size: 0.8rem;
+    }
+
+    .data-table th {
+        font-size: 0.7rem;
+    }
+
+    /* Reduce column widths */
+    .data-table th:nth-child(1),
+    .data-table td:nth-child(1) {
+        min-width: 50px;
+    }
+
+    .data-table th:nth-child(2),
+    .data-table td:nth-child(2) {
+        min-width: 150px;
+    }
+
+    .data-table th:nth-child(3),
+    .data-table td:nth-child(3) {
+        min-width: 180px;
+    }
+
+    .data-table th:nth-child(4),
+    .data-table td:nth-child(4) {
+        min-width: 90px;
+    }
+
+    .data-table th:nth-child(5),
+    .data-table td:nth-child(5) {
+        min-width: 120px;
+    }
+
+    /* Smaller user avatars */
+    .user-avatar-sm {
+        width: 28px;
+        height: 28px;
+        font-size: 0.7rem;
+    }
+
+    .user-name-display {
+        font-size: 0.8rem;
+    }
+
+    /* Smaller action buttons */
+    .btn-icon {
+        width: 26px;
+        height: 26px;
+        font-size: 0.8rem;
+    }
+
+    .action-buttons {
+        gap: 4px;
+    }
+
+    /* Table header */
+    .table-header {
+        padding: 16px;
+    }
+
+    .table-title {
+        font-size: 1.2rem;
+    }
+
+    .table-subtitle {
+        font-size: 0.8rem;
+    }
+
+    /* Search input */
+    .filter-search input {
+        font-size: 0.8rem;
+        padding: 8px 12px 8px 32px;
+    }
+
+    .filter-search i {
+        font-size: 0.85rem;
+        left: 10px;
+    }
 }

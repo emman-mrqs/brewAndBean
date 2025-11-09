@@ -3,7 +3,7 @@ import express from "express";
 // Import Individual Admin Controllers
 import AdminDashboardController from "../controller/admin/adminDashboardController.js";
 import AdminUsersController from "../controller/admin/adminUsersController.js";
-import AdminProductsController from "../controller/admin/adminProductsController.js";
+import AdminProductsController, { upload } from "../controller/admin/adminProductsController.js";
 import AdminOrdersController from "../controller/admin/adminOrdersController.js";
 import AdminReportsController from "../controller/admin/adminReportsController.js";
 import AdminAuditController from "../controller/admin/adminAuditController.js";
@@ -27,12 +27,14 @@ router.get("/admin/api/users",   AdminUsersController.getAllUsers);
 router.post("/admin/api/users",   AdminUsersController.createUser);
 router.put("/admin/api/users/:userId",   AdminUsersController.updateUser);
 router.delete("/admin/api/users/:userId",   AdminUsersController.deleteUser);
+router.post("/admin/api/users/:userId/suspend",   AdminUsersController.suspendUser);
+router.post("/admin/api/users/:userId/lift-suspension",   AdminUsersController.liftSuspension);
 
 // Admin Products Management Routes
 router.get("/admin/products",   AdminProductsController.getProducts);
 router.get("/admin/api/products",   AdminProductsController.getAllProducts);
-router.post("/admin/api/products",   AdminProductsController.createProduct);
-router.put("/admin/api/products/:productId",   AdminProductsController.updateProduct);
+router.post("/admin/api/products",   upload.single('image'), AdminProductsController.createProduct);
+router.put("/admin/api/products/:productId",   upload.single('image'), AdminProductsController.updateProduct);
 router.delete("/admin/api/products/:productId",   AdminProductsController.deleteProduct);
 router.patch("/admin/api/products/:productId/stock",   AdminProductsController.updateStock);
 

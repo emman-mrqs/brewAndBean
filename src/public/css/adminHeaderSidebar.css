@@ -152,6 +152,9 @@
     padding: 8px;
     border-radius: 8px;
     transition: background 0.15s ease, transform 0.15s ease;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(0,0,0,0.1);
 }
 .sidebar-toggle:focus {
     outline: 2px solid rgba(198,124,78,0.25);
@@ -205,6 +208,8 @@
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(0,0,0,0.1);
 }
 
 .notificationBtn:hover, .notification-btn:hover {
@@ -398,6 +403,109 @@
         width: 36px;
         height: 36px;
     }
+
+
+/* Data table container: allow both horizontal and vertical scrolling when content overflows.
+   Keeps the header and filters visible while table body can scroll. */
+.data-table-container {
+    width: 100%;
+    /* allow table to scroll both horizontally and vertically if too large */
+    max-height: 60vh; /* adjust as needed to keep modals visible */
+    overflow-x: auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    background: var(--brew-white);
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Scroll wrapper specifically for table body scrolling */
+.table-scroll {
+    max-height: 50vh; /* table body scroll area */
+    overflow-x: auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: auto; /* allow both axis panning */
+}
+
+.table-scroll .data-table thead th {
+    position: sticky;
+    top: 0;
+    background: var(--brew-white);
+    z-index: 3;
+}
+
+/* Mobile-specific fixes to prevent freezing */
+/* Force body to be scrollable when no modal is open */
+body:not(.modal-open) {
+    overflow: auto !important;
+    position: relative !important;
+}
+
+/* Ensure modal backdrops don't persist */
+.modal-backdrop.fade:not(.show) {
+    display: none !important;
+}
+
+/* Improve touch handling for interactive elements */
+button, .btn, .btn-icon, .pagination-btn {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(0,0,0,0.1);
+}
+
+/* pagination UI in products admin */
+.pagination{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:8px 12px; }
+.pagination .pagination-info{ font-size:0.9rem; color:var(--brew-text-light); }
+.pagination .pagination-buttons{ display:flex; gap:6px; align-items:center; }
+.pagination-btn{ padding:6px 10px; border-radius:6px; border:1px solid var(--brew-line); background:transparent; cursor:pointer; }
+.pagination-btn:hover{ background:rgba(198,124,78,0.06); }
+.pagination-btn.active{ background:var(--brew-primary); color:white; border-color:var(--brew-primary); cursor:default; }
+.pagination-btn:disabled{ opacity:0.5; cursor:default; }
+
+/* Inline editor row styles */
+.inline-editor-row td { background: #fffaf6; padding: 12px 16px; }
+.inline-editor { border: 1px solid rgba(198,124,78,0.08); padding: 8px; border-radius: 8px; }
+.inline-editor .form-label{ font-size:0.8rem; color:var(--brew-text-light); margin-bottom:4px; display:block; }
+.inline-editor .form-control, .inline-editor .form-select { border-radius:6px; }
+.inline-editor .inline-save.btn-primary{ background:var(--brew-primary); border-color:var(--brew-primary); }
+.inline-editor .inline-cancel{ background:transparent; border:1px solid var(--brew-line); }
+/* Primary button styling aligned with Brew & Bean color scheme */
+.btn.btn-primary {
+    background: var(--brew-primary);
+    border-color: var(--brew-primary);
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(166,94,62,0.08);
+    transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease, border-color 120ms ease;
+}
+.btn.btn-primary:hover,
+.btn.btn-primary:focus,
+.btn-primary:hover,
+.btn-primary:focus {
+    background: var(--brew-primary-dark) !important;
+    border-color: var(--brew-primary-dark) !important;
+    color: #fff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(166,94,62,0.12) !important;
+    background-image: none !important;
+}
+.btn.btn-primary:active,
+.btn-primary:active {
+    background: var(--brew-primary-dark) !important;
+    border-color: var(--brew-primary-dark) !important;
+    color: #fff !important;
+    transform: translateY(0);
+    box-shadow: 0 4px 8px rgba(166,94,62,0.08) inset !important;
+}
+.btn.btn-primary:disabled,
+.btn.btn-primary.disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
 
 
 /* Very small screens: prioritize controls and avoid overflow */
