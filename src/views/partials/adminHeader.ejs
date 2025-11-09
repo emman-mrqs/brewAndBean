@@ -1,9 +1,11 @@
 <!-- Admin Header Partial -->
+    <link rel="stylesheet" href="/css/adminHeaderSidebar.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    
 <header class="header">
-    <div class="search-bar">
-        <i class="fas fa-search"></i>
-        <input type="text" placeholder="Search...">
-    </div>
+    <button id="sidebarToggle" class="sidebar-toggle" aria-label="Toggle sidebar">
+        <i class="fas fa-bars"></i>
+    </button>
     <div class="header-actions">
         <button class="notification-btn">
             <i class="fas fa-bell"></i>
@@ -65,4 +67,5 @@
         }
     })();
     </script>
+    <script src="/js/admin/adminHeader.js"></script>
 </header>

@@ -1,5 +1,5 @@
 <!-- Admin Sidebar -->
-<aside class="sidebar">
+<aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
         <div class="logo">
             <span class="logo-icon">☕</span>
@@ -8,7 +8,7 @@
         </div>
     </div>
     <ul class="sidebar-menu">
-        <li><a href="/admin/dashboard" class="<%= page === 'admin-dashboard' ? 'active' : '' %>"><i class="fas fa-th-large"></i> Dashboard</a></li>
+        <li><a href="/admin/dashboard" class="<%= page === 'admin-dashboard' ? 'active' : '' %>"><i class="bi bi-pie-chart-fill"></i></i> Dashboard</a></li>
         <li><a href="/admin/products" class="<%= page === 'admin-products' ? 'active' : '' %>"><i class="fas fa-box"></i> Products</a></li>
         <li><a href="/admin/orders" class="<%= page === 'admin-orders' ? 'active' : '' %>"><i class="fas fa-shopping-bag"></i> Orders</a></li>
         <li><a href="/admin/users" class="<%= page === 'admin-users' ? 'active' : '' %>"><i class="fas fa-users"></i> Users</a></li>
