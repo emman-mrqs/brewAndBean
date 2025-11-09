@@ -1,0 +1,90 @@
+<!-- Sidebar Navigation -->
+<aside class="sidebar" id="sidebar">
+    <!-- Brand Logo -->
+    <div class="sidebar-brand">
+        <div class="brand-logo-container">
+            <a href="/" style="text-decoration: none;"> <div class="brand-icon">☕</div></a>
+            <div class="brand-text-group">
+                <span class="brand-name">Bean & Brew</span>
+                <span class="brand-tagline">PREMIUM COFFEE</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Profile Summary -->
+    <div class="sidebar-profile">
+        <div class="profile-avatar">
+            <% if (user && user.firstName && user.lastName) { %>
+                <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(user.firstName + '+' + user.lastName) %>&background=C67C4E&color=fff&size=80" alt="<%= user.firstName %> <%= user.lastName %>">
+            <% } else { %>
+                <img src="https://ui-avatars.com/api/?name=User&background=C67C4E&color=fff&size=80" alt="User">
+            <% } %>
+        </div>
+        <h3 class="profile-username">
+            <% if (user && user.firstName) { %>
+                <%= user.firstName %> <%= user.lastName || '' %>
+            <% } else { %>
+                Guest User
+            <% } %>
+        </h3>
+        <span class="profile-membership">
+            <% if (user && user.isVerified) { %>
+                Verified Member
+            <% } else { %>
+                New Member
+            <% } %>
+        </span>
+        <div class="profile-quick-stats">
+            <div class="quick-stat">
+                <span class="stat-value" id="user-orders">0</span>
+                <span class="stat-label">Orders</span>
+            </div>
+            <div class="quick-stat">
+                <span class="stat-value" id="user-points">0</span>
+                <span class="stat-label">Points</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="sidebar-menu">
+        <a href="/dashboard" class="menu-item <%= page === 'dashboard' ? 'active' : '' %>">
+            <i class="menu-icon fas fa-home"></i>
+            <span class="menu-text">Dashboard</span>
+        </a>
+        <a href="/order-history" class="menu-item <%= page === 'order-history' ? 'active' : '' %>">
+            <i class="menu-icon fas fa-clock"></i>
+            <span class="menu-text">Order History</span>
+        </a>
+        <a href="/order-preview" class="menu-item <%= page === 'order-preview' ? 'active' : '' %>">
+            <i class="menu-icon fas fa-shopping-cart"></i>
+            <span class="menu-text">Current Order</span>
+        </a>
+        <a href="/rewards" class="menu-item <%= page === 'rewards' ? 'active' : '' %>">
+            <i class="menu-icon fas fa-gift"></i>
+            <span class="menu-text">Rewards</span>
+        </a>
+        <a href="/favorites" class="menu-item <%= page === 'favorites' ? 'active' : '' %>">
+            <i class="menu-icon fas fa-heart"></i>
+            <span class="menu-text">Favorites</span>
+        </a>
+        <a href="/payment" class="menu-item <%= page === 'payment' ? 'active' : '' %>">
+            <i class="menu-icon fas fa-credit-card"></i>
+            <span class="menu-text">Payment</span>
+        </a>
+        <a href="/settings" class="menu-item <%= page === 'settings' ? 'active' : '' %>">
+            <i class="menu-icon fas fa-cog"></i>
+            <span class="menu-text">Settings</span>
+        </a>
+    </nav>
+
+    <!-- Sidebar Footer -->
+    <div class="sidebar-footer">
+        <a href="/menu" class="btn-order">
+            <i class="fas fa-coffee"></i> Order Now
+        </a>
+        <button class="btn-logout" type="button" data-logout>
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+    </div>
+</aside>

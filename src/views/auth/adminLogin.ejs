@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Admin Login - Bean & Brew</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+    <%- include('../partials/pageLoader') %>
+
+    <div class="background-animation" aria-hidden="true">
+        <div class="coffee-bean bean-1"></div>
+        <div class="coffee-bean bean-2"></div>
+        <div class="coffee-bean bean-3"></div>
+        <div class="coffee-bean bean-4"></div>
+        <div class="coffee-bean bean-5"></div>
+        <div class="coffee-bean bean-6"></div>
+        <div class="steam-container">
+            <div class="steam steam-1"></div>
+            <div class="steam steam-2"></div>
+            <div class="steam steam-3"></div>
+            <div class="steam steam-4"></div>
+        </div>
+    </div>
+
+    <div class="login-container" role="main">
+        <div class="login-form-wrapper">
+            <div class="login-form-container" role="form" aria-labelledby="admin-signin-heading">
+                <div class="form-header">
+                    <h2 id="admin-signin-heading">Admin Sign In</h2>
+                    <p>Restricted access — site administrators only</p>
+                </div>
+
+                <% if (typeof message !== 'undefined' && message) { %>
+                    <div class="alert alert-<%= messageType || 'info' %>" role="alert">
+                        <i class="fas fa-<%= messageType === 'success' ? 'check-circle' : messageType === 'error' ? 'exclamation-circle' : 'info-circle' %>"></i>
+                        <%= message %>
+                    </div>
+                <% } %>
+
+                <form class="login-form" id="adminLoginForm" action="/admin/login/<%= process.env.ADMIN_LOGIN_TOKEN %>" method="POST">
+                    <div class="form-group">
+                        <label for="email">Admin Email</label>
+                        <div class="input-wrapper">
+                            <i class="bi bi-envelope-fill input-icon" aria-hidden="true"></i>
+                            <input type="email" id="email" name="email" placeholder="Admin email" required autocomplete="email">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-wrapper">
+                            <i class="bi bi-lock-fill input-icon" aria-hidden="true"></i>
+                            <input type="password" id="password" name="password" placeholder="Password" required autocomplete="current-password">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-login" aria-label="Admin sign in">Sign In</button>
+
+                    <div class="back-link">
+                        <a href="/" class="text-decoration-none">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
+                                <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Back to Home
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/auth/login.js"></script>
+</body>
+</html>

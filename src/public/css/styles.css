@@ -362,6 +362,12 @@ body {
     background: linear-gradient(135deg, #C8915F 0%, #B8865D 50%, #A0603D 100%);
 }
 
+/* Dashboard button with icon styling */
+.nav-btn i {
+    margin-right: 5px;
+    font-size: 0.9rem;
+}
+
 /* Hide mobile-only text on desktop */
 .mobile-only {
     display: none;
@@ -1653,6 +1659,12 @@ body {
 
     .nav-btn:hover::after {
         transform: translateX(5px);
+    }
+
+    /* Mobile dashboard button with icon styling */
+    .nav-btn i {
+        margin-right: 5px;
+        font-size: 0.9rem;
     }
 
     .footer {

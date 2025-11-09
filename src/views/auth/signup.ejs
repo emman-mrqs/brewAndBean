@@ -1,370 +1,248 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - Bean & Brew</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&family=Poppins:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/signUp.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up - Bean & Brew</title>
+
+  <!-- Google fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Your custom CSS -->
+  <link rel="stylesheet" href="/css/signup.css">
 </head>
 <body>
-    <!-- Animated Background Elements -->
-    <div class="background-animation">
-        <div class="coffee-bean bean-1"></div>
-        <div class="coffee-bean bean-2"></div>
-        <div class="coffee-bean bean-3"></div>
-        <div class="coffee-bean bean-4"></div>
-        <div class="coffee-bean bean-5"></div>
-        <div class="coffee-bean bean-6"></div>
-        <div class="steam-container">
-            <div class="steam steam-1"></div>
-            <div class="steam steam-2"></div>
-            <div class="steam steam-3"></div>
-            <div class="steam steam-4"></div>
-        </div>
+  <!-- Animated Background Elements (kept) -->
+  <div class="background-animation" aria-hidden="true">
+    <div class="coffee-bean bean-1"></div>
+    <div class="coffee-bean bean-2"></div>
+    <div class="coffee-bean bean-3"></div>
+    <div class="coffee-bean bean-4"></div>
+    <div class="coffee-bean bean-5"></div>
+    <div class="coffee-bean bean-6"></div>
+    <div class="steam-container">
+      <div class="steam steam-1"></div>
+      <div class="steam steam-2"></div>
+      <div class="steam steam-3"></div>
+      <div class="steam steam-4"></div>
     </div>
+  </div>
 
-    <div class="signup-container">
-        <!-- Left Side - Branding -->
-        <div class="signup-brand">
-            <div class="brand-content">
-                <a href="../Guest Page/html/index.html" class="logo">
-                    <span class="logo-icon">☕</span>
-                    <span class="logo-text">Bean & Brew</span>
-                </a>
-                <h1 class="brand-title">Join Our Community</h1>
-                <p class="brand-subtitle">Create your account and start enjoying premium coffee rewards</p>
-                
-                <div class="brand-features">
-                    <div class="feature-item">
-                        <div class="feature-icon">🎁</div>
-                        <div class="feature-text">
-                            <h3>Welcome Bonus</h3>
-                            <p>Get a free coffee on your first order</p>
-                        </div>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">⭐</div>
-                        <div class="feature-text">
-                            <h3>Loyalty Rewards</h3>
-                            <p>Earn points with every purchase</p>
-                        </div>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">📱</div>
-                        <div class="feature-text">
-                            <h3>Mobile Ordering</h3>
-                            <p>Order ahead and skip the queue</p>
-                        </div>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">🎂</div>
-                        <div class="feature-text">
-                            <h3>Birthday Treats</h3>
-                            <p>Special surprises on your special day</p>
-                        </div>
-                    </div>
-                </div>
+  <!-- CENTERED FORM -->
+    <div class="container-fluid d-flex align-items-center justify-content-center py-4 px-3 signup-container">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5 signup-form-container shadow-lg" role="main" aria-labelledby="create-account-heading">
+      <div class="form-header text-center">
+        <h2 id="create-account-heading">Create Account</h2>
+        <p>Fill in your details to get started</p>
+      </div>
 
-                <div class="brand-stats">
-                    <div class="stat-card">
-                        <div class="stat-number">50K+</div>
-                        <div class="stat-label">Happy Members</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">4.9★</div>
-                        <div class="stat-label">Average Rating</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">1M+</div>
-                        <div class="stat-label">Cups Served</div>
-                    </div>
-                </div>
+      <!-- Success/Error Messages (unchanged) -->
+      <% if (typeof message !== 'undefined' && message) { %>
+        <div class="alert alert-<%= messageType || 'info' %> d-flex align-items-center" role="alert">
+          <i class="me-2 fas fa-<%= messageType === 'success' ? 'check-circle' : messageType === 'error' ? 'exclamation-circle' : 'info-circle' %>"></i>
+          <div><%= message %></div>
+        </div>
+      <% } %>
+
+      <!-- SIGNUP FORM (IDs & names preserved) -->
+      <form class="signup-form" id="signupForm" action="/signup" method="POST" novalidate>
+        <div class="row g-2">
+          <div class="col-md-6">
+            <label for="firstName" class="form-label small fw-600">First Name</label>
+            <div class="input-group">
+              <span class="input-group-text" aria-hidden="true"><i class="bi bi-person-fill"></i></span>
+              <input
+                type="text"
+                id="firstName"
+                name="firstName"
+                class="form-control"
+                placeholder="John"
+                value="<%= typeof formData !== 'undefined' && formData.firstName ? formData.firstName : '' %>"
+                required
+              >
             </div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="lastName" class="form-label small fw-600">Last Name</label>
+            <div class="input-group">
+              <span class="input-group-text" aria-hidden="true"><i class="bi bi-person-fill"></i></span>
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                class="form-control"
+                placeholder="Doe"
+                value="<%= typeof formData !== 'undefined' && formData.lastName ? formData.lastName : '' %>"
+                required
+              >
+            </div>
+          </div>
         </div>
 
-        <!-- Right Side - Signup Form -->
-        <div class="signup-form-wrapper">
-            <div class="signup-form-container">
-                <div class="form-header">
-                    <h2>Create Account</h2>
-                    <p>Fill in your details to get started</p>
-                </div>
-
-                <form class="signup-form" id="signupForm">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="firstName">First Name</label>
-                            <div class="input-wrapper">
-                                <span class="input-icon">👤</span>
-                                <input 
-                                    type="text" 
-                                    id="firstName" 
-                                    name="firstName" 
-                                    placeholder="John"
-                                    required
-                                >
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="lastName">Last Name</label>
-                            <div class="input-wrapper">
-                                <span class="input-icon">👤</span>
-                                <input 
-                                    type="text" 
-                                    id="lastName" 
-                                    name="lastName" 
-                                    placeholder="Doe"
-                                    required
-                                >
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <div class="input-wrapper">
-                            <span class="input-icon">📧</span>
-                            <input 
-                                type="email" 
-                                id="email" 
-                                name="email" 
-                                placeholder="you@example.com"
-                                required
-                            >
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="phone">Phone Number</label>
-                        <div class="input-wrapper">
-                            <span class="input-icon">📱</span>
-                            <input 
-                                type="tel" 
-                                id="phone" 
-                                name="phone" 
-                                placeholder="+1 (555) 000-0000"
-                                required
-                            >
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <div class="input-wrapper">
-                            <span class="input-icon">🔒</span>
-                            <input 
-                                type="password" 
-                                id="password" 
-                                name="password" 
-                                placeholder="Create a strong password"
-                                required
-                            >
-                            <button type="button" class="toggle-password" onclick="togglePassword('password')">
-                                <span id="eyeIcon1">👁️</span>
-                            </button>
-                        </div>
-                        <div class="password-strength" id="passwordStrength">
-                            <div class="strength-bar">
-                                <div class="strength-fill" id="strengthFill"></div>
-                            </div>
-                            <span class="strength-text" id="strengthText">Password strength</span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="confirmPassword">Confirm Password</label>
-                        <div class="input-wrapper">
-                            <span class="input-icon">🔒</span>
-                            <input 
-                                type="password" 
-                                id="confirmPassword" 
-                                name="confirmPassword" 
-                                placeholder="Re-enter your password"
-                                required
-                            >
-                            <button type="button" class="toggle-password" onclick="togglePassword('confirmPassword')">
-                                <span id="eyeIcon2">👁️</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="form-group checkbox-group">
-                        <label class="checkbox-container">
-                            <input type="checkbox" id="terms" required>
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">I agree to the <a href="#" class="terms-link" onclick="return false;" title="Terms & Conditions: By using Bean & Brew services, you agree to our terms of service, including account registration, usage policies, and community guidelines.">Terms & Conditions</a> and <a href="#" class="terms-link" onclick="return false;" title="Privacy Policy: We protect your personal information and use it only to provide better service. We do not sell your data to third parties.">Privacy Policy</a></span>
-                        </label>
-                    </div>
-
-                    <div class="form-group checkbox-group">
-                        <label class="checkbox-container">
-                            <input type="checkbox" id="newsletter">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">Send me news, offers, and updates via email</span>
-                        </label>
-                    </div>
-
-                    <button type="submit" class="btn-signup">
-                        <span>Create Account</span>
-                        <div class="btn-shine"></div>
-                    </button>
-
-                    <div class="divider">
-                        <span>or sign up with</span>
-                    </div>
-
-                    <div class="social-signup">
-                        <button type="button" class="btn-social google">
-                            <svg viewBox="0 0 24 24" width="20" height="20">
-                                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                            </svg>
-                            Google
-                        </button>
-                        <button type="button" class="btn-social facebook">
-                            <svg viewBox="0 0 24 24" width="20" height="20" fill="#1877F2">
-                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                            </svg>
-                            Facebook
-                        </button>
-                    </div>
-                </form>
-
-                <div class="login-prompt">
-                    <p>Already have an account? <a href="/login" class="login-link">Sign In</a></p>
-                </div>
-
-                <div class="back-link">
-                    <a href="/">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Back to Home
-                    </a>
-                </div>
-            </div>
+        <div class="mt-3">
+          <label for="email" class="form-label small fw-600">Email Address</label>
+          <div class="input-group">
+            <span class="input-group-text" aria-hidden="true"><i class="bi bi-envelope-fill"></i></span>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="form-control"
+              placeholder="you@example.com"
+              value="<%= typeof formData !== 'undefined' && formData.email ? formData.email : '' %>"
+              required
+            >
+          </div>
         </div>
+
+        <div class="mt-3">
+          <label for="phone" class="form-label small fw-600">Phone Number</label>
+          <div class="input-group">
+            <span class="input-group-text" aria-hidden="true"><i class="bi bi-telephone-fill"></i></span>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              class="form-control"
+              placeholder="+1 (555) 000-0000"
+              value="<%= typeof formData !== 'undefined' && formData.phone ? formData.phone : '' %>"
+              required
+            >
+          </div>
+        </div>
+
+        <div class="mt-3">
+          <label for="password" class="form-label small fw-600">Password</label>
+          <div class="input-wrapper">
+            <i class="bi bi-lock-fill input-icon" aria-hidden="true"></i>
+<input
+  type="password"
+  id="password"
+  name="password"
+  class="form-control password-field"
+  placeholder="Create a strong password"
+  autocomplete="new-password"
+  autocapitalize="off"
+  autocorrect="off"
+  spellcheck="false"
+  required
+/>
+
+            <button type="button" class="toggle-password" onclick="togglePassword('password', 'eyeIcon1')" aria-label="Toggle password visibility">
+              <i id="eyeIcon1" class="bi bi-eye" aria-hidden="true"></i>
+            </button>
+          </div>
+
+          <!-- Password strength (IDs preserved) -->
+          <div class="password-strength mt-2" id="passwordStrength">
+            <div class="strength-bar">
+              <div class="strength-fill" id="strengthFill"></div>
+            </div>
+            <span class="strength-text" id="strengthText">Password strength</span>
+          </div>
+        </div>
+
+        <div class="mt-3">
+          <label for="confirmPassword" class="form-label small fw-600">Confirm Password</label>
+          <div class="input-wrapper">
+            <i class="bi bi-lock-fill input-icon" aria-hidden="true"></i>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              class="form-control password-field"
+              placeholder="Re-enter your password"
+              required
+            />
+            <button type="button" class="toggle-password" onclick="togglePassword('confirmPassword', 'eyeIcon2')" aria-label="Toggle password visibility">
+              <i id="eyeIcon2" class="bi bi-eye" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="mt-3 d-grid">
+          <button type="submit" class="btn btn-signup py-2 fw-600">
+            <span>Create Account</span>
+            <div class="btn-shine" aria-hidden="true"></div>
+          </button>
+        </div>
+
+        <div class="divider my-3"><span>or sign up with</span></div>
+
+        <!-- Google occupies full width; Facebook removed -->
+        <div class="social-signup mb-2">
+          <button type="button" class="btn btn-social google w-100 d-flex align-items-center justify-content-center gap-2 py-2" aria-label="Continue with Google">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+            </svg>
+            <span>Continue with Google</span>
+          </button>
+        </div>
+      </form>
+
+      <!-- VERIFICATION form (IDs preserved) -->
+      <form class="verification-form" id="verificationForm" action="/verify" method="POST" style="display:none;">
+        <div class="verification-header">
+          <h3>Verify Your Email</h3>
+          <p>We've sent a 6-digit code to your email address. Please enter it below:</p>
+        </div>
+
+        <div class="mb-3">
+          <label for="verificationEmail" class="form-label small fw-600">Email Address</label>
+          <div class="input-group">
+            <span class="input-group-text" aria-hidden="true"><i class="bi bi-envelope-fill"></i></span>
+            <input type="email" id="verificationEmail" name="email" readonly class="form-control" required>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="verificationCode" class="form-label small fw-600">Verification Code</label>
+          <div class="input-group">
+            <span class="input-group-text" aria-hidden="true"><i class="bi bi-key-fill"></i></span>
+            <input type="text" id="verificationCode" name="verificationCode" class="form-control" placeholder="Enter 6-digit code" maxlength="6" pattern="[0-9]{6}" required>
+          </div>
+        </div>
+
+        <div class="d-grid">
+          <button type="submit" class="btn btn-signup py-2 fw-600">Verify Email</button>
+        </div>
+
+        <div class="verification-actions mt-2 text-center">
+          <button type="button" class="btn btn-link btn-sm" onclick="showSignupForm()">Back to Signup</button>
+        </div>
+      </form>
+
+      <div class="login-prompt mt-3 text-center">
+        <p>Already have an account? <a href="/login" class="login-link">Sign In</a></p>
+      </div>
+
+      <div class="back-link text-center mt-2">
+        <a href="/" class="text-decoration-none">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
+            <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Back to Home
+        </a>
+      </div>
     </div>
+  </div>
 
-    <script>
-        // Toggle password visibility
-        function togglePassword(fieldId) {
-            const passwordInput = document.getElementById(fieldId);
-            const eyeIcon = fieldId === 'password' ? document.getElementById('eyeIcon1') : document.getElementById('eyeIcon2');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                eyeIcon.textContent = '👁️‍🗨️';
-            } else {
-                passwordInput.type = 'password';
-                eyeIcon.textContent = '👁️';
-            }
-        }
+  <!-- Bootstrap JS (optional) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-        // Password strength checker
-        const passwordInput = document.getElementById('password');
-        const strengthFill = document.getElementById('strengthFill');
-        const strengthText = document.getElementById('strengthText');
-
-        passwordInput.addEventListener('input', function() {
-            const password = this.value;
-            let strength = 0;
-            
-            // Check password criteria
-            if (password.length >= 8) strength++;
-            if (password.match(/[a-z]+/)) strength++;
-            if (password.match(/[A-Z]+/)) strength++;
-            if (password.match(/[0-9]+/)) strength++;
-            if (password.match(/[$@#&!]+/)) strength++;
-            
-            // Update strength bar
-            const percentage = (strength / 5) * 100;
-            strengthFill.style.width = percentage + '%';
-            
-            // Update colors and text
-            if (strength === 0) {
-                strengthFill.style.background = '#E3E3E3';
-                strengthText.textContent = 'Password strength';
-                strengthText.style.color = '#7E7D7C';
-            } else if (strength <= 2) {
-                strengthFill.style.background = '#ff4444';
-                strengthText.textContent = 'Weak password';
-                strengthText.style.color = '#ff4444';
-            } else if (strength <= 3) {
-                strengthFill.style.background = '#ffaa00';
-                strengthText.textContent = 'Medium password';
-                strengthText.style.color = '#ffaa00';
-            } else {
-                strengthFill.style.background = '#00C851';
-                strengthText.textContent = 'Strong password';
-                strengthText.style.color = '#00C851';
-            }
-        });
-
-        // Form submission
-        document.getElementById('signupForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const firstName = document.getElementById('firstName').value;
-            const lastName = document.getElementById('lastName').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            const terms = document.getElementById('terms').checked;
-            const newsletter = document.getElementById('newsletter').checked;
-            
-            // Validate passwords match
-            if (password !== confirmPassword) {
-                alert('Passwords do not match!');
-                return;
-            }
-            
-            // Check terms acceptance
-            if (!terms) {
-                alert('Please accept the Terms & Conditions');
-                return;
-            }
-            
-            // Add loading state to button
-            const submitBtn = document.querySelector('.btn-signup');
-            submitBtn.classList.add('loading');
-            submitBtn.innerHTML = '<span>Creating Account...</span><div class="btn-shine"></div>';
-            
-            // Simulate signup process
-            setTimeout(() => {
-                console.log('Signup data:', { firstName, lastName, email, phone, newsletter });
-                alert('Account created successfully! Welcome to Bean & Brew!');
-                
-                // Redirect to login page
-                window.location.href = 'LogIn.html';
-            }, 1500);
-        });
-
-        // Input focus animations
-        const inputs = document.querySelectorAll('.signup-form input');
-        inputs.forEach(input => {
-            input.addEventListener('focus', function() {
-                this.parentElement.parentElement.classList.add('focused');
-            });
-            
-            input.addEventListener('blur', function() {
-                if (!this.value) {
-                    this.parentElement.parentElement.classList.remove('focused');
-                }
-            });
-        });
-
-        // Floating animation for coffee beans
-        document.querySelectorAll('.coffee-bean').forEach((bean, index) => {
-            bean.style.animationDelay = `${index * 0.5}s`;
-        });
-    </script>
+  <!-- Keep existing signup JS (IDs preserved) -->
+  <script src="/js/auth/signup.js"></script>
 </body>
 </html>

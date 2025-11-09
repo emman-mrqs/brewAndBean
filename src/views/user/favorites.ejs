@@ -4,85 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Favorites - Bean & Brew</title>
-    <link rel="stylesheet" href="../css/Favorites.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/Favorites.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="../css/bottom-nav.css">
+    <link rel="stylesheet" href="/css/bottomNav.css">
 </head>
 <body>
     <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu">
         <i class="fas fa-mug-hot"></i>
     </button>
 
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-brand">
-            <div class="brand-logo-container">
-                <div class="brand-icon">☕</div>
-                <div class="brand-text-group">
-                    <span class="brand-name">Bean & Brew</span>
-                    <span class="brand-tagline">PREMIUM COFFEE</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="sidebar-profile">
-            <div class="profile-avatar">
-                <img src="https://ui-avatars.com/api/?name=Eldi+Tutunog&background=C67C4E&color=fff&size=80" alt="Eldi Tutunog">
-            </div>
-            <h3 class="profile-username">Eldi Tutunog</h3>
-            <span class="profile-membership">Gold Member</span>
-            <div class="profile-quick-stats">
-                <div class="quick-stat">
-                    <span class="stat-value">47</span>
-                    <span class="stat-label">Orders</span>
-                </div>
-                <div class="quick-stat">
-                    <span class="stat-value">1,250</span>
-                    <span class="stat-label">Points</span>
-                </div>
-            </div>
-        </div>
-
-        <nav class="sidebar-menu">
-            <a href="/dashboard" class="menu-item">
-                <i class="menu-icon fas fa-home"></i>
-                <span class="menu-text">Dashboard</span>
-            </a>
-            <a href="/order-history" class="menu-item">
-                <i class="menu-icon fas fa-clock"></i>
-                <span class="menu-text">Order History</span>
-            </a>
-            <a href="/order-preview" class="menu-item">
-                <i class="menu-icon fas fa-shopping-cart"></i>
-                <span class="menu-text">Current Order</span>
-            </a>
-            <a href="/rewards" class="menu-item">
-                <i class="menu-icon fas fa-gift"></i>
-                <span class="menu-text">Rewards</span>
-            </a>
-            <a href="/favorites" class="menu-item active">
-                <i class="menu-icon fas fa-heart"></i>
-                <span class="menu-text">Favorites</span>
-            </a>
-            <a href="/payment" class="menu-item">
-                <i class="menu-icon fas fa-credit-card"></i>
-                <span class="menu-text">Payment</span>
-            </a>
-            <a href="/settings" class="menu-item">
-                <i class="menu-icon fas fa-cog"></i>
-                <span class="menu-text">Settings</span>
-            </a>
-        </nav>
-
-        <div class="sidebar-footer">
-            <a href="/menu" class="btn-order">
-                <i class="fas fa-coffee"></i> Order Now
-            </a>
-            <button class="btn-logout" onclick="logout()">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </button>
-        </div>
-    </aside>
+    <%- include('../partials/sidebar', { page: 'favorites' }) %>
 
     <main class="main-content">
         <header class="content-header">
@@ -109,61 +42,10 @@
         </div>
     </main>
 
-    <nav class="bottom-nav" role="navigation" aria-label="Primary">
-        <a href="/order-history" class="bottom-nav__item" data-page="history">
-            <i class="fas fa-clock icon" aria-hidden="true"></i>
-            <span>History</span>
-        </a>
-        <a href="/order-preview" class="bottom-nav__item" data-page="current">
-            <i class="fas fa-shopping-cart icon" aria-hidden="true"></i>
-            <span>Current</span>
-        </a>
-        <a href="/rewards" class="bottom-nav__item" data-page="rewards">
-            <i class="fas fa-gift icon" aria-hidden="true"></i>
-            <span>Rewards</span>
-        </a>
-        <a href="/favorites" class="bottom-nav__item" data-page="favorites">
-            <i class="fas fa-heart icon" aria-hidden="true"></i>
-            <span>Favorites</span>
-        </a>
-        <a href="/settings" class="bottom-nav__item" data-page="settings">
-            <i class="fas fa-cog icon" aria-hidden="true"></i>
-            <span>Settings</span>
-        </a>
-    </nav>
+    <%- include('../partials/bottomNav', { page: 'favorites' }) %>
 
-    <script>
-        function initMobileMenu() {
-            const menuToggle = document.getElementById('mobileMenuToggle');
-            const sidebar = document.getElementById('sidebar');
-            const mainContent = document.querySelector('.main-content');
-
-            if (menuToggle && sidebar) {
-                menuToggle.addEventListener('click', function() {
-                    sidebar.classList.toggle('open');
-                });
-
-                if (mainContent) {
-                    mainContent.addEventListener('click', function() {
-                        if (sidebar.classList.contains('open')) {
-                            sidebar.classList.remove('open');
-                        }
-                    });
-                }
-            }
-        }
-
-        function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                window.location.href = '/login';
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            initMobileMenu();
-        });
-    </script>
-    <script src="../js/bottom-nav.js"></script>
+    <script src="/js/user/favorites.js"></script>
+    <!-- <script src="../js/bottom-nav.js"></script> -->
 </body>
 </html>
 

@@ -1,7 +1,3 @@
-//src/controller/logninController.js
-
-
-export function renderLogin(req, res) {
-  res.render("auth/login");
-
-}
+// Re-exports for backward compatibility
+// Actual implementation moved to src/controller/auth/loginController.js
+export { renderLogin, handleLogin, handleLogout } from './auth/loginController.js';

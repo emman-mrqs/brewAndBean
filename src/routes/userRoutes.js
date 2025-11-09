@@ -14,6 +14,9 @@ import OrderController from "../controller/user/orderController.js";
 import PaymentController from "../controller/user/paymentController.js";
 import UserSettingsController from "../controller/user/userSettingsController.js";
 
+// Import Authentication Middleware
+import { requireAuth, requireVerification } from "../middleware/auth.js";
+
 const router = express.Router();
 
 // Home routes
@@ -28,26 +31,26 @@ router.get("/reviews", ReviewsController.getReviews);
 router.get("/contact", ContactController.getContact);
 router.get("/download", DownloadController.getDownload);
 
-// User dashboard and account routes
-router.get("/dashboard", DashboardController.getDashboard);
-router.get("/settings", UserSettingsController.getSettings);
-router.get("/favorites", UserSettingsController.getFavorites);
-router.get("/rewards", UserSettingsController.getRewards);
+// User dashboard and account routes (protected)
+router.get("/dashboard", requireAuth, DashboardController.getDashboard);
+router.get("/settings", requireAuth, UserSettingsController.getSettings);
+router.get("/favorites", requireAuth, UserSettingsController.getFavorites);
+router.get("/rewards", requireAuth, UserSettingsController.getRewards);
 
-// Cart routes
-router.get("/cart", CartController.getCart);
-router.post("/cart/add", CartController.addToCart);
-router.delete("/cart/remove/:productId", CartController.removeFromCart);
-router.put("/cart/update/:productId", CartController.updateCartItem);
+// Cart routes (protected)
+router.get("/cart", requireAuth, CartController.getCart);
+router.post("/cart/add", requireAuth, CartController.addToCart);
+router.delete("/cart/remove/:productId", requireAuth, CartController.removeFromCart);
+router.put("/cart/update/:productId", requireAuth, CartController.updateCartItem);
 
-// Order routes
-router.get("/checkout", OrderController.getCheckout);
-router.get("/order-history", OrderController.getOrderHistory);
-router.get("/order-preview", OrderController.getOrderPreview);
-router.post("/order/process", OrderController.processOrder);
+// Order routes (protected and verified)
+router.get("/checkout", requireAuth, requireVerification, OrderController.getCheckout);
+router.get("/order-history", requireAuth, OrderController.getOrderHistory);
+router.get("/order-preview", requireAuth, OrderController.getOrderPreview);
+router.post("/order/process", requireAuth, requireVerification, OrderController.processOrder);
 
-// Payment routes
-router.get("/payment", PaymentController.getPayment);
+// Payment routes (protected and verified)
+router.get("/payment", requireAuth, requireVerification, PaymentController.getPayment);
 router.post("/payment/process", PaymentController.processPayment);
 
 // API routes for forms and functionality

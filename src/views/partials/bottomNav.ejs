@@ -1,0 +1,22 @@
+<nav class="bottom-nav" role="navigation" aria-label="Primary">
+    <a href="/order-history" class="bottom-nav__item <%= page === 'history' ? 'active' : '' %>" data-page="history">
+        <i class="fas fa-clock icon" aria-hidden="true"></i>
+        <span>History</span>
+    </a>
+    <a href="/order-preview" class="bottom-nav__item <%= page === 'current' ? 'active' : '' %>" data-page="current">
+        <i class="fas fa-shopping-cart icon" aria-hidden="true"></i>
+        <span>Current</span>
+    </a>
+    <a href="/rewards" class="bottom-nav__item <%= page === 'rewards' ? 'active' : '' %>" data-page="rewards">
+        <i class="fas fa-gift icon" aria-hidden="true"></i>
+        <span>Rewards</span>
+    </a>
+    <a href="/favorites" class="bottom-nav__item <%= page === 'favorites' ? 'active' : '' %>" data-page="favorites">
+        <i class="fas fa-heart icon" aria-hidden="true"></i>
+        <span>Favorites</span>
+    </a>
+    <a href="/settings" class="bottom-nav__item <%= page === 'settings' ? 'active' : '' %>" data-page="settings">
+        <i class="fas fa-cog icon" aria-hidden="true"></i>
+        <span>Settings</span>
+    </a>
+</nav>

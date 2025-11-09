@@ -1,7 +1,3 @@
-//src/controller/signupController.js'
-
-
-export function renderSignup(req, res) {
-  res.render("auth/signup");
-
-}
+// Re-exports for backward compatibility
+// Actual implementation moved to src/controller/auth/signupController.js
+export { renderSignup, handleSignup, handleVerification } from './auth/signupController.js';

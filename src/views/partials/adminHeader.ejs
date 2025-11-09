@@ -1,0 +1,68 @@
+<!-- Admin Header Partial -->
+<header class="header">
+    <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search...">
+    </div>
+    <div class="header-actions">
+        <button class="notification-btn">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">3</span>
+        </button>
+
+        <!-- Profile dropdown (replaces standalone logout button) -->
+        <div class="profile-dropdown" style="position: relative;">
+            <button id="profileBtn" class="profile-btn" aria-haspopup="true" aria-expanded="false" style="display:flex;align-items:center;gap:8px;background:none;border:none;cursor:pointer;">
+                <div class="user-avatar"><%= (admin && admin.email) ? admin.email.charAt(0).toUpperCase() : 'A' %></div>
+                <div class="user-info">
+                    <span class="user-name"><%= admin?.email || 'Admin' %></span>
+                </div>
+                <i class="fas fa-chevron-down user-dropdown-icon"></i>
+            </button>
+
+            <div id="profileMenu" class="profile-menu" style="position:absolute;right:0;top:calc(100% + 8px);background:white;border:1px solid #eee;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.08);display:none;min-width:160px;z-index:40;">
+                <a href="#" id="adminLogout" style="display:block;padding:10px 14px;color:#333;text-decoration:none;border-bottom:1px solid #f5f5f5;">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    (function(){
+        const profileBtn = document.getElementById('profileBtn');
+        const profileMenu = document.getElementById('profileMenu');
+        const adminLogout = document.getElementById('adminLogout');
+
+        if (profileBtn && profileMenu) {
+            profileBtn.addEventListener('click', function(e){
+                e.preventDefault();
+                const isOpen = profileMenu.style.display === 'block';
+                profileMenu.style.display = isOpen ? 'none' : 'block';
+                profileBtn.setAttribute('aria-expanded', String(!isOpen));
+            });
+
+            // Close when clicking outside
+            document.addEventListener('click', function(ev){
+                if (!profileBtn.contains(ev.target) && !profileMenu.contains(ev.target)) {
+                    profileMenu.style.display = 'none';
+                    profileBtn.setAttribute('aria-expanded', 'false');
+                }
+            });
+        }
+
+        if (adminLogout) {
+            adminLogout.addEventListener('click', async function(e){
+                e.preventDefault();
+                try {
+                    // POST to admin logout route to clear httpOnly cookie
+                    const resp = await fetch('/admin/logout', { method: 'POST', credentials: 'same-origin' });
+                    // Redirect to home after logout
+                    window.location.href = '/';
+                } catch (err) {
+                    console.error('Admin logout failed', err);
+                    window.location.href = '/';
+                }
+            });
+        }
+    })();
+    </script>
+</header>

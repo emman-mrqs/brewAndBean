@@ -1,12 +1,15 @@
 import express from "express";
 const router = express.Router();
 
-// Import Controller
-import { renderSignup } from "../controller/signupController.js";
+// Import Controllers
+import { renderSignup, handleSignup, handleVerification } from "../controller/auth/signupController.js";
+import { requireGuest } from "../middleware/auth.js";
 
+// Signup routes
+router.get("/signup", requireGuest, renderSignup);
+router.post("/signup", requireGuest, handleSignup);
 
-
-router.get("/signup", renderSignup);
-
+// Verification route for signup
+router.post("/verify", handleVerification);
 
 export default router;

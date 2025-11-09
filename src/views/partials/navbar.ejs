@@ -18,10 +18,26 @@
                     </div>
                 </div>
                 <div class="guest-profile-section">
-                    <div class="guest-avatar">BB</div>
+                    <div class="guest-avatar">
+                        <% if (isAuthenticated && user) { %>
+                            <% const firstInitial = (user.firstName && typeof user.firstName === 'string') ? user.firstName.charAt(0) : (user.first_name && typeof user.first_name === 'string' ? user.first_name.charAt(0) : ''); %>
+                            <% const lastInitial = (user.lastName && typeof user.lastName === 'string') ? user.lastName.charAt(0) : (user.last_name && typeof user.last_name === 'string' ? user.last_name.charAt(0) : ''); %>
+                            <%= (firstInitial || lastInitial) ? (firstInitial + lastInitial) : 'BB' %>
+                        <% } else { %>
+                            BB
+                        <% } %>
+                    </div>
                     <div class="guest-info">
-                        <div class="guest-title">Welcome, Tang ina mo</div>
-                        <div class="guest-badge">Join & Earn Rewards</div>
+                        <% if (isAuthenticated && user) { %>
+                            <div class="guest-title">Welcome, <%= user.firstName %></div>
+                            <div class="guest-badge">Premium Member</div>
+                            <div class="logout-link">
+                                <a href="/logout" onclick="return confirmLogout()" style="color: #e74c3c; font-size: 0.85rem; text-decoration: underline;">Logout</a>
+                            </div>
+                        <% } else { %>
+                            <div class="guest-title">Welcome, Guest</div>
+                            <div class="guest-badge">Join & Earn Rewards</div>
+                        <% } %>
                     </div>
                 </div>
             </div>
@@ -36,10 +52,86 @@
                 <i class="fas fa-mug-hot"></i>
                 <span class="mobile-only">My Orders</span>
             </a></li>
-            <li><a href="/dashboard" class="nav-btn">Dashboard</a></li>
+            <% if (isAuthenticated && user) { %>
+                <!-- Logged in: Show only Dashboard with profile icon -->
+                <li><a href="/dashboard" class="nav-btn">
+                    <i class="fas fa-user"></i>
+                    Dashboard
+                </a></li>
+            <% } else { %>
+                <!-- Not logged in: Show only Log In Now -->
+                <li><a href="/login" class="nav-btn">Log In Now</a></li>
+            <% } %>
         </ul>
     </div>
 </nav>
 
 <!-- Mobile Menu Backdrop -->
 <div class="mobile-backdrop" id="mobileBackdrop"></div>
+
+<script>
+(function() {
+    'use strict';
+
+    // Cached DOM elements
+    const navbar = document.getElementById('navbar');
+    const backToTop = document.getElementById('backToTop');
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    const mobileBackdrop = document.getElementById('mobileBackdrop');
+
+    // Navbar scroll effect with throttle
+    let scrollTimeout;
+    window.addEventListener('scroll', function() {
+        if (!scrollTimeout) {
+            scrollTimeout = setTimeout(function() {
+                const scrolled = window.scrollY > 100;
+                if (navbar) {
+                    navbar.classList.toggle('scrolled', scrolled);
+                }
+                if (backToTop) {
+                    backToTop.classList.toggle('visible', scrolled);
+                }
+                scrollTimeout = null;
+            }, 100);
+        }
+    }, { passive: true });
+
+    // Mobile menu toggle
+    if (navToggle && navLinks) {
+        const toggleMenu = () => {
+            const isActive = navLinks.classList.toggle('active');
+            navToggle.classList.toggle('active', isActive);
+            if (mobileBackdrop) {
+                mobileBackdrop.classList.toggle('active', isActive);
+            }
+            document.body.style.overflow = isActive ? 'hidden' : '';
+        };
+
+        navToggle.addEventListener('click', toggleMenu);
+        
+        if (mobileBackdrop) {
+            mobileBackdrop.addEventListener('click', toggleMenu);
+        }
+
+        // Close mobile menu on link click
+        navLinks.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
+    }
+
+    // Set active nav link
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('.nav-link').forEach(link => {
+        if (link.getAttribute('href') === currentPage) {
+            link.classList.add('active');
+        }
+    });
+
+})();
+
+// Logout confirmation function
+function confirmLogout() {
+    return confirm('Are you sure you want to logout?');
+}
+</script>

@@ -5,8 +5,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="theme-color" content="#C67C4E">
 	<title>My Cart - Bean & Brew</title>
-	<link rel="stylesheet" href="../css/styles.css">
-	<link rel="stylesheet" href="../css/cart.css">
+	<link rel="stylesheet" href="/css/styles.css">
+	<link rel="stylesheet" href="/css/cart.css">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -85,30 +85,9 @@
 	</button>
 
 	<!-- Bottom Navigation (Mobile) -->
-	<nav class="bottom-nav" aria-label="Bottom Navigation">
-		<a href="/" class="bn-link" aria-label="Home">
-			<i class="fas fa-house" aria-hidden="true"></i>
-			<span>Home</span>
-		</a>
-		<a href="/menu" class="bn-link" aria-label="Menu">
-			<i class="fas fa-mug-saucer" aria-hidden="true"></i>
-			<span>Menu</span>
-		</a>
-		<a href="/dashboard" class="bn-link" aria-label="Dashboard">
-			<i class="fas fa-gauge" aria-hidden="true"></i>
-			<span>Dashboard</span>
-		</a>
-		<a href="/cart" class="bn-link active" aria-label="Cart">
-			<i class="fas fa-cart-shopping" aria-hidden="true"></i>
-			<span>Cart</span>
-		</a>
-		<a href="/specialties" class="bn-link" aria-label="Specialties">
-			<i class="fas fa-star" aria-hidden="true"></i>
-			<span>Specialties</span>
-		</a>
-	</nav>
+	<%- include('../partials/generalBottomNav', { page: 'cart' }) %>
 
-	<script src="../js/shared.js"></script>
+	<!-- <script src="../js/shared.js"></script> -->
 	<script>
 		// Cart page logic with persistence and promo handling
 		(function() {
