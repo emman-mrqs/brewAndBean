@@ -4,212 +4,622 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Management - Bean & Brew Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Order Status Badges */
+        .order-status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        
+        .order-status-pending {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+        
+        .order-status-confirmed {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+        
+        .order-status-preparing {
+            background: #FED7AA;
+            color: #9A3412;
+        }
+        
+        .order-status-ready {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+        
+        .order-status-completed {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+        
+        .order-status-cancelled {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        /* Disabled Edit Button */
+        .btn-icon.btn-edit:disabled {
+            opacity: 0.4;
+            cursor: not-allowed !important;
+        }
+
+        .btn-icon.btn-edit:disabled:hover {
+            background: transparent !important;
+            transform: none !important;
+        }
+
+        /* Payment Method Styling */
+        .payment-method-cell {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .payment-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+        .payment-icon.paypal {
+            background: linear-gradient(135deg, #0070BA 0%, #1546A0 100%);
+        }
+
+        .payment-icon.gcash {
+            background: linear-gradient(135deg, #007DFF 0%, #0056B3 100%);
+        }
+
+        .payment-icon.cash {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+        }
+
+        .payment-icon.card {
+            background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
+        }
+
+        .payment-icon i {
+            color: white;
+            font-size: 16px;
+        }
+
+        .payment-text {
+            font-size: 0.9rem;
+            color: var(--brew-text);
+        }
+
+        /* Modern Invoice Modal */
+        .invoice-modal .modal-dialog {
+            max-width: 900px;
+        }
+
+        .invoice-modal .modal-content {
+            border: none;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .invoice-modal .modal-header {
+            background: linear-gradient(135deg, var(--brew-primary) 0%, #9A6E4C 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            border: none;
+        }
+
+        .invoice-modal .modal-header .btn-close {
+            filter: brightness(0) invert(1);
+        }
+
+        .invoice-modal .modal-header .btn-print {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .invoice-modal .modal-header .btn-print:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .invoice-modal .modal-body {
+            padding: 0;
+        }
+
+        /* Invoice Header */
+        .invoice-header {
+            background: linear-gradient(135deg, var(--brew-primary) 0%, #9A6E4C 100%);
+            color: white;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .invoice-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.1)" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,106.7C960,117,1056,139,1152,133.3C1248,128,1344,96,1392,80L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+            background-size: cover;
+            opacity: 0.3;
+        }
+
+        .invoice-header > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .invoice-header h2,
+        .invoice-header h3 {
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .invoice-header p {
+            margin: 0;
+            opacity: 0.95;
+        }
+
+        /* Invoice Body */
+        .invoice-body {
+            padding: 2rem;
+            background: white;
+        }
+
+        .invoice-info-section {
+            margin-bottom: 2rem;
+        }
+
+        .invoice-info-section h6 {
+            color: #6B7280;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            letter-spacing: 0.5px;
+        }
+
+        .invoice-info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .invoice-info-row:last-child {
+            border-bottom: none;
+        }
+
+        .invoice-info-label {
+            color: #6B7280;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .invoice-info-value {
+            color: var(--brew-text);
+            font-weight: 600;
+        }
+
+        /* Invoice Items Table */
+        .invoice-items-table {
+            width: 100%;
+            margin: 1.5rem 0;
+            border-collapse: collapse;
+        }
+
+        .invoice-items-table thead th {
+            background-color: #F9FAFB;
+            color: var(--brew-text);
+            font-weight: 600;
+            padding: 1rem;
+            border: none;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: left;
+        }
+
+        .invoice-items-table thead th:last-child {
+            text-align: right;
+        }
+
+        .invoice-items-table tbody td {
+            padding: 1rem;
+            vertical-align: middle;
+            border-bottom: 1px solid #E5E7EB;
+            color: var(--brew-text);
+        }
+
+        .invoice-items-table tbody td:last-child {
+            text-align: right;
+            font-weight: 600;
+        }
+
+        .invoice-items-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Invoice Summary */
+        .invoice-summary {
+            background: #F9FAFB;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 1.5rem;
+        }
+
+        .invoice-summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            color: var(--brew-text);
+        }
+
+        .invoice-summary-row.grand-total {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--brew-primary);
+            padding-top: 1rem;
+            border-top: 2px solid #E5E7EB;
+            margin-top: 0.5rem;
+        }
+
+        .invoice-payment-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .invoice-payment-badge.pending {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .invoice-payment-badge.completed {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            /* Make Actions column sticky on mobile for orders table */
+            .data-table th:nth-child(8),
+            .data-table td:nth-child(8) {
+                position: sticky;
+                right: 0;
+                background: var(--brew-white);
+                box-shadow: -4px 0 8px rgba(0, 0, 0, 0.05);
+                z-index: 1;
+            }
+
+            .data-table thead th:nth-child(8) {
+                background: var(--brew-surface);
+                z-index: 2;
+            }
+
+            .payment-method-cell {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+
+            .invoice-header,
+            .invoice-body {
+                padding: 1.5rem;
+            }
+
+            .invoice-items-table {
+                font-size: 0.875rem;
+            }
+
+            .invoice-items-table thead th,
+            .invoice-items-table tbody td {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            /* Hide everything except invoice */
+            body * {
+                visibility: hidden;
+            }
+            
+            #viewInvoiceModal,
+            #viewInvoiceModal * {
+                visibility: visible;
+            }
+            
+            #viewInvoiceModal {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            /* Hide modal UI elements */
+            .modal-header,
+            .modal-footer,
+            .btn-close {
+                display: none !important;
+            }
+            
+            /* Reset modal styles for print */
+            .modal,
+            .modal-dialog,
+            .modal-content {
+                position: static !important;
+                display: block !important;
+                border: none !important;
+                box-shadow: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                background: white !important;
+            }
+
+            .modal-body {
+                padding: 20px !important;
+            }
+
+            /* Invoice styling for print */
+            .invoice-header {
+                background: var(--brew-primary) !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                color: white !important;
+                padding: 30px !important;
+                margin: -20px -20px 20px -20px !important;
+            }
+
+            .invoice-header h2,
+            .invoice-header h3,
+            .invoice-header p {
+                color: white !important;
+            }
+
+            /* Table styling for print */
+            .invoice-items-table {
+                page-break-inside: auto;
+            }
+
+            .invoice-items-table tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            .invoice-items-table thead {
+                display: table-header-group;
+            }
+
+            .invoice-items-table tbody td,
+            .invoice-items-table thead th {
+                border: 1px solid #E5E7EB !important;
+                padding: 12px !important;
+            }
+
+            /* Preserve colors for badges and icons */
+            .order-status-badge,
+            .invoice-payment-badge,
+            .payment-icon {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            /* Summary box */
+            .invoice-summary {
+                background: #F9FAFB !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                page-break-inside: avoid;
+            }
+
+            /* Info sections */
+            .invoice-info-section {
+                page-break-inside: avoid;
+                margin-bottom: 20px;
+            }
+
+            /* Ensure proper spacing */
+            .invoice-body {
+                font-size: 11pt;
+                line-height: 1.5;
+            }
+
+            /* Payment method icons */
+            .payment-method-cell {
+                display: flex !important;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .payment-icon {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                display: inline-flex !important;
+            }
+
+            /* Avoid page breaks in critical sections */
+            .invoice-summary,
+            .invoice-info-section,
+            .row {
+                page-break-inside: avoid;
+            }
+
+            /* Footer */
+            .border-top {
+                border-top: 2px solid #E5E7EB !important;
+                page-break-inside: avoid;
+            }
+
+            /* Responsive print - fit to page width */
+            @page {
+                margin: 1cm;
+                size: A4;
+            }
+
+            /* Adjust font sizes for print */
+            h6 {
+                font-size: 12pt;
+                font-weight: 600;
+            }
+
+            .invoice-summary-row.grand-total {
+                font-size: 14pt !important;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Sidebar Overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- Sidebar -->
     <%- include('../partials/adminSidebar', { page: 'admin-orders' }) %>
 
-    <!-- Main Content -->
     <div class="main-content">
-        <!-- Header -->
         <%- include('../partials/adminHeader') %>
 
-        <!-- Page Content -->
         <div class="page-content">
             <div class="page-header">
                 <h1>Order Management</h1>
                 <p>Track and manage customer orders</p>
             </div>
 
-            <!-- Orders Table -->
             <div class="data-table-container">
                 <div class="filters-bar">
-                    <select class="filter-select">
-                        <option>All Orders</option>
-                        <option>Pending</option>
-                        <option>Delivered</option>
-                        <option>Cancelled</option>
+                    <div class="filter-search">
+                        <i class="fas fa-search"></i>
+                        <input id="orderSearch" type="text" placeholder="Search user, order ID...">
+                    </div>
+                    <select class="filter-select" id="statusFilter">
+                        <option value="">All Statuses</option>
+                        <option value="pending">Pending</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="preparing">Preparing</option>
+                        <option value="ready">Ready for Pickup</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
                     </select>
                 </div>
 
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Order ID</th>
-                            <th>Customer Name</th>
-                            <th>Payment Type</th>
-                            <th>Total Amount</th>
-                            <th>Status</th>
-                            <th>Date</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>ORD-001</td>
-                            <td>
-                                <div class="user-cell">
-                                    <div class="user-avatar-sm" style="background: #EF4444;">SJ</div>
-                                    <span>Sarah Johnson</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="payment-icon">
-                                    <i class="fab fa-paypal" style="color: #0070BA;"></i> PayPal
-                                </div>
-                            </td>
-                            <td>$24.50</td>
-                            <td><span class="status-badge delivered">Delivered</span></td>
-                            <td>Jan 15, 2024</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn-icon"><i class="fas fa-eye"></i></button>
-                                    <button class="btn-icon"><i class="fas fa-download"></i></button>
-                                    <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>ORD-002</td>
-                            <td>
-                                <div class="user-cell">
-                                    <div class="user-avatar-sm" style="background: #10B981;">MC</div>
-                                    <span>Michael Chen</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="payment-icon">
-                                    <i class="fas fa-money-bill-wave" style="color: #10B981;"></i> Cash
-                                </div>
-                            </td>
-                            <td>$15.75</td>
-                            <td><span class="status-badge pending">Pending</span></td>
-                            <td>Jan 15, 2024</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn-icon"><i class="fas fa-eye"></i></button>
-                                    <button class="btn-icon"><i class="fas fa-download"></i></button>
-                                    <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>ORD-003</td>
-                            <td>
-                                <div class="user-cell">
-                                    <div class="user-avatar-sm" style="background: #F59E0B;">ER</div>
-                                    <span>Emma Rodriguez</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="payment-icon">
-                                    <i class="fab fa-paypal" style="color: #0070BA;"></i> PayPal
-                                </div>
-                            </td>
-                            <td>$22.25</td>
-                            <td><span class="status-badge pending">Pending</span></td>
-                            <td>Jan 15, 2024</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn-icon"><i class="fas fa-eye"></i></button>
-                                    <button class="btn-icon"><i class="fas fa-download"></i></button>
-                                    <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>ORD-004</td>
-                            <td>
-                                <div class="user-cell">
-                                    <div class="user-avatar-sm" style="background: #8B5CF6;">DT</div>
-                                    <span>David Thompson</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="payment-icon">
-                                    <i class="fas fa-money-bill-wave" style="color: #10B981;"></i> Cash
-                                </div>
-                            </td>
-                            <td>$12.99</td>
-                            <td><span class="status-badge cancelled">Cancelled</span></td>
-                            <td>Jan 14, 2024</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn-icon"><i class="fas fa-eye"></i></button>
-                                    <button class="btn-icon"><i class="fas fa-download"></i></button>
-                                    <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>ORD-005</td>
-                            <td>
-                                <div class="user-cell">
-                                    <div class="user-avatar-sm" style="background: #EC4899;">LP</div>
-                                    <span>Lisa Park</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="payment-icon">
-                                    <i class="fab fa-paypal" style="color: #0070BA;"></i> PayPal
-                                </div>
-                            </td>
-                            <td>$45.40</td>
-                            <td><span class="status-badge delivered">Delivered</span></td>
-                            <td>Jan 13, 2024</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn-icon"><i class="fas fa-eye"></i></button>
-                                    <button class="btn-icon"><i class="fas fa-download"></i></button>
-                                    <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>ORD-006</td>
-                            <td>
-                                <div class="user-cell">
-                                    <div class="user-avatar-sm" style="background: #14B8A6;">JW</div>
-                                    <span>James Wilson</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="payment-icon">
-                                    <i class="fas fa-money-bill-wave" style="color: #10B981;"></i> Cash
-                                </div>
-                            </td>
-                            <td>$28.45</td>
-                            <td><span class="status-badge pending">Pending</span></td>
-                            <td>Jan 13, 2024</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn-icon"><i class="fas fa-eye"></i></button>
-                                    <button class="btn-icon"><i class="fas fa-download"></i></button>
-                                    <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table data-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Payment Method</th>
+                                <th>Total Amount</th>
+                                <th>Payment Status</th>
+                                <th>Order Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
 
-                <div class="pagination">
-                    <div class="pagination-info">Showing 1-6 of 6 orders</div>
-                    <div class="pagination-buttons">
-                        <button class="pagination-btn" disabled>Previous</button>
-                        <button class="pagination-btn active">1</button>
-                        <button class="pagination-btn" disabled>Next</button>
+                <div id="ordersPagination" class="pagination"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Order Status Modal -->
+    <div class="modal fade" id="editStatusModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Order Status</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="editOrderId">
+                    <div class="mb-3">
+                        <label class="form-label">Order ID</label>
+                        <input type="text" id="editOrderIdDisplay" class="form-control" readonly>
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label">Customer Name</label>
+                        <input type="text" id="editCustomerName" class="form-control" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Order Status *</label>
+                        <select id="editOrderStatus" class="form-select" required>
+                            <option value="pending">Pending</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="preparing">Preparing</option>
+                            <option value="ready">Ready for Pickup</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                        <div class="form-text">Change the order status to track progress</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Notes</label>
+                        <textarea id="editOrderNotes" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveStatusBtn">Update Status</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- View Order Invoice Modal -->
+    <div class="modal fade invoice-modal" id="viewInvoiceModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Order Invoice</h5>
+                    <div>
+                        <button type="button" class="btn btn-sm btn-print me-2" onclick="window.print()">
+                            <i class="fas fa-print"></i> Print Invoice
+                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                </div>
+                <div class="modal-body" id="invoiceContent">
+                    <!-- Invoice content populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="position-fixed bottom-0 end-0 p-3" style="z-index: 2100;"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/admin/orders.js"></script>
 </body>
 </html>

@@ -60,6 +60,7 @@ class PaymentController {
             };
 
             let paymentStatus = 'pending';
+            let orderStatus = 'pending'; // Default order status
             let transactionId = paymentResult.transactionId;
 
             // Handle different payment methods
@@ -68,12 +69,14 @@ class PaymentController {
                     // In production, redirect to GCash API
                     paymentResult.paymentUrl = `https://gcash.example.com/pay?ref=${orderId}`;
                     paymentStatus = 'pending';
+                    orderStatus = 'pending';
                     break;
                     
                 case 'paypal':
                     // In production, redirect to PayPal API
                     paymentResult.paymentUrl = `https://paypal.com/checkout?ref=${orderId}`;
                     paymentStatus = 'pending';
+                    orderStatus = 'pending';
                     break;
                     
                 case 'card':
@@ -89,12 +92,15 @@ class PaymentController {
                     // Process card payment (simulated)
                     paymentResult.success = true;
                     paymentStatus = 'completed';
+                    orderStatus = 'confirmed'; // Card payment confirmed
                     break;
                     
                 case 'cash_on_pickup':
+                case 'cash':
                     // No payment processing needed, just mark as pending
                     paymentResult.success = true;
                     paymentStatus = 'pending';
+                    orderStatus = 'pending'; // Cash on pickup remains pending until paid
                     break;
                     
                 default:
@@ -134,14 +140,16 @@ class PaymentController {
                 UPDATE orders
                 SET payment_method = $1,
                     payment_status = $2,
+                    order_status = $3,
                     updated_at = NOW()
-                WHERE id = $3
+                WHERE id = $4
                 RETURNING user_id
             `;
 
             const orderUpdateResult = await client.query(updateOrderQuery, [
                 paymentMethod,
                 paymentStatus,
+                orderStatus,
                 orderId
             ]);
 
@@ -370,12 +378,13 @@ class PaymentController {
                     user_id, 
                     notes, 
                     payment_method, 
-                    payment_status, 
+                    payment_status,
+                    order_status,
                     total_amount, 
                     shipping_address,
                     branch_id
                 )
-                VALUES ($1, $2, $3, $4, $5, $6, $7)
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
                 RETURNING id
             `;
 
@@ -386,6 +395,7 @@ class PaymentController {
                 orderData.notes || null,
                 'paypal',
                 'completed', // Payment already completed via PayPal
+                'confirmed', // PayPal payment = confirmed order status
                 orderData.total,
                 shippingAddress,
                 orderData.branchId

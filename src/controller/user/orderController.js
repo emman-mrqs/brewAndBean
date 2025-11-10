@@ -92,12 +92,13 @@ class OrderController {
                     user_id, 
                     notes, 
                     payment_method, 
-                    payment_status, 
+                    payment_status,
+                    order_status,
                     total_amount, 
                     shipping_address,
                     branch_id
                 )
-                VALUES ($1, $2, $3, $4, $5, $6, $7)
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
                 RETURNING id
             `;
 
@@ -108,6 +109,7 @@ class OrderController {
                 notes || null,
                 'pending', // Will be set during payment
                 'pending',
+                'pending', // order_status - will be updated based on payment method
                 total,
                 shippingAddress,
                 branchId

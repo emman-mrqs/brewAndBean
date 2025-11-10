@@ -632,8 +632,9 @@ body.modal-open .sidebar-overlay {
         min-width: 100px;
     }
 
-    .data-table th:nth-child(7), /* ACTIONS - now sticky for products table */
-    .data-table td:nth-child(7) {
+    /* ACTIONS column sticky - only for products table (7th column there) */
+    #productsTable .data-table th:nth-child(7),
+    #productsTable .data-table td:nth-child(7) {
         min-width: 140px;
         position: sticky;
         right: 0;
@@ -641,7 +642,7 @@ body.modal-open .sidebar-overlay {
         box-shadow: -4px 0 8px rgba(0, 0, 0, 0.05);
     }
 
-    .data-table thead th:nth-child(7) {
+    #productsTable .data-table thead th:nth-child(7) {
         position: sticky;
         right: 0;
         background: var(--brew-surface);

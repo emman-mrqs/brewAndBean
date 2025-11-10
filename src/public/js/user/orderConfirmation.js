@@ -89,9 +89,20 @@
         // Payment status
         const statusEl = document.getElementById('paymentStatus');
         const paymentStatus = order.payment_status || 'pending';
+        const orderStatus = order.order_status || 'pending';
         const statusClass = paymentStatus === 'completed' || paymentStatus === 'paid' ? 'completed' : 'pending';
         const statusText = paymentStatus.charAt(0).toUpperCase() + paymentStatus.slice(1);
-        statusEl.innerHTML = `<span class="payment-badge ${statusClass}">${statusText}</span>`;
+        
+        // Display order status
+        const orderStatusText = orderStatus.charAt(0).toUpperCase() + orderStatus.slice(1);
+        const orderStatusClass = orderStatus === 'confirmed' ? 'completed' : orderStatus === 'preparing' ? 'pending' : orderStatus === 'ready' ? 'completed' : orderStatus === 'cancelled' ? 'cancelled' : 'pending';
+        
+        statusEl.innerHTML = `
+            <div>
+                <span class="payment-badge ${statusClass}">${statusText}</span>
+                <span class="payment-badge ${orderStatusClass} ms-2">${orderStatusText}</span>
+            </div>
+        `;
 
         // Customer & pickup details
         const shippingAddress = order.shipping_address || '';

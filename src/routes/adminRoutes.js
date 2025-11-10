@@ -43,6 +43,7 @@ router.patch("/admin/api/products/:productId/stock",   AdminProductsController.u
 router.get("/admin/orders",   AdminOrdersController.getOrders);
 router.get("/admin/api/orders",   AdminOrdersController.getAllOrders);
 router.get("/admin/api/orders/:orderId",   AdminOrdersController.getOrderDetails);
+router.put("/admin/api/orders/:orderId",   AdminOrdersController.updateOrder);
 router.patch("/admin/api/orders/:orderId/status",   AdminOrdersController.updateOrderStatus);
 router.delete("/admin/api/orders/:orderId",   AdminOrdersController.cancelOrder);
 
