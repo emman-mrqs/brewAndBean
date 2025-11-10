@@ -49,9 +49,11 @@ router.delete("/admin/api/orders/:orderId",   AdminOrdersController.cancelOrder)
 
 // Admin Reports Routes
 router.get("/admin/reports",   AdminReportsController.getReports);
+router.get("/admin/api/reports/overview",   AdminReportsController.getOverviewStats);
 router.get("/admin/api/reports/sales",   AdminReportsController.getSalesReport);
-router.get("/admin/api/reports/customers",   AdminReportsController.getCustomerReport);
+router.get("/admin/api/reports/customers",   AdminReportsController.getCustomerAnalytics);
 router.get("/admin/api/reports/inventory",   AdminReportsController.getInventoryReport);
+router.get("/admin/api/reports/branches",   AdminReportsController.getBranchPerformance);
 
 // Admin Branches Management Routes
 router.get("/admin/branches",   AdminBranchesController.renderBranchesPage);

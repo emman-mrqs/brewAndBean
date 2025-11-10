@@ -3,232 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reports & Analytics - Bean & Brew Admin</title>
+    <title><%= title %></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="/css/reports.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        .period-tabs {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 32px;
-        }
-        .period-tab {
-            padding: 10px 20px;
-            border: 1px solid var(--brew-line);
-            background: white;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-        .period-tab.active {
-            background: var(--brew-primary);
-            color: white;
-            border-color: var(--brew-primary);
-        }
-        .insights-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-top: 32px;
-        }
-        .insight-card {
-            background: white;
-            padding: 20px;
-            border-radius: 16px;
-            border: 1px solid var(--brew-line);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .insight-info h4 {
-            font-size: 0.85rem;
-            color: var(--brew-text-light);
-            margin-bottom: 4px;
-        }
-        .insight-info p {
-            font-size: 0.9rem;
-            color: var(--brew-text);
-        }
-        .insight-value {
-            font-size: 1.3rem;
-            font-weight: 700;
-        }
-        .insight-value.positive {
-            color: #10B981;
-        }
-        .insight-value.neutral {
-            color: var(--brew-primary);
-        }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
-    <!-- Sidebar Overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- Sidebar -->
     <%- include('../partials/adminSidebar', { page: 'admin-reports' }) %>
 
-    <!-- Main Content -->
     <div class="main-content">
-        <!-- Header -->
         <%- include('../partials/adminHeader') %>
 
-        <!-- Page Content -->
         <div class="page-content">
             <div class="page-header">
                 <h1>Reports & Analytics</h1>
-                <p>Track your coffee shop's performance and insights</p>
+                <p>Comprehensive business insights and performance metrics</p>
             </div>
 
-            <!-- Period Tabs -->
-            <div class="period-tabs">
-                <button class="period-tab active">Last 7 Days</button>
-                <button class="period-tab">Last 30 Days</button>
-                <button class="period-tab">Last 6 Months</button>
-            </div>
-
-            <!-- Stats Grid -->
-            <div class="stats-grid">
+            <!-- Overview Stats -->
+            <div class="reports-grid" id="overviewStats">
                 <div class="stat-card">
                     <div class="stat-card-header">
-                        <span class="stat-card-title">Total Revenue</span>
-                        <div class="stat-card-icon revenue">
-                            <i class="fas fa-dollar-sign"></i>
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalRevenue">₱0</div>
+                            <div class="stat-label">Total Revenue</div>
                         </div>
-                    </div>
-                    <div class="stat-card-value">$12,000</div>
-                    <div class="stat-card-change positive">
-                        <i class="fas fa-arrow-up"></i> +2.5% from last period
+                        <div class="stat-icon revenue">
+                            <i class="fas fa-peso-sign"></i>
+                        </div>
                     </div>
                 </div>
 
                 <div class="stat-card">
                     <div class="stat-card-header">
-                        <span class="stat-card-title">Total Orders</span>
-                        <div class="stat-card-icon orders">
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalOrders">0</div>
+                            <div class="stat-label">Total Orders</div>
+                        </div>
+                        <div class="stat-icon orders">
                             <i class="fas fa-shopping-cart"></i>
                         </div>
                     </div>
-                    <div class="stat-card-value">485</div>
-                    <div class="stat-card-change positive">
-                        <i class="fas fa-arrow-up"></i> +8.2% from last period
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalCustomers">0</div>
+                            <div class="stat-label">Total Customers</div>
+                        </div>
+                        <div class="stat-icon customers">
+                            <i class="fas fa-users"></i>
+                        </div>
                     </div>
                 </div>
 
                 <div class="stat-card">
                     <div class="stat-card-header">
-                        <span class="stat-card-title">Average Spend</span>
-                        <div class="stat-card-icon spend">
-                            <i class="fas fa-chart-line"></i>
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalProducts">0</div>
+                            <div class="stat-label">Total Products</div>
                         </div>
-                    </div>
-                    <div class="stat-card-value">$24.74</div>
-                    <div class="stat-card-change positive">
-                        <i class="fas fa-arrow-up"></i> +3.1% from last period
-                    </div>
-                </div>
-            </div>
-
-            <!-- Revenue Trend & Payment Methods -->
-            <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 24px; margin: 32px 0;">
-                <div class="data-table-container">
-                    <div class="table-header">
-                        <h2 class="table-title">Revenue Trend</h2>
-                        <span style="color: var(--brew-text-light); font-size: 0.9rem;">Daily Revenue</span>
-                    </div>
-                    <div style="padding: 40px; text-align: center; color: var(--brew-text-light);">
-                        <i class="fas fa-chart-area" style="font-size: 4rem; opacity: 0.2;"></i>
-                        <p style="margin-top: 16px;">Revenue chart visualization</p>
-                    </div>
-                </div>
-
-                <div class="data-table-container">
-                    <div class="table-header">
-                        <h2 class="table-title">Payment Methods</h2>
-                        <span style="color: var(--brew-text-light); font-size: 0.9rem;">Sales Distribution</span>
-                    </div>
-                    <div style="padding: 40px;">
-                        <div style="width: 150px; height: 150px; margin: 0 auto 24px; border-radius: 50%; background: conic-gradient(#C67C4E 0% 65%, #F5E6D3 65% 100%); position: relative;">
-                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-                                <div style="font-size: 1.5rem; font-weight: 700; color: var(--brew-text);">Total</div>
-                                <div style="font-size: 0.9rem; color: var(--brew-text-light);">$485</div>
-                            </div>
-                        </div>
-                        <div style="display: flex; flex-direction: column; gap: 12px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div style="display: flex; align-items: center; gap: 8px;">
-                                    <div style="width: 12px; height: 12px; background: #C67C4E; border-radius: 50%;"></div>
-                                    <div>
-                                        <div style="font-weight: 600; color: var(--brew-text);">PayPal</div>
-                                        <div style="font-size: 0.8rem; color: var(--brew-text-light);">Digital payments</div>
-                                    </div>
-                                </div>
-                                <div style="text-align: right;">
-                                    <div style="font-weight: 600;">65%</div>
-                                    <div style="font-size: 0.8rem; color: var(--brew-text-light);">$7,800</div>
-                                </div>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div style="display: flex; align-items: center; gap: 8px;">
-                                    <div style="width: 12px; height: 12px; background: #F5E6D3; border-radius: 50%;"></div>
-                                    <div>
-                                        <div style="font-weight: 600; color: var(--brew-text);">Cash</div>
-                                        <div style="font-size: 0.8rem; color: var(--brew-text-light);">Physical payments</div>
-                                    </div>
-                                </div>
-                                <div style="text-align: right;">
-                                    <div style="font-weight: 600;">35%</div>
-                                    <div style="font-size: 0.8rem; color: var(--brew-text-light);">$4,200</div>
-                                </div>
-                            </div>
+                        <div class="stat-icon products">
+                            <i class="fas fa-box"></i>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Quick Insights -->
-            <div class="data-table-container">
-                <div class="table-header">
-                    <h2 class="table-title">Quick Insights</h2>
-                </div>
-                <div style="padding: 24px;">
-                    <div class="insights-grid">
-                        <div class="insight-card">
-                            <div class="insight-info">
-                                <h4>Peak Sales Day</h4>
-                                <p>Highest revenue day</p>
-                            </div>
-                            <div class="insight-value neutral">Saturday</div>
-                        </div>
-                        <div class="insight-card">
-                            <div class="insight-info">
-                                <h4>Customer Growth</h4>
-                                <p>New customers this week</p>
-                            </div>
-                            <div class="insight-value positive">+15.3%</div>
-                        </div>
-                        <div class="insight-card">
-                            <div class="insight-info">
-                                <h4>Best Selling Item</h4>
-                                <p>Most popular product</p>
-                            </div>
-                            <div class="insight-value neutral">House Blend</div>
-                        </div>
-                        <div class="insight-card">
-                            <div class="insight-info">
-                                <h4>Return Rate</h4>
-                                <p>Repeat customers</p>
-                            </div>
-                            <div class="insight-value positive">68.5%</div>
-                        </div>
+            <!-- Sales Chart -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3 class="chart-title">Sales Performance</h3>
+                    <div class="chart-filters">
+                        <button class="filter-btn" data-period="7days">7 Days</button>
+                        <button class="filter-btn active" data-period="30days">30 Days</button>
+                        <button class="filter-btn" data-period="90days">90 Days</button>
+                        <button class="filter-btn" data-period="year">1 Year</button>
                     </div>
+                </div>
+                <div class="canvas-wrapper">
+                    <canvas id="salesChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Two Column Charts -->
+            <div class="two-column-grid">
+                <!-- Auth Providers Chart -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3 class="chart-title">User Registration Methods</h3>
+                    </div>
+                    <div class="canvas-wrapper small">
+                        <canvas id="authProvidersChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Payment Methods Chart -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Payment Methods Distribution</h3>
+                    </div>
+                    <div class="canvas-wrapper small">
+                        <canvas id="paymentMethodsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customer Analytics -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3 class="chart-title">Customer Growth Trend (Last 12 Months)</h3>
+                </div>
+                <div class="canvas-wrapper">
+                    <canvas id="customerTrendChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Tables Row -->
+            <div class="two-column-grid">
+                <!-- Top Products Table -->
+                <div class="table-container">
+                    <h3 class="chart-title mb-3">Top Selling Products</h3>
+                    <div class="table-responsive">
+                        <table class="report-table" id="topProductsTable">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Sold</th>
+                                    <th>Revenue</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="3" class="text-center">
+                                        <div class="loading-spinner">
+                                            <i class="fas fa-spinner fa-spin fa-2x"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Low Stock Table -->
+                <div class="table-container">
+                    <h3 class="chart-title mb-3">Low Stock Alert</h3>
+                    <div class="table-responsive">
+                        <table class="report-table" id="lowStockTable">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Variant</th>
+                                    <th>Stock</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="3" class="text-center">
+                                        <div class="loading-spinner">
+                                            <i class="fas fa-spinner fa-spin fa-2x"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Branch Performance -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3 class="chart-title">Branch Performance</h3>
+                </div>
+                <div class="canvas-wrapper">
+                    <canvas id="branchPerformanceChart"></canvas>
                 </div>
             </div>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/admin/reports.js"></script>
 </body>
 </html>
