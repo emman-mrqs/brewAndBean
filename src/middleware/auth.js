@@ -34,6 +34,20 @@ export function requireAuth(req, res, next) {
     res.redirect('/login');
 }
 
+// API Authentication middleware (returns JSON instead of redirect)
+export function requireAuthAPI(req, res, next) {
+    if (req.session && req.session.isAuthenticated && req.session.user) {
+        return next();
+    }
+    
+    // Return 401 Unauthorized for API requests
+    return res.status(401).json({
+        success: false,
+        message: 'Authentication required. Please log in.',
+        requiresLogin: true
+    });
+}
+
 // Middleware to check if user is suspended (use after requireAuth)
 export async function checkSuspension(req, res, next) {
     // Only check if user is authenticated

@@ -12,6 +12,173 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <meta name="description" content="Complete your coffee order securely with Bean & Brew.">
+    <style>
+        /* Modern Toast Notification Styles - Fixed Bottom Right */
+        .toast-container {
+            position: fixed !important;
+            bottom: 20px !important;
+            right: 20px !important;
+            z-index: 9999 !important;
+            pointer-events: none;
+        }
+
+        .toast-container .toast {
+            pointer-events: auto;
+            min-width: 320px;
+            max-width: 400px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.08);
+            border: none;
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .toast.hiding {
+            animation: slideOutRight 0.3s ease-in;
+        }
+
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+
+        .toast-header {
+            padding: 14px 16px;
+            font-weight: 600;
+            font-size: 15px;
+            border-bottom: none !important;
+        }
+
+        .toast-header .btn-close {
+            padding: 0;
+            margin-left: auto;
+            opacity: 0.6;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .toast-header .btn-close:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .toast-body {
+            padding: 14px 16px !important;
+            font-size: 14px;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .toast-header i {
+            font-size: 18px;
+            margin-right: 10px;
+        }
+
+        /* Responsive adjustments for mobile */
+        @media (max-width: 768px) {
+            .toast-container {
+                bottom: 80px !important;
+                right: 10px !important;
+                left: 10px !important;
+                width: auto !important;
+            }
+
+            .toast-container .toast {
+                min-width: 280px;
+                max-width: 100%;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .toast-container {
+                bottom: 70px !important;
+                right: 8px !important;
+                left: 8px !important;
+            }
+
+            .toast-container .toast {
+                min-width: 100%;
+                border-radius: 10px;
+            }
+
+            .toast-header {
+                padding: 12px 14px;
+                font-size: 14px;
+            }
+
+            .toast-body {
+                padding: 12px 14px !important;
+                font-size: 13px;
+            }
+
+            .toast-header i {
+                font-size: 16px;
+            }
+        }
+
+        /* Ensure toast stays above other elements */
+        .toast-container * {
+            box-sizing: border-box;
+        }
+
+        /* Modern color adjustments for better visibility */
+        .toast {
+            background: rgba(255, 255, 255, 0.98) !important;
+        }
+
+        /* Success Toast - Modern Green */
+        .toast[style*="background-color: rgb(212, 237, 218)"] {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%) !important;
+        }
+
+        /* Error Toast - Modern Red */
+        .toast[style*="background-color: rgb(248, 215, 218)"] {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%) !important;
+        }
+
+        /* Warning Toast - Modern Yellow */
+        .toast[style*="background-color: rgb(255, 243, 205)"] {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%) !important;
+        }
+
+        /* Info Toast - Modern Blue */
+        .toast[style*="background-color: rgb(209, 236, 241)"] {
+            background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%) !important;
+        }
+
+        /* Add subtle pulse animation on show */
+        .toast.show {
+            animation: slideInRight 0.3s ease-out, pulse 0.5s ease 0.3s;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.02);
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Animated Background Elements -->
@@ -42,8 +209,13 @@
                     </div>
                     <div class="progress-line completed"></div>
                     <div class="progress-step active">
-                        <div class="step-icon"><i class="fas fa-credit-card"></i></div>
+                        <div class="step-icon"><i class="fas fa-clipboard-list"></i></div>
                         <span class="step-label">Checkout</span>
+                    </div>
+                    <div class="progress-line"></div>
+                    <div class="progress-step">
+                        <div class="step-icon"><i class="fas fa-credit-card"></i></div>
+                        <span class="step-label">Payment</span>
                     </div>
                     <div class="progress-line"></div>
                     <div class="progress-step">
@@ -60,101 +232,62 @@
                     <div class="form-section">
                         <div class="section-header">
                             <h2><i class="fas fa-user"></i> Contact Information</h2>
+                            <div class="contact-action-buttons">
+                                <button type="button" class="edit-contact-btn" id="editContactBtn" title="Edit contact information">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button type="button" class="cancel-contact-btn" id="cancelContactBtn" title="Cancel editing" style="display: none;">
+                                    <i class="fas fa-times"></i> Cancel
+                                </button>
+                            </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="fullName">Full Name <span class="required">*</span></label>
-                                <input type="text" id="fullName" placeholder="Juan Dela Cruz" required>
+                                <input type="text" id="fullName" placeholder="Juan Dela Cruz" value="<%= user.fullName %>" required readonly>
                             </div>
                         </div>
                         <div class="form-row two-col">
                             <div class="form-group">
                                 <label for="email">Email <span class="required">*</span></label>
-                                <input type="email" id="email" placeholder="juan@example.com" required>
+                                <input type="email" id="email" placeholder="juan@example.com" value="<%= user.email %>" required readonly>
                             </div>
                             <div class="form-group">
                                 <label for="phone">Phone Number <span class="required">*</span></label>
-                                <input type="tel" id="phone" placeholder="+63 912 345 6789" required>
+                                <input type="tel" id="phone" placeholder="+63 912 345 6789" value="<%= user.phone %>" required readonly>
                             </div>
+                        </div>
+                        <div class="contact-info-note" style="display: none;">
+                            <i class="fas fa-info-circle"></i> 
+                            <span>Changes here will only apply to this order and won't update your account profile.</span>
                         </div>
                     </div>
 
-                    <!-- Delivery Address -->
+                    <!-- Choose Branch -->
                     <div class="form-section">
                         <div class="section-header">
-                            <h2><i class="fas fa-truck"></i> Delivery Address</h2>
+                            <h2><i class="fas fa-store"></i> Choose Pickup Branch</h2>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="address">Street Address <span class="required">*</span></label>
-                                <input type="text" id="address" placeholder="123 Coffee Street" required>
-                            </div>
-                        </div>
-                        <div class="form-row two-col">
-                            <div class="form-group">
-                                <label for="city">City <span class="required">*</span></label>
-                                <input type="text" id="city" placeholder="Manila" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="zip">ZIP Code <span class="required">*</span></label>
-                                <input type="text" id="zip" placeholder="1000" required>
+                                <label for="branch">Select Branch <span class="required">*</span></label>
+                                <select id="branch" class="branch-select" required>
+                                    <option value="">-- Select a branch --</option>
+                                    <!-- Branches will be loaded dynamically -->
+                                </select>
+                                <div class="branch-info" id="branchInfo" style="display: none;">
+                                    <i class="fas fa-location-dot"></i>
+                                    <div class="branch-details">
+                                        <strong id="branchName"></strong>
+                                        <small id="branchAddress"></small>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="notes">Delivery Notes (Optional)</label>
-                                <textarea id="notes" rows="3" placeholder="e.g. Please ring the doorbell twice"></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Payment Method -->
-                    <div class="form-section">
-                        <div class="section-header">
-                            <h2><i class="fas fa-credit-card"></i> Payment Method</h2>
-                        </div>
-                        
-                        <div class="payment-methods">
-                            <label class="payment-option">
-                                <input type="radio" name="payment" value="card" checked>
-                                <div class="payment-card">
-                                    <i class="fas fa-credit-card"></i>
-                                    <span>Credit / Debit Card</span>
-                                </div>
-                            </label>
-                            <label class="payment-option">
-                                <input type="radio" name="payment" value="gcash">
-                                <div class="payment-card">
-                                    <i class="fas fa-mobile-screen"></i>
-                                    <span>GCash</span>
-                                </div>
-                            </label>
-                            <label class="payment-option">
-                                <input type="radio" name="payment" value="cod">
-                                <div class="payment-card">
-                                    <i class="fas fa-money-bill-wave"></i>
-                                    <span>Cash on Delivery</span>
-                                </div>
-                            </label>
-                        </div>
-
-                        <!-- Card Details (shown when card is selected) -->
-                        <div id="cardDetails" class="card-details">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="cardNumber">Card Number <span class="required">*</span></label>
-                                    <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
-                                </div>
-                            </div>
-                            <div class="form-row two-col">
-                                <div class="form-group">
-                                    <label for="expiry">Expiry Date <span class="required">*</span></label>
-                                    <input type="text" id="expiry" placeholder="MM/YY" maxlength="5">
-                                </div>
-                                <div class="form-group">
-                                    <label for="cvv">CVV <span class="required">*</span></label>
-                                    <input type="text" id="cvv" placeholder="123" maxlength="3">
-                                </div>
+                                <label for="notes">Pickup Notes (Optional)</label>
+                                <textarea id="notes" rows="3" placeholder="e.g. Preferred pickup time, special instructions"></textarea>
                             </div>
                         </div>
                     </div>
@@ -171,8 +304,8 @@
 
                         <div class="order-totals">
                             <div class="total-row"><span>Subtotal</span><span id="checkoutSubtotal">₱0.00</span></div>
-                            <div class="total-row"><span>Shipping</span><span id="checkoutShipping">₱59.00</span></div>
-                            <div class="total-row"><span>Tax (8%)</span><span id="checkoutTax">₱0.00</span></div>
+                            <div class="total-row"><span>Tax (2%)</span><span id="checkoutShipping">₱0.00</span></div>
+                            <div class="total-row" style="display:none;"><span>Tax</span><span id="checkoutTax">₱0.00</span></div>
                             <div class="total-row discount-row" id="checkoutDiscountRow" style="display:none">
                                 <span>Discount</span><span id="checkoutDiscount">–₱0.00</span>
                             </div>
@@ -184,7 +317,7 @@
                         </div>
 
                         <button class="place-order-btn" id="placeOrderBtn">
-                            <i class="fas fa-lock"></i> Place Order Securely
+                            <i class="fas fa-lock"></i> Continue to Payment
                         </button>
 
                         <div class="security-badges">
@@ -207,146 +340,9 @@
     <!-- Bottom Navigation (Mobile) -->
     <%- include('../partials/generalBottomNav', { page: 'checkout' }) %>
 
-    <!-- <script src="../js/shared.js"></script> -->
-    <script>
-        // Checkout page logic
-        (function() {
-            const CART_KEY = 'bb_cart_items';
-            const PROMO_KEY = 'bb_cart_promo';
-            const BASE_SHIPPING = 59.00;
-            const TAX_RATE = 0.08;
-
-            const orderItemsEl = document.getElementById('orderItems');
-            const subtotalEl = document.getElementById('checkoutSubtotal');
-            const shippingEl = document.getElementById('checkoutShipping');
-            const taxEl = document.getElementById('checkoutTax');
-            const totalEl = document.getElementById('checkoutTotal');
-            const discountRowEl = document.getElementById('checkoutDiscountRow');
-            const discountEl = document.getElementById('checkoutDiscount');
-            const placeOrderBtn = document.getElementById('placeOrderBtn');
-            const cardDetailsEl = document.getElementById('cardDetails');
-
-            // Load cart data
-            function loadCart() {
-                try {
-                    const data = JSON.parse(localStorage.getItem(CART_KEY));
-                    return Array.isArray(data) ? data.filter(i => i.selected) : [];
-                } catch { return []; }
-            }
-
-            function loadPromo() {
-                try { return JSON.parse(localStorage.getItem(PROMO_KEY)) || { code: '', type: null, value: 0 }; }
-                catch { return { code: '', type: null, value: 0 }; }
-            }
-
-            // Render order items
-            function renderOrderSummary() {
-                const items = loadCart();
-                const promo = loadPromo();
-
-                if (!items.length) {
-                    orderItemsEl.innerHTML = `
-                        <div class="empty-order">
-                            <p>No items in your order.</p>
-                            <a href="/cart" class="btn-link">← Back to Cart</a>
-                        </div>
-                    `;
-                    return;
-                }
-
-                orderItemsEl.innerHTML = items.map(it => `
-                    <div class="order-item">
-                        <div class="oi-thumb">
-                            ${it.img && (it.img.includes('/') || it.img.endsWith('.webp')) 
-                                ? `<img src="${it.img}" alt="${it.name}">`
-                                : it.img || '☕'}
-                        </div>
-                        <div class="oi-info">
-                            <div class="oi-name">${it.name}</div>
-                            <div class="oi-qty">Qty: ${it.qty}</div>
-                        </div>
-                        <div class="oi-price">₱${(it.price * it.qty).toFixed(2)}</div>
-                    </div>
-                `).join('');
-
-                // Calculate totals
-                const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
-                const shippingCost = promo.type === 'ship' ? 0 : BASE_SHIPPING;
-                const tax = subtotal * TAX_RATE;
-                let discount = 0;
-                if (promo.type === 'percent') {
-                    discount = subtotal * promo.value;
-                }
-                const total = Math.max(0, subtotal - discount) + tax + shippingCost;
-
-                subtotalEl.textContent = `₱${subtotal.toFixed(2)}`;
-                shippingEl.textContent = `₱${shippingCost.toFixed(2)}`;
-                taxEl.textContent = `₱${tax.toFixed(2)}`;
-                totalEl.textContent = `₱${total.toFixed(2)}`;
-
-                if (discount > 0) {
-                    discountRowEl.style.display = '';
-                    discountEl.textContent = `–₱${discount.toFixed(2)}`;
-                } else {
-                    discountRowEl.style.display = 'none';
-                }
-            }
-
-            // Payment method toggle
-            document.querySelectorAll('input[name="payment"]').forEach(radio => {
-                radio.addEventListener('change', (e) => {
-                    if (e.target.value === 'card') {
-                        cardDetailsEl.style.display = 'block';
-                    } else {
-                        cardDetailsEl.style.display = 'none';
-                    }
-                });
-            });
-
-            // Form validation and submission
-            placeOrderBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                
-                const fullName = document.getElementById('fullName').value.trim();
-                const email = document.getElementById('email').value.trim();
-                const phone = document.getElementById('phone').value.trim();
-                const address = document.getElementById('address').value.trim();
-                const city = document.getElementById('city').value.trim();
-                const zip = document.getElementById('zip').value.trim();
-                const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
-
-                if (!fullName || !email || !phone || !address || !city || !zip) {
-                    alert('Please fill in all required fields.');
-                    return;
-                }
-
-                if (paymentMethod === 'card') {
-                    const cardNumber = document.getElementById('cardNumber').value.trim();
-                    const expiry = document.getElementById('expiry').value.trim();
-                    const cvv = document.getElementById('cvv').value.trim();
-                    if (!cardNumber || !expiry || !cvv) {
-                        alert('Please complete your card details.');
-                        return;
-                    }
-                }
-
-                // Simulate order placement
-                placeOrderBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-                placeOrderBtn.disabled = true;
-
-                setTimeout(() => {
-                    // Clear cart and promo
-                    localStorage.removeItem(CART_KEY);
-                    localStorage.removeItem(PROMO_KEY);
-                    
-                    alert('🎉 Order placed successfully! Thank you for choosing Bean & Brew.');
-                    window.location.href = '/';
-                }, 2000);
-            });
-
-            // Initialize
-            renderOrderSummary();
-        })();
-    </script>
+    <!-- Bootstrap JS for Toast -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Checkout JavaScript -->
+    <script src="/js/user/checkout.js"></script>
 </body>
 </html>

@@ -82,14 +82,26 @@ function displayProducts(products) {
         const imageUrl = product.img_url || '/uploads/products/default-product.jpg';
         const price = product.price || 0;
         
+        // Check if all variants are out of stock
+        const isSoldOut = product.variants && product.variants.length > 0 
+            ? product.variants.every(v => v.stock_quantity === 0)
+            : false;
+        
         return `
-            <div class="menu-item" data-aos="fade-up" data-delay="${index * 50}" 
+            <div class="menu-item ${isSoldOut ? 'sold-out' : ''}" data-aos="fade-up" data-delay="${index * 50}" 
                  data-product-id="${product.id}" data-name="${product.name}" 
                  data-price="${price}"
                  data-img="${imageUrl}">
                 <div class="menu-item-visual">
                     <img src="${imageUrl}" alt="${product.name}" class="menu-item-image" 
                          onerror="this.src='/uploads/products/default-product.jpg'">
+                    ${isSoldOut ? `
+                        <div class="sold-out-overlay">
+                            <span class="sold-out-badge">
+                                <i class="fas fa-ban"></i> SOLD OUT
+                            </span>
+                        </div>
+                    ` : ''}
                 </div>
                 <div class="menu-item-info">
                     <div class="menu-item-header">
@@ -102,8 +114,8 @@ function displayProducts(products) {
                         <button class="view-btn" title="View Details">
                             <i class="fas fa-eye"></i> View
                         </button>
-                        <button class="add-to-cart-btn" title="Add to Cart">
-                            <i class="fas fa-cart-plus"></i> Add to Cart
+                        <button class="add-to-cart-btn" title="${isSoldOut ? 'Out of Stock' : 'Add to Cart'}" ${isSoldOut ? 'disabled' : ''}>
+                            <i class="fas ${isSoldOut ? 'fa-ban' : 'fa-cart-plus'}"></i> ${isSoldOut ? 'Sold Out' : 'Add to Cart'}
                         </button>
                     </div>
                 </div>
@@ -401,58 +413,184 @@ function initAddToCartButtons() {
     document.addEventListener('click', function(e) {
         if (e.target.closest('.add-to-cart-btn')) {
             const btn = e.target.closest('.add-to-cart-btn');
-            const item = btn.closest('.menu-item');
             
-            const cartItem = {
-                id: item.dataset.productId,
-                name: item.dataset.name,
-                note: item.dataset.category.charAt(0).toUpperCase() + item.dataset.category.slice(1),
-                price: parseFloat(item.dataset.price),
-                qty: 1,
-                selected: true,
-                img: item.dataset.img
-            };
-
-            // Load existing cart
-            let cart = JSON.parse(localStorage.getItem('bb_cart_items') || '[]');
-            
-            // Check if item already exists
-            const existingIndex = cart.findIndex(c => c.id === cartItem.id);
-            if (existingIndex >= 0) {
-                cart[existingIndex].qty += 1;
-                showToast(`📦 ${cartItem.name} quantity updated in cart!`);
-            } else {
-                cart.push(cartItem);
-                showToast(`✅ ${cartItem.name} added to cart!`);
+            // Prevent action if button is disabled
+            if (btn.disabled) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
             }
             
-            // Save cart
-            localStorage.setItem('bb_cart_items', JSON.stringify(cart));
+            const item = btn.closest('.menu-item');
             
-            // Visual feedback
-            btn.innerHTML = '<i class="fas fa-check"></i> Added!';
-            btn.style.background = 'linear-gradient(135deg, #2e7d32, #1b5e20)';
-            setTimeout(() => {
-                btn.innerHTML = '<i class="fas fa-cart-plus"></i> Add to Cart';
-                btn.style.background = '';
-            }, 2000);
+            const productId = item.dataset.productId;
+            const productName = item.dataset.name;
+            
+            // Find product to get first available variant
+            const product = allProducts.find(p => p.id.toString() === productId);
+            
+            // Get first available variant if exists
+            let variantId = null;
+            if (product && product.variants && product.variants.length > 0) {
+                const firstAvailableVariant = product.variants.find(v => v.stock_quantity > 0);
+                if (firstAvailableVariant) {
+                    variantId = firstAvailableVariant.id;
+                }
+            }
+            
+            // Add to cart
+            addItemToCart(productId, variantId, productName, btn);
         }
     });
 }
 
-// Toast notification
-function showToast(message) {
-    const existingToast = document.querySelector('.toast-notification');
-    if (existingToast) existingToast.remove();
+// Add item to cart via API
+async function addItemToCart(productId, variantId, productName, btn) {
+    try {
+        // Disable button during request
+        const originalHTML = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+        
+        const response = await fetch('/cart/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                productId: parseInt(productId),
+                variantId: variantId ? parseInt(variantId) : null,
+                quantity: 1
+            })
+        });
+        
+        const data = await response.json();
+        
+        // Check if user is not authenticated (401 or redirect response)
+        if (response.status === 401 || response.redirected) {
+            showBootstrapToast('Login Required', 'Please login to add items to cart', 'warning');
+            setTimeout(() => {
+                window.location.href = '/login';
+            }, 1500);
+            return;
+        }
+        
+        if (response.ok && data.success) {
+            // Success feedback
+            btn.innerHTML = '<i class="fas fa-check"></i> Added!';
+            btn.style.background = 'linear-gradient(135deg, #2e7d32, #1b5e20)';
+            
+            // Show Bootstrap toast
+            if (data.updated) {
+                showBootstrapToast('Cart Updated', `${productName} quantity updated in cart!`, 'warning');
+            } else {
+                showBootstrapToast('Added to Cart', `${productName} has been added to your cart!`, 'success');
+            }
+            
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.style.background = '';
+                btn.disabled = false;
+            }, 2000);
+        } else {
+            throw new Error(data.message || 'Failed to add to cart');
+        }
+    } catch (error) {
+        console.error('Error adding to cart:', error);
+        
+        // Check if error is due to authentication
+        if (error.message && error.message.includes('Unauthorized')) {
+            showBootstrapToast('Login Required', 'Please login to add items to cart', 'warning');
+            setTimeout(() => {
+                window.location.href = '/login';
+            }, 1500);
+        } else {
+            showBootstrapToast('Error', error.message || 'Failed to add to cart', 'danger');
+        }
+        
+        // Reset button
+        btn.innerHTML = '<i class="fas fa-cart-plus"></i> Add to Cart';
+        btn.disabled = false;
+    }
+}
+
+// Bootstrap Toast notification
+function showBootstrapToast(title, message, type = 'success') {
+    // Create toast container if it doesn't exist
+    let toastContainer = document.querySelector('.toast-container');
+    if (!toastContainer) {
+        toastContainer = document.createElement('div');
+        toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+        toastContainer.style.zIndex = '9999';
+        document.body.appendChild(toastContainer);
+    }
     
-    const toast = document.createElement('div');
-    toast.className = 'toast-notification';
-    toast.textContent = message;
-    document.body.appendChild(toast);
+    // Icon and color based on type
+    const icons = {
+        success: 'fa-check-circle',
+        warning: 'fa-exclamation-circle',
+        danger: 'fa-times-circle',
+        info: 'fa-info-circle'
+    };
     
-    setTimeout(() => toast.classList.add('show'), 100);
-    setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
+    const textColors = {
+        success: 'text-success',
+        warning: 'text-warning',
+        danger: 'text-danger',
+        info: 'text-info'
+    };
+    
+    const bgColors = {
+        success: '#d4edda',
+        warning: '#fff3cd',
+        danger: '#f8d7da',
+        info: '#d1ecf1'
+    };
+    
+    const borderColors = {
+        success: '#c3e6cb',
+        warning: '#ffeaa7',
+        danger: '#f5c6cb',
+        info: '#bee5eb'
+    };
+    
+    // Create unique ID for this toast
+    const toastId = 'toast-' + Date.now();
+    
+    // Create toast element
+    const toastEl = document.createElement('div');
+    toastEl.id = toastId;
+    toastEl.className = 'toast';
+    toastEl.setAttribute('role', 'alert');
+    toastEl.setAttribute('aria-live', 'assertive');
+    toastEl.setAttribute('aria-atomic', 'true');
+    toastEl.style.minWidth = '250px';
+    toastEl.style.backgroundColor = bgColors[type];
+    toastEl.style.border = `1px solid ${borderColors[type]}`;
+    
+    toastEl.innerHTML = `
+        <div class="toast-header" style="background-color: white; border-bottom: 1px solid ${borderColors[type]};">
+            <i class="fas ${icons[type]} ${textColors[type]} me-2"></i>
+            <strong class="me-auto ${textColors[type]}">${title}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" style="color: #333;">
+            ${message}
+        </div>
+    `;
+    
+    toastContainer.appendChild(toastEl);
+    
+    // Initialize and show Bootstrap toast
+    const bsToast = new bootstrap.Toast(toastEl, {
+        autohide: true,
+        delay: 3000
+    });
+    
+    bsToast.show();
+    
+    // Remove toast element after it's hidden
+    toastEl.addEventListener('hidden.bs.toast', function() {
+        toastEl.remove();
+    });
 }

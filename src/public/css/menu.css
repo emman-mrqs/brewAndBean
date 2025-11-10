@@ -780,3 +780,122 @@
         gap: 0.35rem;
     }
 }
+/* ============================================
+   SOLD OUT STYLES
+   ============================================ */
+
+/* Sold out overlay on product image */
+.sold-out-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(44, 44, 44, 0.85), rgba(75, 85, 99, 0.85));
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    border-radius: 8px;
+}
+
+.sold-out-badge {
+    background: linear-gradient(135deg, #4B5563, #6B7280);
+    color: white;
+    padding: 14px 32px;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    box-shadow: 0 8px 24px rgba(75, 85, 99, 0.6), 
+                0 4px 12px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-transform: uppercase;
+    border: 3px solid rgba(255, 255, 255, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.sold-out-badge::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: shine 3s ease-in-out infinite;
+}
+
+@keyframes shine {
+    0% {
+        left: -100%;
+    }
+    50%, 100% {
+        left: 100%;
+    }
+}
+
+.sold-out-badge i {
+    font-size: 1.3rem;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+/* Sold out product item styling */
+.menu-item.sold-out {
+    opacity: 0.9;
+    position: relative;
+}
+
+.menu-item.sold-out .menu-item-image {
+    filter: grayscale(100%) brightness(0.7);
+    transform: scale(0.95);
+}
+
+/* Disabled add to cart button */
+.add-to-cart-btn:disabled {
+    background: linear-gradient(135deg, #6B7280, #4B5563) !important;
+    cursor: not-allowed !important;
+    opacity: 1;
+    color: #E5E7EB !important;
+    transform: none !important;
+    box-shadow: 0 2px 8px rgba(75, 85, 99, 0.4) !important;
+    pointer-events: none;
+}
+
+.add-to-cart-btn:disabled:hover {
+    transform: none !important;
+    box-shadow: 0 2px 8px rgba(75, 85, 99, 0.4) !important;
+}
+
+.add-to-cart-btn:disabled i {
+    opacity: 0.9;
+}
+
+/* Responsive sold out badge */
+@media (max-width: 768px) {
+    .sold-out-badge {
+        padding: 12px 28px;
+        font-size: 1.1rem;
+        letter-spacing: 1.5px;
+    }
+    
+    .sold-out-badge i {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .sold-out-badge {
+        padding: 10px 24px;
+        font-size: 1rem;
+        letter-spacing: 1px;
+    }
+    
+    .sold-out-badge i {
+        font-size: 1.1rem;
+    }
+}

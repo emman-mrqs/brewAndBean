@@ -937,3 +937,57 @@ body {
         font-size: 0.875rem;
     }
 }
+
+/* ============================================
+   PAYPAL BUTTON RESPONSIVE STYLES
+   ============================================ */
+
+/* Base PayPal Button Container */
+#paypal-button-container {
+    width: 100%;
+    max-width: 750px;
+    margin: 20px auto;
+    padding: 0 10px;
+}
+
+/* PayPal Button Wrapper */
+#paypal-button-container > div {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Ensure PayPal buttons are responsive */
+#paypal-button-container iframe {
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
+/* Tablet and below */
+@media (max-width: 768px) {
+    #paypal-button-container {
+        max-width: 100%;
+        margin: 15px auto;
+        padding: 0 8px;
+    }
+}
+
+/* Mobile devices */
+@media (max-width: 480px) {
+    #paypal-button-container {
+        margin: 12px auto;
+        padding: 0 5px;
+    }
+    
+    /* Ensure buttons stack properly on mobile */
+    #paypal-button-container .paypal-button {
+        min-height: 40px !important;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+    #paypal-button-container {
+        padding: 0;
+    }
+}
+

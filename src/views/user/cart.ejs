@@ -7,11 +7,262 @@
 	<title>My Cart - Bean & Brew</title>
 	<link rel="stylesheet" href="/css/styles.css">
 	<link rel="stylesheet" href="/css/cart.css">
+	<!-- Bootstrap CSS (only for modals and toasts) -->
+	<style>
+		/* Only apply Bootstrap styles to modals and toasts - prevent conflicts with existing styles */
+		.modal, .modal * {
+			box-sizing: border-box;
+		}
+		
+		.toast, .toast * {
+			box-sizing: border-box;
+		}
+		
+		/* Ensure modals and toasts use Bootstrap positioning */
+		.modal-backdrop {
+			position: fixed;
+			top: 0;
+			left: 0;
+			z-index: 1040;
+			width: 100vw;
+			height: 100vh;
+			background-color: #000;
+		}
+		
+		.modal-backdrop.show {
+			opacity: 0.5;
+		}
+		
+		.modal {
+			position: fixed;
+			top: 0;
+			left: 0;
+			z-index: 1055;
+			display: none;
+			width: 100%;
+			height: 100%;
+			overflow-x: hidden;
+			overflow-y: auto;
+			outline: 0;
+		}
+		
+		.modal.show {
+			display: block;
+		}
+		
+		.modal-dialog {
+			position: relative;
+			width: auto;
+			margin: 1.75rem auto;
+			max-width: 500px;
+		}
+		
+		.modal-dialog-centered {
+			display: flex;
+			align-items: center;
+			min-height: calc(100% - 3.5rem);
+		}
+		
+		.modal-content {
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+			pointer-events: auto;
+			background-color: #fff;
+			background-clip: padding-box;
+			border: 1px solid rgba(0, 0, 0, 0.2);
+			outline: 0;
+		}
+		
+		.modal-header {
+			display: flex;
+			flex-shrink: 0;
+			align-items: center;
+			justify-content: space-between;
+		}
+		
+		.modal-title {
+			margin-bottom: 0;
+			line-height: 1.5;
+		}
+		
+		.modal-body {
+			position: relative;
+			flex: 1 1 auto;
+		}
+		
+		.modal-footer {
+			display: flex;
+			flex-wrap: wrap;
+			flex-shrink: 0;
+			align-items: center;
+			justify-content: flex-end;
+			gap: 0.5rem;
+		}
+		
+		/* Only apply button styles within modals */
+		.modal .btn {
+			display: inline-block;
+			font-weight: 400;
+			line-height: 1.5;
+			text-align: center;
+			text-decoration: none;
+			vertical-align: middle;
+			cursor: pointer;
+			user-select: none;
+			border: 1px solid transparent;
+			transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+		}
+		
+		.modal .btn-secondary {
+			color: #fff;
+			background-color: #6c757d;
+			border-color: #6c757d;
+		}
+		
+		.modal .btn-secondary:hover {
+			background-color: #5c636a;
+			border-color: #565e64;
+		}
+		
+		.modal .btn-danger {
+			color: #fff;
+			background-color: #dc3545;
+			border-color: #dc3545;
+		}
+		
+		.modal .btn-danger:hover {
+			background-color: #bb2d3b;
+			border-color: #b02a37;
+		}
+		
+		.modal .btn-close,
+		.toast .btn-close {
+			box-sizing: content-box;
+			width: 1em;
+			height: 1em;
+			padding: 0.25em;
+			color: #000;
+			background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+			border: 0;
+			opacity: 0.5;
+			cursor: pointer;
+		}
+		
+		.modal .btn-close:hover,
+		.toast .btn-close:hover {
+			opacity: 0.75;
+		}
+		
+		.toast {
+			max-width: 350px;
+			overflow: hidden;
+			font-size: 0.875rem;
+			background-color: rgba(255, 255, 255, 0.85);
+			background-clip: padding-box;
+			border: 1px solid rgba(0, 0, 0, 0.1);
+			box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+			border-radius: 0.25rem;
+		}
+		
+		.toast:not(.show) {
+			display: none;
+		}
+		
+		.toast.show {
+			display: block;
+		}
+		
+		.toast-header {
+			display: flex;
+			align-items: center;
+			padding: 0.5rem 0.75rem;
+			color: #6c757d;
+			background-color: rgba(255, 255, 255, 0.85);
+			background-clip: padding-box;
+			border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+		}
+		
+		.toast-body {
+			padding: 0.75rem;
+			word-wrap: break-word;
+		}
+		
+		/* Utility classes - scoped to toast container */
+		.toast-container.position-fixed {
+			position: fixed !important;
+		}
+		
+		.toast-container.bottom-0 {
+			bottom: 0 !important;
+		}
+		
+		.toast-container.end-0 {
+			right: 0 !important;
+		}
+		
+		.toast-container.p-3 {
+			padding: 1rem !important;
+		}
+		
+		/* Utility classes for modal and toast content */
+		.modal .d-flex,
+		.toast .d-flex {
+			display: flex !important;
+		}
+		
+		.modal .me-auto,
+		.toast .me-auto {
+			margin-right: auto !important;
+		}
+		
+		.modal .me-2,
+		.toast .me-2 {
+			margin-right: 0.5rem !important;
+		}
+		
+		.modal .text-success,
+		.toast .text-success {
+			color: #28a745 !important;
+		}
+		
+		.modal .text-warning,
+		.toast .text-warning {
+			color: #ffc107 !important;
+		}
+		
+		.modal .text-danger,
+		.toast .text-danger {
+			color: #dc3545 !important;
+		}
+		
+		.modal .text-info,
+		.toast .text-info {
+			color: #17a2b8 !important;
+		}
+		
+		/* Fade transitions for modals */
+		.modal.fade,
+		.toast.fade {
+			transition: opacity 0.15s linear;
+		}
+		
+		.modal.fade:not(.show),
+		.toast.fade:not(.show) {
+			opacity: 0;
+		}
+		
+		.modal.fade.show,
+		.toast.fade.show {
+			opacity: 1;
+		}
+	</style>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-	<meta name="description" content="Review your selected coffee items, update quantities, apply promo codes, and proceed to checkout.">
+	<meta name="description" content="Review your selected coffee items, update quantities, and proceed to checkout.">
 	<meta name="keywords" content="coffee cart, checkout, bean and brew, orders">
 </head>
 <body>
@@ -36,38 +287,66 @@
                     <h1><span class="ch-icon">🧺</span> Your Cart</h1>
                     <p class="ch-sub">Warm up your day — review items, adjust quantities, and brew the perfect order.</p>
                 </div>
-            </header>			<section class="cart-grid">
+                <div class="ch-right">
+                    <button class="edit-cart-btn" id="editCartBtn">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button class="delete-selected-btn" id="deleteSelectedBtn" style="display: none;">
+                        <i class="fas fa-trash"></i> Delete Selected
+                    </button>
+                    <button class="cancel-edit-btn" id="cancelEditBtn" style="display: none;">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </header>
+			
+			<section class="cart-grid">
 				<!-- Cart Items -->
-				<div class="cart-items cart-card" id="cartItems">
-					<!-- Items will be rendered here -->
+				<div class="cart-items cart-card">
+					<!-- Empty cart message -->
+					<div id="emptyCartMessage" style="display: none; text-align: center; padding: 60px 20px;">
+						<i class="fas fa-shopping-cart" style="font-size: 64px; color: #ddd; margin-bottom: 20px;"></i>
+						<h3 style="color: #666; margin-bottom: 10px;">Your cart is empty</h3>
+						<p style="color: #999; margin-bottom: 20px;">Add some delicious coffee to get started!</p>
+						<a href="/menu" style="display: inline-block; background: var(--brew-primary); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none;">
+							Browse Menu
+						</a>
+					</div>
+					
+					<!-- Cart items container -->
+					<div id="cartItemsContainer">
+						<!-- Items will be rendered here by JavaScript -->
+						<div style="text-align: center; padding: 40px;">
+							<i class="fas fa-spinner fa-spin" style="font-size: 48px; color: var(--brew-primary);"></i>
+							<p style="color: #999; margin-top: 16px;">Loading cart...</p>
+						</div>
+					</div>
 				</div>
 
 				<!-- Order Summary -->
 				<aside class="order-summary cart-card">
 					<h2 class="os-title">Order Summary</h2>
-
-					<div class="promo-box">
-						<label for="promoCode">Promo Code</label>
-						<div class="promo-row">
-							<input type="text" id="promoCode" placeholder="Enter code (e.g., BREW10)">
-							<button class="apply-promo" id="applyPromo" aria-label="Apply promo code">Apply</button>
-						</div>
-						<div class="promo-msg" id="promoMessage" aria-live="polite"></div>
+					
+					<div class="order-info" style="margin-bottom: 20px; padding: 12px; background: rgba(198, 124, 78, 0.05); border-radius: 8px;">
+						<p style="margin: 0; color: #666; font-size: 0.9rem;">
+							<i class="fas fa-shopping-bag"></i> 
+							<span id="itemCount">0</span> item(s) selected
+						</p>
 					</div>
 
 					<div class="order-totals">
-						<div class="total-row"><span>Subtotal</span><span id="subtotalValue">₱0.00</span></div>
-						<div class="total-row"><span>Shipping</span><span id="shippingValue">₱59.00</span></div>
-						<div class="total-row"><span>Tax (8%)</span><span id="taxValue">₱0.00</span></div>
-						<div class="total-row discount-row" id="discountRow" style="display:none"><span>Discount</span><span id="discountValue">–₱0.00</span></div>
+						<div class="total-row"><span>Subtotal</span><span id="cartSubtotal">₱0.00</span></div>
+						<div class="total-row"><span>Tax (2%)</span><span id="cartShipping">₱0.00</span></div>
 					</div>
 
 					<div class="total-main">
 						<span>Total</span>
-						<span id="totalValue">₱0.00</span>
+						<span id="cartTotal">₱0.00</span>
 					</div>
 
-				<a href="/checkout" class="checkout-btn" aria-label="Proceed to checkout">Proceed to Checkout - ₱0.00</a>
+				<button class="checkout-btn" id="checkoutBtn" aria-label="Proceed to checkout">
+					Proceed to Checkout
+				</button>
 
 				<a href="/menu" class="continue-shopping-link"><i class="fas fa-arrow-left"></i> Continue Shopping</a>
 
@@ -87,213 +366,9 @@
 	<!-- Bottom Navigation (Mobile) -->
 	<%- include('../partials/generalBottomNav', { page: 'cart' }) %>
 
-	<!-- <script src="../js/shared.js"></script> -->
-	<script>
-		// Cart page logic with persistence and promo handling
-		(function() {
-			const CART_KEY = 'bb_cart_items';
-			const PROMO_KEY = 'bb_cart_promo';
-
-			const cartItemsEl = document.getElementById('cartItems');
-			const promoInput = document.getElementById('promoCode');
-			const promoBtn = document.getElementById('applyPromo');
-			const promoMsg = document.getElementById('promoMessage');
-			const discountRow = document.getElementById('discountRow');
-			const discountValueEl = document.getElementById('discountValue');
-			const subtotalEl = document.getElementById('subtotalValue');
-			const shippingEl = document.getElementById('shippingValue');
-			const taxEl = document.getElementById('taxValue');
-			const totalEl = document.getElementById('totalValue');
-			const checkoutBtn = document.querySelector('.checkout-btn');
-
-			// Default shipping and tax
-			const BASE_SHIPPING = 59.00;
-			const TAX_RATE = 0.08;
-
-            // Seed data if empty
-            const seed = [
-                { id: 'caramel-macchiato', name: 'Caramel Macchiato', note: 'Hot | Velvety & sweet', price: 180.00, qty: 2, selected: true, img: '../../../Assets/Coffee/Hot Caramel Macchiato.webp' },
-                { id: 'spanish-latte', name: 'Spanish Latte', note: 'Cold | Smooth & creamy', price: 165.00, qty: 1, selected: true, img: '../../../Assets/Coffee/Cold Spanish Latte.webp' },
-                { id: 'mocha-frappe', name: 'Mocha Frappe', note: 'Special | Rich & refreshing', price: 195.00, qty: 1, selected: true, img: '../../../Assets/Coffee/Special Mocha Frappe.webp' }
-            ];			function loadCart() {
-				try {
-					const data = JSON.parse(localStorage.getItem(CART_KEY));
-					return Array.isArray(data) && data.length ? data : seed;
-				} catch { return seed; }
-			}
-
-			function saveCart(items) {
-				localStorage.setItem(CART_KEY, JSON.stringify(items));
-			}
-
-			function loadPromo() {
-				try { return JSON.parse(localStorage.getItem(PROMO_KEY)) || { code: '', type: null, value: 0 }; }
-				catch { return { code: '', type: null, value: 0 }; }
-			}
-
-			function savePromo(promo) {
-				localStorage.setItem(PROMO_KEY, JSON.stringify(promo));
-			}
-
-			function renderItems(items) {
-				if (!items.length) {
-					cartItemsEl.innerHTML = `
-						<div class="empty-cart">
-							<div class="empty-illustration">☕</div>
-							<h3>Your cart is empty</h3>
-							<p>Add some delicious coffee to get started.</p>
-							<a class="btn btn-primary" href="/menu">Browse Menu</a>
-						</div>
-					`;
-					return;
-				}
-
-			cartItemsEl.innerHTML = items.map((it, idx) => {
-				const isImageUrl = it.img && (it.img.startsWith('http') || it.img.includes('/') || it.img.endsWith('.webp') || it.img.endsWith('.jpg') || it.img.endsWith('.png'));
-				const thumbContent = isImageUrl 
-					? `<img src="${it.img}" alt="${it.name}" loading="lazy">`
-					: it.img || (idx % 3 === 0 ? '☕' : idx % 3 === 1 ? '🥤' : '🧋');
-				
-				return `
-				<div class="cart-item" id="item-${it.id}">
-					<label class="item-check">
-						<input type="checkbox" class="item-checkbox" ${it.selected ? 'checked' : ''} data-id="${it.id}">
-						<span class="check-deco"></span>
-					</label>
-					<div class="item-thumb" aria-hidden="true">${thumbContent}</div>
-					<div class="item-info">
-						<div class="item-title">${it.name}</div>
-						<div class="item-note">${it.note || ''}</div>
-						<button class="item-remove" data-id="${it.id}" aria-label="Remove ${it.name}"><i class="fas fa-trash"></i> Remove</button>
-					</div>
-					<div class="item-price"><span class="item-unit-price">₱${it.price.toFixed(2)}</span></div>
-					<div class="item-qty">
-						<button class="qty-btn" data-action="decrease" data-id="${it.id}" aria-label="Decrease quantity"><i class="fas fa-minus"></i></button>
-						<input type="number" id="qty-${it.id}" min="1" step="1" value="${it.qty}" aria-label="Quantity for ${it.name}">
-						<button class="qty-btn" data-action="increase" data-id="${it.id}" aria-label="Increase quantity"><i class="fas fa-plus"></i></button>
-					</div>
-				</div>
-			`;}).join('');
-		}			// Override global updateCartTotal for this page to include discounts + persistence
-			window.updateCartTotal = function() {
-				// Read DOM state back into model
-				let items = [];
-				document.querySelectorAll('.cart-item').forEach(el => {
-					const id = el.id.replace('item-', '');
-					const checked = !!el.querySelector('.item-checkbox')?.checked;
-					const priceText = el.querySelector('.item-unit-price')?.textContent || '₱0';
-					const price = parseFloat(priceText.replace(/[^\d.]/g, '')) || 0;
-					const qty = Math.max(1, parseInt(el.querySelector('input[type="number"]').value || '1', 10));
-					const name = el.querySelector('.item-title')?.textContent || 'Item';
-					const note = el.querySelector('.item-note')?.textContent || '';
-					const thumbEl = el.querySelector('.item-thumb');
-					const img = thumbEl ? thumbEl.textContent : '☕';
-					items.push({ id, name, note, price, qty, selected: checked, img });
-				});
-
-				saveCart(items);
-
-				// Compute totals
-				const subtotal = items.filter(i => i.selected).reduce((s, i) => s + i.price * i.qty, 0);
-				const promo = loadPromo();
-				const shippingBase = promo.type === 'ship' ? 0 : BASE_SHIPPING;
-				const tax = subtotal * TAX_RATE;
-
-				// Discounts
-				let discount = 0;
-				if (promo.type === 'percent') {
-					discount = subtotal * promo.value; // promo.value is 0.1 for 10%
-				}
-
-				const total = Math.max(0, subtotal - discount) + tax + shippingBase;
-
-				// Update UI
-				subtotalEl.textContent = `₱${subtotal.toFixed(2)}`;
-				shippingEl.textContent = `₱${shippingBase.toFixed(2)}`;
-				taxEl.textContent = `₱${tax.toFixed(2)}`;
-				totalEl.textContent = `₱${total.toFixed(2)}`;
-				checkoutBtn.textContent = `Proceed to Checkout - ₱${total.toFixed(2)}`;
-
-				if (discount > 0) {
-					discountRow.style.display = '';
-					discountValueEl.textContent = `–₱${discount.toFixed(2)}`;
-				} else {
-					discountRow.style.display = 'none';
-					discountValueEl.textContent = '–₱0.00';
-				}
-			};
-
-			function applyPromoHandler() {
-				const raw = (promoInput.value || '').trim().toUpperCase();
-				let promo = { code: '', type: null, value: 0 };
-
-				if (raw === 'BREW10') {
-					promo = { code: raw, type: 'percent', value: 0.10 };
-					promoMsg.textContent = 'Promo applied: 10% off your subtotal.';
-					promoMsg.className = 'promo-msg success';
-				} else if (raw === 'FREESHIP') {
-					promo = { code: raw, type: 'ship', value: 0 };
-					promoMsg.textContent = 'Promo applied: Free shipping.';
-					promoMsg.className = 'promo-msg success';
-				} else if (!raw) {
-					promoMsg.textContent = 'Enter a promo code.';
-					promoMsg.className = 'promo-msg';
-				} else {
-					promoMsg.textContent = 'Invalid code. Try BREW10 or FREESHIP.';
-					promoMsg.className = 'promo-msg error';
-				}
-
-				savePromo(promo);
-				updateCartTotal();
-			}
-
-			function wireEvents() {
-				// Delegated events for cart items
-				cartItemsEl.addEventListener('click', (e) => {
-					const btn = e.target.closest('.qty-btn');
-					const remove = e.target.closest('.item-remove');
-					if (btn) {
-						const id = btn.getAttribute('data-id');
-						const action = btn.getAttribute('data-action');
-						const input = document.getElementById(`qty-${id}`);
-						if (input) {
-							const val = Math.max(1, parseInt(input.value || '1', 10));
-							input.value = action === 'increase' ? val + 1 : Math.max(1, val - 1);
-							updateCartTotal();
-						}
-					}
-					if (remove) {
-						const id = remove.getAttribute('data-id');
-						const el = document.getElementById(`item-${id}`);
-						if (el) {
-							el.classList.add('removing');
-							setTimeout(() => { el.remove(); updateCartTotal(); }, 200);
-						}
-					}
-				});
-
-				cartItemsEl.addEventListener('change', (e) => {
-					if (e.target.matches('.item-checkbox') || e.target.matches('input[type="number"]')) {
-						updateCartTotal();
-					}
-				});
-
-				promoBtn.addEventListener('click', applyPromoHandler);
-				promoInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); applyPromoHandler(); }});
-			}
-
-			// Init
-			const items = loadCart();
-			renderItems(items);
-			const savedPromo = loadPromo();
-			if (savedPromo.code) {
-				promoInput.value = savedPromo.code;
-				promoMsg.textContent = savedPromo.type === 'ship' ? 'Free shipping applied.' : 'Discount applied.';
-				promoMsg.className = 'promo-msg success';
-			}
-			wireEvents();
-			updateCartTotal();
-		})();
-	</script>
+	<!-- Bootstrap JS for Toast -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<!-- Cart JavaScript -->
+	<script src="/js/user/cart.js"></script>
 </body>
 </html>

@@ -7,6 +7,7 @@ import AdminProductsController, { upload } from "../controller/admin/adminProduc
 import AdminOrdersController from "../controller/admin/adminOrdersController.js";
 import AdminReportsController from "../controller/admin/adminReportsController.js";
 import AdminAuditController from "../controller/admin/adminAuditController.js";
+import AdminBranchesController from "../controller/admin/adminBranchesController.js";
 
 // Import authentication middleware
 import {   requireAdmin } from "../middleware/auth.js";
@@ -50,6 +51,14 @@ router.get("/admin/reports",   AdminReportsController.getReports);
 router.get("/admin/api/reports/sales",   AdminReportsController.getSalesReport);
 router.get("/admin/api/reports/customers",   AdminReportsController.getCustomerReport);
 router.get("/admin/api/reports/inventory",   AdminReportsController.getInventoryReport);
+
+// Admin Branches Management Routes
+router.get("/admin/branches",   AdminBranchesController.renderBranchesPage);
+router.get("/api/admin/branches",   AdminBranchesController.getAllBranches);
+router.get("/api/admin/branches/:id",   AdminBranchesController.getBranch);
+router.post("/api/admin/branches",   AdminBranchesController.createBranch);
+router.put("/api/admin/branches/:id",   AdminBranchesController.updateBranch);
+router.delete("/api/admin/branches/:id",   AdminBranchesController.deleteBranch);
 
 // Admin Audit Logs Routes
 router.get("/admin/audit-logs",   AdminAuditController.getAuditLogs);

@@ -15,7 +15,7 @@ import PaymentController from "../controller/user/paymentController.js";
 import UserSettingsController from "../controller/user/userSettingsController.js";
 
 // Import Authentication Middleware
-import { requireAuth, requireVerification, checkSuspension } from "../middleware/auth.js";
+import { requireAuth, requireAuthAPI, requireVerification, checkSuspension } from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -43,9 +43,11 @@ router.get("/rewards", requireAuth, UserSettingsController.getRewards);
 
 // Cart routes (protected)
 router.get("/cart", requireAuth, CartController.getCart);
-router.post("/cart/add", requireAuth, CartController.addToCart);
-router.delete("/cart/remove/:productId", requireAuth, CartController.removeFromCart);
-router.put("/cart/update/:productId", requireAuth, CartController.updateCartItem);
+router.get("/api/cart/items", requireAuthAPI, CartController.getCartItems);
+router.post("/cart/add", requireAuthAPI, CartController.addToCart);
+router.delete("/cart/remove/:itemId", requireAuthAPI, CartController.removeFromCart);
+router.put("/cart/update/:itemId", requireAuthAPI, CartController.updateCartItem);
+router.delete("/cart/clear", requireAuthAPI, CartController.clearCart);
 
 // Order routes (protected and verified)
 router.get("/checkout", requireAuth, requireVerification, OrderController.getCheckout);
@@ -53,9 +55,34 @@ router.get("/order-history", requireAuth, OrderController.getOrderHistory);
 router.get("/order-preview", requireAuth, OrderController.getOrderPreview);
 router.post("/order/process", requireAuth, requireVerification, OrderController.processOrder);
 
+// Order API routes
+router.post("/api/orders", requireAuth, requireVerification, OrderController.createOrder);
+router.get("/api/orders/:orderId", requireAuth, OrderController.getOrder);
+router.get("/api/orders/:orderId/payment", requireAuth, OrderController.getOrderPayment); // Get payment details
+router.get("/api/orders", requireAuth, OrderController.getUserOrders);
+router.put("/api/orders/:orderId/status", requireAuth, OrderController.updateOrderStatus);
+
+// Public API for branches (for checkout page)
+router.get("/api/branches", OrderController.getBranches);
+
 // Payment routes (protected and verified)
-router.get("/payment", requireAuth, requireVerification, PaymentController.getPayment);
-router.post("/payment/process", PaymentController.processPayment);
+router.get("/payment-settings", requireAuth, requireVerification, PaymentController.getPaymentSettings); // Payment settings page
+router.get("/payment", requireAuth, requireVerification, PaymentController.getPaymentCheckout); // Payment checkout page
+router.post("/api/orders/payment", requireAuth, PaymentController.processPayment); // Process payment API
+
+// PayPal routes
+router.post("/api/paypal/create-order", requireAuth, requireVerification, PaymentController.createPayPalOrder);
+router.post("/api/paypal/capture-payment", requireAuth, requireVerification, PaymentController.capturePayPalPayment);
+router.get("/api/paypal/success", PaymentController.paypalSuccess);
+router.get("/api/paypal/cancel", PaymentController.paypalCancel);
+
+// Order confirmation route
+router.get("/order-confirmation", requireAuth, requireVerification, (req, res) => {
+    res.render("user/orderConfirmation", {
+        title: "Order Confirmation - Bean & Brew",
+        page: "checkout"
+    });
+});
 
 // API routes for forms and functionality
 router.post("/contact/submit", ContactController.submitContactForm);
