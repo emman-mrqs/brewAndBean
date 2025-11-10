@@ -9,8 +9,6 @@ This is an **internal PayPal SDK error** that can occur due to several reasons:
 #### 1. **Verify PayPal Sandbox Credentials**
 Your current credentials in `.env`:
 ```
-PAYPAL_CLIENT_ID=AcyxRXruPQz-LZDg26BfBmdPm_f7l_5BdCzfY3fK4-mbP4OddZMBD0X61pT0FBltJj1R1DvFa6Xc15wH
-```
 
 **Action:**
 1. Go to https://developer.paypal.com/dashboard/
