@@ -21,6 +21,7 @@
     <title>Bean & Brew - Premium Coffee Experience</title>
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/modernHome.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -79,22 +80,30 @@
                 </div>
                 <div class="welcome-grid">
                     <div class="welcome-card">
-                        <div class="welcome-icon">🌍</div>
+                        <div class="welcome-icon">
+                            <i class="fas fa-globe-americas"></i>
+                        </div>
                         <h3>Global Origins</h3>
                         <p>We source premium beans from 15+ countries, ensuring each cup captures the unique essence of its origin.</p>
                     </div>
                     <div class="welcome-card">
-                        <div class="welcome-icon">🔥</div>
+                        <div class="welcome-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
                         <h3>Artisan Roasting</h3>
                         <p>Our master roasters carefully craft small batches to unlock the perfect balance of flavor and aroma.</p>
                     </div>
                     <div class="welcome-card">
-                        <div class="welcome-icon">☕</div>
+                        <div class="welcome-icon">
+                            <i class="fas fa-coffee"></i>
+                        </div>
                         <h3>Expert Brewing</h3>
                         <p>From classic espresso to innovative cold brews, our skilled baristas create coffee perfection.</p>
                     </div>
                     <div class="welcome-card">
-                        <div class="welcome-icon">❤️</div>
+                        <div class="welcome-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
                         <h3>Community Love</h3>
                         <p>Join our coffee-loving community where every visit feels like coming home to great coffee and warm smiles.</p>
                     </div>
@@ -113,25 +122,33 @@
             </div>
             <div class="quick-links-grid">
                 <a href="/specialties" class="quick-link-card">
-                    <div class="quick-link-icon">☕</div>
+                    <div class="quick-link-icon">
+                        <i class="fas fa-mug-hot"></i>
+                    </div>
                     <h3>Our Specialties</h3>
                     <p>Discover our artisan roasting and brewing expertise</p>
                     <span class="quick-link-arrow">→</span>
                 </a>
                 <a href="/menu" class="quick-link-card">
-                    <div class="quick-link-icon">📋</div>
+                    <div class="quick-link-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
                     <h3>Full Menu</h3>
                     <p>Browse our signature beverages and seasonal specials</p>
                     <span class="quick-link-arrow">→</span>
                 </a>
                 <a href="/about" class="quick-link-card">
-                    <div class="quick-link-icon">📖</div>
+                    <div class="quick-link-icon">
+                        <i class="fas fa-store"></i>
+                    </div>
                     <h3>Our Story</h3>
                     <p>Learn about our journey and commitment to quality</p>
                     <span class="quick-link-arrow">→</span>
                 </a>
                 <a href="/reviews" class="quick-link-card">
-                    <div class="quick-link-icon">⭐</div>
+                    <div class="quick-link-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
                     <h3>Reviews</h3>
                     <p>See what our customers are saying about us</p>
                     <span class="quick-link-arrow">→</span>
@@ -175,14 +192,14 @@
 
         // Intersection Observer for animations
         const observerOptions = {
-            threshold: 0.2,
-            rootMargin: '0px 0px -100px 0px'
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
         };
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-in');
+                    entry.target.classList.add('visible');
                     
                     // Animate counters
                     if (entry.target.querySelector('[data-count]')) {
@@ -195,7 +212,7 @@
         }, observerOptions);
 
         // Observe elements
-        document.querySelectorAll('.hero-stats').forEach(el => observer.observe(el));
+        document.querySelectorAll('.welcome-card, .quick-link-card, .section-header').forEach(el => observer.observe(el));
         
         // Newsletter form handler
         function handleNewsletterSubmit(event) {
