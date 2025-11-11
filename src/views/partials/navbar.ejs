@@ -1,46 +1,24 @@
-<!-- Navigation -->
+<!-- Load Modern Navbar Styles -->
+<link rel="stylesheet" href="/css/modernNavbar.css">
+
+<!-- Modern Responsive Navigation -->
 <nav class="navbar" id="navbar">
-    <div class="container">
-        <a href="/" class="logo">
-            <span class="logo-icon">☕</span>
+    <div class="navbar-container">
+        <!-- Hamburger Menu (Mobile Only) -->
+        <button class="hamburger-menu" id="navToggle" aria-label="Toggle Menu">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+
+        <!-- Logo -->
+        <a href="/" class="navbar-logo">
+            <i class="fas fa-mug-hot logo-icon"></i>
             <span class="logo-text">Bean & Brew</span>
         </a>
-        <div class="nav-toggle" id="navToggle">
-            <i class="fas fa-mug-hot"></i>
-        </div>
-        <ul class="nav-links" id="navLinks">
-            <div class="mobile-sidebar-header">
-                <div class="mobile-logo">
-                    <span class="mobile-logo-icon">☕</span>
-                    <div class="mobile-logo-text">
-                        <span class="mobile-brand-name">Bean & Brew</span>
-                        <span class="mobile-brand-tagline">PREMIUM COFFEE</span>
-                    </div>
-                </div>
-                <div class="guest-profile-section">
-                    <div class="guest-avatar">
-                        <% if (isAuthenticated && user) { %>
-                            <% const firstInitial = (user.firstName && typeof user.firstName === 'string') ? user.firstName.charAt(0) : (user.first_name && typeof user.first_name === 'string' ? user.first_name.charAt(0) : ''); %>
-                            <% const lastInitial = (user.lastName && typeof user.lastName === 'string') ? user.lastName.charAt(0) : (user.last_name && typeof user.last_name === 'string' ? user.last_name.charAt(0) : ''); %>
-                            <%= (firstInitial || lastInitial) ? (firstInitial + lastInitial) : 'BB' %>
-                        <% } else { %>
-                            BB
-                        <% } %>
-                    </div>
-                    <div class="guest-info">
-                        <% if (isAuthenticated && user) { %>
-                            <div class="guest-title">Welcome, <%= user.firstName %></div>
-                            <div class="guest-badge">Premium Member</div>
-                            <div class="logout-link">
-                                <a href="/logout" onclick="return confirmLogout()" style="color: #e74c3c; font-size: 0.85rem; text-decoration: underline;">Logout</a>
-                            </div>
-                        <% } else { %>
-                            <div class="guest-title">Welcome, Guest</div>
-                            <div class="guest-badge">Join & Earn Rewards</div>
-                        <% } %>
-                    </div>
-                </div>
-            </div>
+
+        <!-- Desktop Navigation Links -->
+        <ul class="desktop-nav-links">
             <li><a href="/" class="nav-link <%= page === 'home' ? 'active' : '' %>">Home</a></li>
             <li><a href="/menu" class="nav-link <%= page === 'menu' ? 'active' : '' %>">Menu</a></li>
             <li><a href="/specialties" class="nav-link <%= page === 'specialties' ? 'active' : '' %>">Specialties</a></li>
@@ -48,26 +26,164 @@
             <li><a href="/reviews" class="nav-link <%= page === 'reviews' ? 'active' : '' %>">Reviews</a></li>
             <li><a href="/contact" class="nav-link <%= page === 'contact' ? 'active' : '' %>">Contact</a></li>
             <li><a href="/download" class="nav-link <%= page === 'download' ? 'active' : '' %>">Download</a></li>
-            <li><a href="/cart" class="nav-link">
-                <i class="fas fa-mug-hot"></i>
-                <span class="mobile-only">My Orders</span>
-            </a></li>
-            <% if (isAuthenticated && user) { %>
-                <!-- Logged in: Show only Dashboard with profile icon -->
-                <li><a href="/dashboard" class="nav-btn">
-                    <i class="fas fa-user"></i>
-                    Dashboard
-                </a></li>
-            <% } else { %>
-                <!-- Not logged in: Show only Log In Now -->
-                <li><a href="/login" class="nav-btn">Log In Now</a></li>
-            <% } %>
         </ul>
+
+        <!-- Desktop User Actions -->
+        <div class="navbar-actions">
+            <!-- Cart -->
+            <a href="/cart" class="action-btn cart-btn" title="Cart">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-badge" id="desktopCartBadge">0</span>
+            </a>
+
+            <!-- User Menu -->
+            <% if (isAuthenticated && user) { %>
+                <div class="user-dropdown">
+                    <button class="user-btn" id="desktopUserBtn">
+                        <div class="user-avatar">
+                            <% const firstInitial = (user.firstName && typeof user.firstName === 'string') ? user.firstName.charAt(0) : (user.first_name && typeof user.first_name === 'string' ? user.first_name.charAt(0) : ''); %>
+                            <% const lastInitial = (user.lastName && typeof user.lastName === 'string') ? user.lastName.charAt(0) : (user.last_name && typeof user.last_name === 'string' ? user.last_name.charAt(0) : ''); %>
+                            <%= (firstInitial || lastInitial) ? (firstInitial + lastInitial).toUpperCase() : 'BB' %>
+                            <span class="notification-badge" id="desktopNotificationBadge" style="display: none;">0</span>
+                        </div>
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </button>
+                    
+                    <div class="user-dropdown-menu" id="desktopUserDropdown">
+                        <div class="dropdown-header">
+                            <div class="user-info">
+                                <p class="user-name"><%= user.firstName %> <%= user.lastName %></p>
+                                <p class="user-email"><%= user.email %></p>
+                            </div>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a href="/dashboard" class="dropdown-item">
+                            <i class="fas fa-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                        <a href="/settings" class="dropdown-item">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                        <a href="/order-history" class="dropdown-item">
+                            <i class="fas fa-history"></i>
+                            <span>Order History</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <button onclick="return confirmLogout()" class="dropdown-item logout-item">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </div>
+            <% } else { %>
+                <a href="/login" class="action-btn login-btn">
+                    <i class="fas fa-user"></i>
+                    <span class="login-text">Login</span>
+                </a>
+            <% } %>
+        </div>
     </div>
 </nav>
 
-<!-- Mobile Menu Backdrop -->
-<div class="mobile-backdrop" id="mobileBackdrop"></div>
+<!-- Modern Mobile Sidebar -->
+<div class="mobile-sidebar" id="mobileSidebar">
+    <div class="sidebar-content">
+        <!-- Sidebar Header with User Info -->
+        <div class="sidebar-header">
+            <% if (isAuthenticated && user) { %>
+                <div class="sidebar-user">
+                    <div class="sidebar-user-avatar">
+                        <% const sidebarFirstInitial = (user.firstName && typeof user.firstName === 'string') ? user.firstName.charAt(0) : (user.first_name && typeof user.first_name === 'string' ? user.first_name.charAt(0) : ''); %>
+                        <% const sidebarLastInitial = (user.lastName && typeof user.lastName === 'string') ? user.lastName.charAt(0) : (user.last_name && typeof user.last_name === 'string' ? user.last_name.charAt(0) : ''); %>
+                        <%= (sidebarFirstInitial || sidebarLastInitial) ? (sidebarFirstInitial + sidebarLastInitial).toUpperCase() : 'BB' %>
+                        <span class="mobile-notification-badge" id="mobileNotificationBadge" style="display: none;">0</span>
+                    </div>
+                    <div class="sidebar-user-info">
+                        <h3 class="sidebar-user-name"><%= user.firstName %> <%= user.lastName %></h3>
+                        <p class="sidebar-user-email"><%= user.email %></p>
+                    </div>
+                </div>
+            <% } else { %>
+                <div class="sidebar-guest">
+                    <div class="sidebar-guest-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="sidebar-guest-info">
+                        <h3 class="sidebar-guest-title">Welcome, Guest</h3>
+                        <a href="/login" class="sidebar-login-btn">Sign In</a>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar-nav">
+            <a href="/" class="sidebar-nav-item <%= page === 'home' ? 'active' : '' %>">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="/menu" class="sidebar-nav-item <%= page === 'menu' ? 'active' : '' %>">
+                <i class="fas fa-coffee"></i>
+                <span>Menu</span>
+            </a>
+            <a href="/specialties" class="sidebar-nav-item <%= page === 'specialties' ? 'active' : '' %>">
+                <i class="fas fa-star"></i>
+                <span>Specialties</span>
+            </a>
+            <a href="/about" class="sidebar-nav-item <%= page === 'about' ? 'active' : '' %>">
+                <i class="fas fa-info-circle"></i>
+                <span>About</span>
+            </a>
+            <a href="/reviews" class="sidebar-nav-item <%= page === 'reviews' ? 'active' : '' %>">
+                <i class="fas fa-comments"></i>
+                <span>Reviews</span>
+            </a>
+            <a href="/contact" class="sidebar-nav-item <%= page === 'contact' ? 'active' : '' %>">
+                <i class="fas fa-envelope"></i>
+                <span>Contact</span>
+            </a>
+            <a href="/download" class="sidebar-nav-item <%= page === 'download' ? 'active' : '' %>">
+                <i class="fas fa-download"></i>
+                <span>Download</span>
+            </a>
+        </nav>
+
+        <!-- Sidebar Footer (For Authenticated Users) -->
+        <% if (isAuthenticated && user) { %>
+            <div class="sidebar-footer">
+                <a href="/cart" class="sidebar-footer-item">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Cart</span>
+                    <span class="sidebar-cart-badge" id="mobileCartBadge">0</span>
+                </a>
+                <a href="/dashboard" class="sidebar-footer-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/settings" class="sidebar-footer-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+                <button onclick="return confirmLogout()" class="sidebar-footer-item logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        <% } else { %>
+            <div class="sidebar-footer">
+                <a href="/cart" class="sidebar-footer-item">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Cart</span>
+                    <span class="sidebar-cart-badge" id="mobileCartBadge">0</span>
+                </a>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<!-- Backdrop -->
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
 <script>
 (function() {
@@ -77,15 +193,17 @@
     const navbar = document.getElementById('navbar');
     const backToTop = document.getElementById('backToTop');
     const navToggle = document.getElementById('navToggle');
-    const navLinks = document.getElementById('navLinks');
-    const mobileBackdrop = document.getElementById('mobileBackdrop');
+    const mobileSidebar = document.getElementById('mobileSidebar');
+    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+    const desktopUserBtn = document.getElementById('desktopUserBtn');
+    const desktopUserDropdown = document.getElementById('desktopUserDropdown');
 
     // Navbar scroll effect with throttle
     let scrollTimeout;
     window.addEventListener('scroll', function() {
         if (!scrollTimeout) {
             scrollTimeout = setTimeout(function() {
-                const scrolled = window.scrollY > 100;
+                const scrolled = window.scrollY > 50;
                 if (navbar) {
                     navbar.classList.toggle('scrolled', scrolled);
                 }
@@ -97,41 +215,120 @@
         }
     }, { passive: true });
 
-    // Mobile menu toggle
-    if (navToggle && navLinks) {
-        const toggleMenu = () => {
-            const isActive = navLinks.classList.toggle('active');
+    // Mobile sidebar toggle
+    if (navToggle && mobileSidebar) {
+        const toggleSidebar = () => {
+            const isActive = mobileSidebar.classList.toggle('active');
             navToggle.classList.toggle('active', isActive);
-            if (mobileBackdrop) {
-                mobileBackdrop.classList.toggle('active', isActive);
+            if (sidebarBackdrop) {
+                sidebarBackdrop.classList.toggle('active', isActive);
             }
             document.body.style.overflow = isActive ? 'hidden' : '';
         };
 
-        navToggle.addEventListener('click', toggleMenu);
+        navToggle.addEventListener('click', toggleSidebar);
         
-        if (mobileBackdrop) {
-            mobileBackdrop.addEventListener('click', toggleMenu);
+        if (sidebarBackdrop) {
+            sidebarBackdrop.addEventListener('click', toggleSidebar);
         }
 
-        // Close mobile menu on link click
-        navLinks.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', toggleMenu);
+        // Close sidebar on link click
+        mobileSidebar.querySelectorAll('.sidebar-nav-item, .sidebar-footer-item').forEach(link => {
+            link.addEventListener('click', function() {
+                if (!this.classList.contains('logout')) {
+                    toggleSidebar();
+                }
+            });
         });
     }
 
-    // Set active nav link
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    document.querySelectorAll('.nav-link').forEach(link => {
-        if (link.getAttribute('href') === currentPage) {
-            link.classList.add('active');
+    // Desktop user dropdown toggle
+    if (desktopUserBtn && desktopUserDropdown) {
+        desktopUserBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            desktopUserDropdown.classList.toggle('active');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (desktopUserDropdown && !desktopUserBtn.contains(e.target) && !desktopUserDropdown.contains(e.target)) {
+                desktopUserDropdown.classList.remove('active');
+            }
+        });
+    }
+
+    // Update cart badge (both mobile and desktop)
+    async function updateCartBadge() {
+        try {
+            const response = await fetch('/api/cart/count');
+            if (response.ok) {
+                const data = await response.json();
+                const mobileCartBadge = document.getElementById('mobileCartBadge');
+                const desktopCartBadge = document.getElementById('desktopCartBadge');
+                
+                // Update mobile cart badge
+                if (mobileCartBadge) {
+                    mobileCartBadge.textContent = data.count || 0;
+                    mobileCartBadge.style.display = data.count > 0 ? 'flex' : 'none';
+                }
+                
+                // Update desktop cart badge
+                if (desktopCartBadge) {
+                    desktopCartBadge.textContent = data.count || 0;
+                    desktopCartBadge.style.display = data.count > 0 ? 'flex' : 'none';
+                }
+            }
+        } catch (error) {
+            console.error('Error updating cart badge:', error);
         }
-    });
+    }
+
+    // Update notification badge (both mobile and desktop)
+    async function updateNotificationBadge() {
+        try {
+            const response = await fetch('/api/notifications/count');
+            if (response.ok) {
+                const data = await response.json();
+                const mobileNotificationBadge = document.getElementById('mobileNotificationBadge');
+                const desktopNotificationBadge = document.getElementById('desktopNotificationBadge');
+                
+                // Update mobile notification badge
+                if (mobileNotificationBadge) {
+                    mobileNotificationBadge.textContent = data.count || 0;
+                    mobileNotificationBadge.style.display = data.count > 0 ? 'flex' : 'none';
+                }
+                
+                // Update desktop notification badge
+                if (desktopNotificationBadge) {
+                    desktopNotificationBadge.textContent = data.count || 0;
+                    desktopNotificationBadge.style.display = data.count > 0 ? 'flex' : 'none';
+                }
+            }
+        } catch (error) {
+            console.error('Error updating notification badge:', error);
+        }
+    }
+
+    // Update badges on page load
+    updateCartBadge();
+    updateNotificationBadge();
+    
+    // Update badges periodically (every 30 seconds)
+    setInterval(updateCartBadge, 30000);
+    setInterval(updateNotificationBadge, 30000);
+
+    // Listen for update events
+    window.addEventListener('cartUpdated', updateCartBadge);
+    window.addEventListener('notificationUpdated', updateNotificationBadge);
 
 })();
 
 // Logout confirmation function
 function confirmLogout() {
-    return confirm('Are you sure you want to logout?');
+    if (confirm('Are you sure you want to logout?')) {
+        window.location.href = '/logout';
+        return false;
+    }
+    return false;
 }
 </script>

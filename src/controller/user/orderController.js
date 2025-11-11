@@ -370,6 +370,33 @@ class OrderController {
             });
         }
     }
+
+    // Get notification count (pending and processing orders)
+    static async getNotificationCount(req, res) {
+        try {
+            const userId = req.session.user.id;
+            
+            // Count orders with status 'pending' or 'processing'
+            const result = await pool.query(
+                `SELECT COUNT(*) as count 
+                 FROM orders 
+                 WHERE user_id = $1 
+                 AND order_status IN ('pending', 'processing')`,
+                [userId]
+            );
+            
+            res.json({ 
+                success: true, 
+                count: parseInt(result.rows[0].count) || 0 
+            });
+        } catch (error) {
+            console.error('Error getting notification count:', error);
+            res.status(500).json({ 
+                success: false, 
+                count: 0 
+            });
+        }
+    }
 }
 
 export default OrderController;

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Bean & Brew Customer Dashboard - Manage your orders, rewards, and preferences">
+    <meta name="description" content="Bean & Brew Customer Dashboard - Manage your orders and preferences">
     <meta name="author" content="Bean & Brew">
     <meta name="theme-color" content="#C67C4E">
     
@@ -15,10 +15,7 @@
     <link rel="stylesheet" href="/css/bottomNav.css">
 </head>
 <body>
-    <!-- Mobile Menu Toggle -->
-    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu">
-        <i class="fas fa-mug-hot"></i>
-    </button>
+    <%- include('../partials/dashboardNavbar') %>
 
     <%- include('../partials/sidebar', { page: 'dashboard' }) %>
 
@@ -26,253 +23,193 @@
     <main class="main-content">
         <!-- Page Header -->
         <header class="content-header">
-            <h1 class="page-title">Dashboard Overview</h1>
-            <p class="page-subtitle" id="greetingText">
-                Good <%= new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 18 ? 'Afternoon' : 'Evening' %>, 
-                <% if (user && user.firstName) { %>
-                    <%= user.firstName %>!
-                <% } else { %>
-                    Valued Customer!
+            <div class="header-content">
+                <div class="header-text">
+                    <h1 class="page-title">
+                        Good <%= new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 18 ? 'Afternoon' : 'Evening' %>,
+                        <% if (user && user.firstName) { %>
+                            <%= user.firstName %>!
+                        <% } else { %>
+                            Valued Customer!
+                        <% } %>
+                    </h1>
+                    <p class="page-subtitle">Welcome back to Bean & Brew</p>
+                </div>
+                <% if (user && !user.isVerified) { %>
+                <div class="verification-alert">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>Please verify your email to unlock all features</span>
+                </div>
                 <% } %>
-            </p>
+            </div>
         </header>
 
         <!-- Stats Overview -->
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-icon" style="background: linear-gradient(135deg, #C67C4E 0%, #A66438 100%);">
+                <div class="stat-icon orders-icon">
                     <i class="fas fa-shopping-bag"></i>
                 </div>
                 <div class="stat-info">
                     <p class="stat-label">Total Orders</p>
-                    <h3 class="stat-number">47</h3>
-                    <span class="stat-change positive"><i class="fas fa-arrow-up"></i> +3 this week</span>
+                    <h3 class="stat-number" id="totalOrders">0</h3>
+                    <span class="stat-change">All time purchases</span>
                 </div>
             </div>
 
             <div class="stat-card">
-                <div class="stat-icon" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">
-                    <i class="fas fa-star"></i>
+                <div class="stat-icon cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
                 </div>
                 <div class="stat-info">
-                    <p class="stat-label">Reward Points</p>
-                    <h3 class="stat-number">1,250</h3>
-                    <span class="stat-change positive"><i class="fas fa-arrow-up"></i> +150 earned</span>
+                    <p class="stat-label">Cart Items</p>
+                    <h3 class="stat-number" id="cartItems">0</h3>
+                    <span class="stat-change">Ready to checkout</span>
                 </div>
             </div>
 
             <div class="stat-card">
-                <div class="stat-icon" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
-                    <i class="fas fa-wallet"></i>
+                <div class="stat-icon spent-icon">
+                    <i class="fas fa-peso-sign"></i>
                 </div>
                 <div class="stat-info">
                     <p class="stat-label">Total Spent</p>
-                    <h3 class="stat-number">&#8369;8,540</h3>
-                    <span class="stat-change neutral">&#8369;285 avg order</span>
+                    <h3 class="stat-number" id="totalSpent">₱0</h3>
+                    <span class="stat-change">Completed orders</span>
                 </div>
             </div>
 
             <div class="stat-card">
-                <div class="stat-icon" style="background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);">
-                    <i class="fas fa-heart"></i>
+                <div class="stat-icon pending-icon">
+                    <i class="fas fa-clock"></i>
                 </div>
                 <div class="stat-info">
-                    <p class="stat-label">Favorite Items</p>
-                    <h3 class="stat-number">0</h3>
-                    <span class="stat-change neutral">Add favorites</span>
+                    <p class="stat-label">Pending Orders</p>
+                    <h3 class="stat-number" id="pendingOrders">0</h3>
+                    <span class="stat-change">In progress</span>
                 </div>
             </div>
         </div>
 
         <!-- Main Dashboard Grid -->
         <div class="dashboard-grid">
-            <!-- Current Order Card -->
-            <section class="card current-order-card">
+            <!-- Recent Orders Card -->
+            <section class="card recent-orders-card">
                 <div class="card-header">
                     <h2 class="card-title">
-                        <i class="fas fa-shopping-cart"></i> Current Order
+                        <i class="fas fa-receipt"></i> Recent Orders
                     </h2>
-                    <a href="/order-preview" class="btn-link">View Details</a>
+                    <a href="/order-history" class="btn-link">View All</a>
                 </div>
                 <div class="card-body">
-                    <div class="order-widget">
-                        <div class="order-status-badge preparing">
-                            <i class="fas fa-clock"></i> Preparing
-                        </div>
-                        <div class="order-items-with-images">
-                            <div class="order-product-mini">
-                                <img src="../../Assets/Coffee/Cold Caramel Macchiato.webp" alt="Caramel Macchiato" class="mini-product-image">
-                                <div class="mini-product-details">
-                                    <h4>Caramel Macchiato (L)</h4>
-                                    <p>Iced, Extra Caramel</p>
-                                    <span class="mini-product-price">&#8369;175</span>
-                                </div>
-                            </div>
-                            <div class="order-product-mini">
-                                <img src="../../Assets/Coffee/Hot Cappuccino.webp" alt="Cappuccino" class="mini-product-image">
-                                <div class="mini-product-details">
-                                    <h4>Cappuccino (Reg)</h4>
-                                    <p>Hot, Regular</p>
-                                    <span class="mini-product-price">&#8369;110</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="order-total-mini">
-                            <strong>Total:</strong>
-                            <strong>&#8369;285</strong>
-                        </div>
-                        <button class="btn-primary-action" onclick="window.location.href='/order-preview'">
-                            <i class="fas fa-eye"></i> Track Order
-                        </button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Quick Reorder Card -->
-            <section class="card quick-reorder-card">
-                <div class="card-header">
-                    <h2 class="card-title">
-                        <i class="fas fa-redo"></i> Quick Reorder
-                    </h2>
-                    <a href="/favorites" class="btn-link">View All</a>
-                </div>
-                <div class="card-body">
-                    <div class="quick-reorder-list">
-                        <div class="reorder-item">
-                            <img src="../../Assets/Coffee/Cold Caramel Macchiato.webp" alt="Caramel Macchiato" class="reorder-image">
-                            <div class="item-info">
-                                <h4>Caramel Macchiato</h4>
-                                <p>Ordered 12 times</p>
-                            </div>
-                            <button class="btn-reorder">Reorder</button>
-                        </div>
-                        <div class="reorder-item">
-                            <img src="../../Assets/Coffee/Cold Spanish Latte.webp" alt="Spanish Latte" class="reorder-image">
-                            <div class="item-info">
-                                <h4>Spanish Latte</h4>
-                                <p>Ordered 8 times</p>
-                            </div>
-                            <button class="btn-reorder">Reorder</button>
-                        </div>
-                        <div class="reorder-item">
-                            <img src="../../Assets/Coffee/Hot Cappuccino.webp" alt="Cappuccino" class="reorder-image">
-                            <div class="item-info">
-                                <h4>Cappuccino</h4>
-                                <p>Ordered 15 times</p>
-                            </div>
-                            <button class="btn-reorder">Reorder</button>
+                    <div class="orders-list" id="recentOrdersList">
+                        <div class="empty-state">
+                            <i class="fas fa-coffee"></i>
+                            <p>No orders yet</p>
+                            <a href="/menu" class="btn-primary-small">Browse Menu</a>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Rewards Widget -->
-            <section class="card rewards-widget-card">
+            <!-- Active Cart Card -->
+            <section class="card cart-preview-card">
                 <div class="card-header">
                     <h2 class="card-title">
-                        <i class="fas fa-gift"></i> Your Rewards
+                        <i class="fas fa-shopping-cart"></i> Your Cart
                     </h2>
-                    <a href="/rewards" class="btn-link">See All</a>
+                    <a href="/cart" class="btn-link">View Cart</a>
                 </div>
                 <div class="card-body">
-                    <div class="rewards-summary">
-                        <div class="points-circle">
-                            <div class="points-value">1,250</div>
-                            <div class="points-label">Points</div>
+                    <div class="cart-preview" id="cartPreview">
+                        <div class="empty-state">
+                            <i class="fas fa-cart-plus"></i>
+                            <p>Your cart is empty</p>
+                            <a href="/menu" class="btn-primary-small">Start Shopping</a>
                         </div>
-                        <div class="rewards-info">
-                            <p class="rewards-status"><i class="fas fa-crown"></i> Gold Member Status</p>
-                            <div class="next-reward">
-                                <div class="progress-mini">
-                                    <div class="progress-fill-mini" style="width: 83%"></div>
-                                </div>
-                                <p class="progress-text-mini">250 points to next free coffee</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="rewards-message">
-                        <i class="fas fa-info-circle"></i> Keep earning points with every purchase!
                     </div>
                 </div>
             </section>
 
-            <!-- Recent Activity Widget -->
-            <section class="card activity-widget-card">
+            <!-- Quick Actions Card -->
+            <section class="card quick-actions-card">
                 <div class="card-header">
                     <h2 class="card-title">
-                        <i class="fas fa-clock"></i> Recent Activity
+                        <i class="fas fa-bolt"></i> Quick Actions
                     </h2>
                 </div>
                 <div class="card-body">
-                    <div class="activity-timeline">
-                        <div class="timeline-item">
-                            <div class="timeline-icon" style="background: #C67C4E;">
+                    <div class="quick-actions-grid">
+                        <a href="/menu" class="action-btn">
+                            <div class="action-icon" style="background: linear-gradient(135deg, #C67C4E 0%, #A66438 100%);">
+                                <i class="fas fa-coffee"></i>
+                            </div>
+                            <span>Browse Menu</span>
+                        </a>
+                        <a href="/order-history" class="action-btn">
+                            <div class="action-icon" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">
+                                <i class="fas fa-history"></i>
+                            </div>
+                            <span>Order History</span>
+                        </a>
+                        <a href="/cart" class="action-btn">
+                            <div class="action-icon" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
                                 <i class="fas fa-shopping-bag"></i>
                             </div>
-                            <div class="timeline-content">
-                                <p class="timeline-text">Order placed for &#8369;285</p>
-                                <span class="timeline-time">2 hours ago</span>
+                            <span>My Cart</span>
+                        </a>
+                        <a href="/settings" class="action-btn">
+                            <div class="action-icon" style="background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);">
+                                <i class="fas fa-cog"></i>
                             </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-icon" style="background: #F59E0B;">
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <div class="timeline-content">
-                                <p class="timeline-text">Earned 50 reward points</p>
-                                <span class="timeline-time">5 hours ago</span>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-icon" style="background: #10B981;">
-                                <i class="fas fa-heart"></i>
-                            </div>
-                            <div class="timeline-content">
-                                <p class="timeline-text">Added new favorite item</p>
-                                <span class="timeline-time">Yesterday</span>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-icon" style="background: #6366F1;">
-                                <i class="fas fa-trophy"></i>
-                            </div>
-                            <div class="timeline-content">
-                                <p class="timeline-text">Reached Gold Member status</p>
-                                <span class="timeline-time">3 days ago</span>
-                            </div>
-                        </div>
+                            <span>Settings</span>
+                        </a>
                     </div>
                 </div>
             </section>
 
-            <!-- Special Offers Card -->
-            <section class="card offers-card">
+            <!-- Account Info Card -->
+            <section class="card account-info-card">
                 <div class="card-header">
                     <h2 class="card-title">
-                        <i class="fas fa-tags"></i> Special Offers
+                        <i class="fas fa-user-circle"></i> Account Information
                     </h2>
+                    <a href="/settings" class="btn-link">Edit Profile</a>
                 </div>
                 <div class="card-body">
-                    <div class="offers-list">
-                        <div class="offer-item" style="background: linear-gradient(135deg, #C67C4E 0%, #A66438 100%);">
-                            <img src="../../Assets/Coffee/Special Affogato.webp" alt="Gold Exclusive" class="offer-image">
-                            <div class="offer-content">
-                                <h4>Gold Member Exclusive</h4>
-                                <p>Get 2x points on all orders this week!</p>
+                    <div class="account-details">
+                        <div class="account-item">
+                            <i class="fas fa-user"></i>
+                            <div class="account-item-content">
+                                <label>Full Name</label>
+                                <p><%= user && user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : 'Not set' %></p>
                             </div>
                         </div>
-                        <div class="offer-item" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">
-                            <img src="../../Assets/Coffee/Hot Cafe Mocha.webp" alt="Buy 1 Get 1" class="offer-image">
-                            <div class="offer-content">
-                                <h4>Buy 1 Get 1 Free</h4>
-                                <p>On all medium-sized coffees today</p>
+                        <div class="account-item">
+                            <i class="fas fa-envelope"></i>
+                            <div class="account-item-content">
+                                <label>Email Address</label>
+                                <p><%= user && user.email ? user.email : 'Not set' %></p>
                             </div>
                         </div>
-                        <div class="offer-item" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
-                            <img src="../../Assets/Coffee/Cold Vanilla Latte.webp" alt="Iced Special" class="offer-image">
-                            <div class="offer-content">
-                                <h4>Iced Coffee Special</h4>
-                                <p>20% off all cold beverages before 2 PM</p>
+                        <div class="account-item">
+                            <i class="fas fa-phone"></i>
+                            <div class="account-item-content">
+                                <label>Phone Number</label>
+                                <p><%= user && user.phone ? user.phone : 'Not set' %></p>
+                            </div>
+                        </div>
+                        <div class="account-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <div class="account-item-content">
+                                <label>Account Status</label>
+                                <p>
+                                    <% if (user && user.isVerified) { %>
+                                        <span class="status-badge verified"><i class="fas fa-check-circle"></i> Verified</span>
+                                    <% } else { %>
+                                        <span class="status-badge unverified"><i class="fas fa-exclamation-circle"></i> Unverified</span>
+                                    <% } %>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -286,9 +223,6 @@
     <script src="/js/auth/logout.js"></script>
     <script src="/js/auth/userProfile.js"></script>
     <script src="/js/user/dashboard.js"></script>
-    <!-- <script src="../js/bottom-nav.js"></script>
 </body>
 </html>
-
-
 

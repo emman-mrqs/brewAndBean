@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
 <nav class="bottom-nav" aria-label="Bottom Navigation">
     <a href="/" class="bn-link <%= page === 'home' ? 'active' : '' %>" aria-label="Home">
         <i class="fas fa-house" aria-hidden="true"></i>
@@ -11,12 +13,12 @@
         <i class="fas fa-gauge" aria-hidden="true"></i>
         <span>Dashboard</span>
     </a>
-    <a href="/cart" class="bn-link <%= page === 'cart' ? 'active' : '' %>" aria-label="Cart">
-        <i class="fas fa-cart-shopping" aria-hidden="true"></i>
-        <span>Cart</span>
+    <a href="#" class="bn-link <%= page === 'cart' ? 'active' : '' %>" aria-label="Cart">
+        <i class="bi bi-bell-fill" aria-hidden="true"></i>
+        <span>notification</span>
     </a>
-    <a href="/specialties" class="bn-link <%= page === 'specialties' ? 'active' : '' %>" aria-label="Specialties">
-        <i class="fas fa-star" aria-hidden="true"></i>
-        <span>Specialties</span>
+    <a href="/contact" class="bn-link <%= page === 'contact' ? 'active' : '' %>" aria-label="Contact">
+        <i class="bi bi-envelope-fill" aria-hidden="true"></i>
+        <span>Contact</span>
     </a>
 </nav>

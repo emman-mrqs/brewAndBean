@@ -275,6 +275,39 @@ class CartController {
             res.status(500).json({ success: false, message: "Failed to clear cart" });
         }
     }
+
+    // Get cart item count
+    static async getCartCount(req, res) {
+        try {
+            const userId = req.session.user.id;
+            
+            // Get user's cart
+            const cartResult = await db.query(
+                'SELECT id FROM cart WHERE user_id = $1',
+                [userId]
+            );
+            
+            if (cartResult.rows.length === 0) {
+                return res.json({ success: true, count: 0 });
+            }
+            
+            const cartId = cartResult.rows[0].id;
+            
+            // Count cart items
+            const countResult = await db.query(
+                'SELECT COUNT(*) as count FROM cart_items WHERE cart_id = $1',
+                [cartId]
+            );
+            
+            res.json({ 
+                success: true, 
+                count: parseInt(countResult.rows[0].count) || 0 
+            });
+        } catch (error) {
+            console.error("Error getting cart count:", error);
+            res.status(500).json({ success: false, count: 0 });
+        }
+    }
 }
 
 export default CartController;

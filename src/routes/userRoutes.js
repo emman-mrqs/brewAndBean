@@ -37,6 +37,9 @@ router.get("/download", DownloadController.getDownload);
 
 // User dashboard and account routes (protected)
 router.get("/dashboard", requireAuth, DashboardController.getDashboard);
+router.get("/api/dashboard/stats", requireAuthAPI, DashboardController.getUserStats);
+router.get("/api/dashboard/recent-orders", requireAuthAPI, DashboardController.getRecentOrders);
+router.get("/api/dashboard/cart-preview", requireAuthAPI, DashboardController.getCartPreview);
 router.get("/settings", requireAuth, UserSettingsController.getSettings);
 router.get("/favorites", requireAuth, UserSettingsController.getFavorites);
 router.get("/rewards", requireAuth, UserSettingsController.getRewards);
@@ -44,6 +47,7 @@ router.get("/rewards", requireAuth, UserSettingsController.getRewards);
 // Cart routes (protected)
 router.get("/cart", requireAuth, CartController.getCart);
 router.get("/api/cart/items", requireAuthAPI, CartController.getCartItems);
+router.get("/api/cart/count", requireAuthAPI, CartController.getCartCount);
 router.post("/cart/add", requireAuthAPI, CartController.addToCart);
 router.delete("/cart/remove/:itemId", requireAuthAPI, CartController.removeFromCart);
 router.put("/cart/update/:itemId", requireAuthAPI, CartController.updateCartItem);
@@ -61,6 +65,7 @@ router.get("/api/orders/:orderId", requireAuth, OrderController.getOrder);
 router.get("/api/orders/:orderId/payment", requireAuth, OrderController.getOrderPayment); // Get payment details
 router.get("/api/orders", requireAuth, OrderController.getUserOrders);
 router.put("/api/orders/:orderId/status", requireAuth, OrderController.updateOrderStatus);
+router.get("/api/notifications/count", requireAuthAPI, OrderController.getNotificationCount);
 
 // Public API for branches (for checkout page)
 router.get("/api/branches", OrderController.getBranches);
