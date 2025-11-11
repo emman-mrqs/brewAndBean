@@ -41,8 +41,8 @@ router.get("/api/dashboard/stats", requireAuthAPI, DashboardController.getUserSt
 router.get("/api/dashboard/recent-orders", requireAuthAPI, DashboardController.getRecentOrders);
 router.get("/api/dashboard/cart-preview", requireAuthAPI, DashboardController.getCartPreview);
 router.get("/settings", requireAuth, UserSettingsController.getSettings);
-router.get("/favorites", requireAuth, UserSettingsController.getFavorites);
-router.get("/rewards", requireAuth, UserSettingsController.getRewards);
+router.post("/settings/profile", requireAuth, UserSettingsController.updateProfile);
+router.post("/settings/password", requireAuth, UserSettingsController.updatePassword);
 
 // Cart routes (protected)
 router.get("/cart", requireAuth, CartController.getCart);
@@ -61,6 +61,9 @@ router.post("/order/process", requireAuth, requireVerification, OrderController.
 
 // Order API routes
 router.post("/api/orders", requireAuth, requireVerification, OrderController.createOrder);
+router.get("/api/orders/history", requireAuth, OrderController.getOrderHistoryData); // Get order history (completed/cancelled)
+router.get("/api/orders/current", requireAuth, OrderController.getCurrentOrders); // Get current orders (not completed/cancelled)
+router.post("/api/orders/:orderId/cancel", requireAuth, OrderController.cancelOrder); // Cancel order
 router.get("/api/orders/:orderId", requireAuth, OrderController.getOrder);
 router.get("/api/orders/:orderId/payment", requireAuth, OrderController.getOrderPayment); // Get payment details
 router.get("/api/orders", requireAuth, OrderController.getUserOrders);
@@ -71,7 +74,6 @@ router.get("/api/notifications/count", requireAuthAPI, OrderController.getNotifi
 router.get("/api/branches", OrderController.getBranches);
 
 // Payment routes (protected and verified)
-router.get("/payment-settings", requireAuth, requireVerification, PaymentController.getPaymentSettings); // Payment settings page
 router.get("/payment", requireAuth, requireVerification, PaymentController.getPaymentCheckout); // Payment checkout page
 router.post("/api/orders/payment", requireAuth, PaymentController.processPayment); // Process payment API
 
@@ -93,6 +95,5 @@ router.get("/order-confirmation", requireAuth, requireVerification, (req, res) =
 router.post("/contact/submit", ContactController.submitContactForm);
 router.post("/reviews/add", ReviewsController.addReview);
 router.post("/settings/update", UserSettingsController.updateSettings);
-router.post("/favorites/add", UserSettingsController.addToFavorites);
 
 export default router;

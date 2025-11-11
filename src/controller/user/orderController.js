@@ -2,11 +2,13 @@
 import pool from '../../database/db.js';
 
 class OrderController {
-    static getOrderHistory(req, res) {
+    static async getOrderHistory(req, res) {
         try {
             res.render("user/orderHistory", {
                 title: "Order History - Bean & Brew",
-                page: "orderHistory"
+                page: "orderHistory",
+                isAuthenticated: req.isAuthenticated ? req.isAuthenticated() : false,
+                user: req.user || null
             });
         } catch (error) {
             console.error("Error rendering order history page:", error);
@@ -14,15 +16,197 @@ class OrderController {
         }
     }
 
-    static getOrderPreview(req, res) {
+    // Get order history data (API) - only completed and cancelled orders
+    static async getOrderHistoryData(req, res) {
+        try {
+            const userId = req.user?.id;
+
+            if (!userId) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'User not authenticated'
+                });
+            }
+
+            const query = `
+                SELECT 
+                    o.id,
+                    o.order_status,
+                    o.payment_status,
+                    o.payment_method,
+                    o.total_amount,
+                    o.created_at,
+                    o.updated_at,
+                    b.name as branch_name,
+                    b.city as branch_city,
+                    COUNT(oi.id) as item_count,
+                    STRING_AGG(DISTINCT p.name || ' (' || pv.name || ')', ', ') as items
+                FROM orders o
+                LEFT JOIN branches b ON o.branch_id = b.id
+                LEFT JOIN order_items oi ON o.id = oi.order_id
+                LEFT JOIN product_variant pv ON oi.product_variant_id = pv.id
+                LEFT JOIN products p ON pv.product_id = p.id
+                WHERE o.user_id = $1 
+                AND o.order_status IN ('completed', 'cancelled')
+                GROUP BY o.id, b.name, b.city
+                ORDER BY o.created_at DESC
+            `;
+
+            const result = await pool.query(query, [userId]);
+
+            res.json({
+                success: true,
+                orders: result.rows
+            });
+
+        } catch (error) {
+            console.error('Error fetching order history:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Failed to fetch order history',
+                error: error.message
+            });
+        }
+    }
+
+    static async getOrderPreview(req, res) {
         try {
             res.render("user/orderPreview", {
-                title: "Order Preview - Bean & Brew",
-                page: "orderPreview"
+                title: "Current Orders - Bean & Brew",
+                page: "orderPreview",
+                isAuthenticated: req.isAuthenticated ? req.isAuthenticated() : false,
+                user: req.user || null
             });
         } catch (error) {
             console.error("Error rendering order preview page:", error);
             res.status(500).render("error", { message: "Internal Server Error" });
+        }
+    }
+
+    // Get current orders (API) - all orders except completed and cancelled
+    static async getCurrentOrders(req, res) {
+        try {
+            const userId = req.user?.id;
+
+            if (!userId) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'User not authenticated'
+                });
+            }
+
+            const query = `
+                SELECT 
+                    o.id,
+                    o.order_status,
+                    o.payment_status,
+                    o.payment_method,
+                    o.total_amount,
+                    o.notes,
+                    o.created_at,
+                    o.updated_at,
+                    b.name as branch_name,
+                    b.street as branch_street,
+                    b.city as branch_city,
+                    b.zipcode as branch_zipcode,
+                    json_agg(
+                        json_build_object(
+                            'id', oi.id,
+                            'product_name', p.name,
+                            'variant_name', pv.name,
+                            'quantity', oi.quantity,
+                            'unit_price', oi.unit_price,
+                            'total_price', oi.total_price,
+                            'img_url', p.img_url
+                        )
+                    ) as items
+                FROM orders o
+                LEFT JOIN branches b ON o.branch_id = b.id
+                LEFT JOIN order_items oi ON o.id = oi.order_id
+                LEFT JOIN product_variant pv ON oi.product_variant_id = pv.id
+                LEFT JOIN products p ON pv.product_id = p.id
+                WHERE o.user_id = $1 
+                AND o.order_status NOT IN ('completed', 'cancelled')
+                GROUP BY o.id, b.name, b.street, b.city, b.zipcode
+                ORDER BY o.created_at DESC
+            `;
+
+            const result = await pool.query(query, [userId]);
+
+            res.json({
+                success: true,
+                orders: result.rows
+            });
+
+        } catch (error) {
+            console.error('Error fetching current orders:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Failed to fetch current orders',
+                error: error.message
+            });
+        }
+    }
+
+    // Cancel order (API) - only for pending and confirmed orders
+    static async cancelOrder(req, res) {
+        try {
+            const { orderId } = req.params;
+            const userId = req.user?.id || req.session?.user?.id;
+
+            if (!userId) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'User not authenticated'
+                });
+            }
+
+            // Check if order exists and belongs to user
+            const orderCheck = await pool.query(
+                'SELECT id, order_status, user_id FROM orders WHERE id = $1 AND user_id = $2',
+                [orderId, userId]
+            );
+
+            if (orderCheck.rows.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Order not found'
+                });
+            }
+
+            const order = orderCheck.rows[0];
+
+            // Check if order can be cancelled (only pending or confirmed)
+            if (!['pending', 'confirmed'].includes(order.order_status)) {
+                return res.status(400).json({
+                    success: false,
+                    message: `Cannot cancel order with status: ${order.order_status}`
+                });
+            }
+
+            // Update order status to cancelled
+            const updateResult = await pool.query(
+                `UPDATE orders 
+                 SET order_status = 'cancelled',
+                     updated_at = NOW()
+                 WHERE id = $1
+                 RETURNING *`,
+                [orderId]
+            );
+
+            res.json({
+                success: true,
+                message: 'Order cancelled successfully',
+                order: updateResult.rows[0]
+            });
+
+        } catch (error) {
+            console.error('Error cancelling order:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Failed to cancel order',
+                error: error.message
+            });
         }
     }
 

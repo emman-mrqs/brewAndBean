@@ -4,7 +4,7 @@ import db from '../../database/db.js';
 class DashboardController {
     static async getDashboard(req, res) {
         try {
-            res.render("user/dashboard", {
+            res.render("user/dashboard-new", {
                 title: "Dashboard - Bean & Brew",
                 page: "dashboard"
             });

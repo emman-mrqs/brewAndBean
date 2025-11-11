@@ -12,17 +12,46 @@
     <link rel="stylesheet" href="/css/dashboard.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="/css/bottomNav.css">
 </head>
 <body>
-    <%- include('../partials/dashboardNavbar') %>
-
-    <%- include('../partials/sidebar', { page: 'dashboard' }) %>
+    <%- include('../partials/navbar', { page: 'dashboard', isAuthenticated: typeof isAuthenticated !== 'undefined' ? isAuthenticated : false, user: typeof user !== 'undefined' ? user : null }) %>
 
     <!-- Main Content Area -->
     <main class="main-content">
-        <!-- Page Header -->
-        <header class="content-header">
+        <div class="dashboard-container">
+            <!-- Navigation Grid -->
+            <div class="dashboard-nav-grid">
+                <a href="/dashboard" class="nav-card active">
+                    <div class="nav-card-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h3 class="nav-card-title">Dashboard</h3>
+                    <p class="nav-card-desc">Overview & Stats</p>
+                </a>
+                <a href="/order-history" class="nav-card">
+                    <div class="nav-card-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h3 class="nav-card-title">Order History</h3>
+                    <p class="nav-card-desc">Past Orders</p>
+                </a>
+                <a href="/order-preview" class="nav-card">
+                    <div class="nav-card-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h3 class="nav-card-title">Current Order</h3>
+                    <p class="nav-card-desc">Active Order</p>
+                </a>
+                <a href="/settings" class="nav-card">
+                    <div class="nav-card-icon">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <h3 class="nav-card-title">Settings</h3>
+                    <p class="nav-card-desc">Account Settings</p>
+                </a>
+            </div>
+            <!-- Page Header -->
+            <header class="content-header">
             <div class="header-content">
                 <div class="header-text">
                     <h1 class="page-title">
@@ -131,43 +160,6 @@
                 </div>
             </section>
 
-            <!-- Quick Actions Card -->
-            <section class="card quick-actions-card">
-                <div class="card-header">
-                    <h2 class="card-title">
-                        <i class="fas fa-bolt"></i> Quick Actions
-                    </h2>
-                </div>
-                <div class="card-body">
-                    <div class="quick-actions-grid">
-                        <a href="/menu" class="action-btn">
-                            <div class="action-icon" style="background: linear-gradient(135deg, #C67C4E 0%, #A66438 100%);">
-                                <i class="fas fa-coffee"></i>
-                            </div>
-                            <span>Browse Menu</span>
-                        </a>
-                        <a href="/order-history" class="action-btn">
-                            <div class="action-icon" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">
-                                <i class="fas fa-history"></i>
-                            </div>
-                            <span>Order History</span>
-                        </a>
-                        <a href="/cart" class="action-btn">
-                            <div class="action-icon" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
-                                <i class="fas fa-shopping-bag"></i>
-                            </div>
-                            <span>My Cart</span>
-                        </a>
-                        <a href="/settings" class="action-btn">
-                            <div class="action-icon" style="background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);">
-                                <i class="fas fa-cog"></i>
-                            </div>
-                            <span>Settings</span>
-                        </a>
-                    </div>
-                </div>
-            </section>
-
             <!-- Account Info Card -->
             <section class="card account-info-card">
                 <div class="card-header">
@@ -216,9 +208,11 @@
                 </div>
             </section>
         </div>
+        </div>
     </main>
 
-    <%- include('../partials/bottomNav', { page: 'dashboard' }) %>
+    <!-- Bottom Navigation (Mobile) -->
+    <%- include('../partials/generalBottomNav', { page: 'home' }) %>
 
     <script src="/js/auth/logout.js"></script>
     <script src="/js/auth/userProfile.js"></script>

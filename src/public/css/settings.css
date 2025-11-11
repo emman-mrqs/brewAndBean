@@ -767,58 +767,262 @@ body {
     }
 }
 
-/* ===== SETTINGS PAGE SPECIFIC STYLES ===== */
-.setting-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.25rem;
-    background: var(--brew-surface);
-    border-radius: 10px;
-    margin-bottom: 1rem;
-    cursor: pointer;
-    transition: 0.3s;
+/* ===== UPDATED SETTINGS PAGE STYLES ===== */
+
+/* Container helpers (keeps spacing consistent with dashboard) */
+.settings-page-wrapper {
+  padding: 0;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
 }
 
-.setting-item:hover {
-    background: white;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transform: translateY(-2px);
+/* Profile card - left side info + right side actions */
+.profile-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1rem;
+  background: var(--brew-surface);
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.03);
 }
 
-.setting-content {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+/* layout inside profile card */
+.profile-left {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  min-width: 0;
 }
 
-.setting-icon {
-    font-size: 2rem;
+.profile-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid var(--brew-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--brew-white);
+  flex-shrink: 0;
 }
 
-.setting-text h4 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--brew-black);
-    margin-bottom: 0.25rem;
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-.setting-text p {
-    font-size: 0.9rem;
-    color: var(--brew-gray);
-    margin: 0;
+.avatar-placeholder {
+  font-size: 1.6rem;
+  color: var(--brew-primary);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  height:100%;
 }
 
-.setting-item i.fa-chevron-right {
-    color: var(--brew-gray);
-    transition: transform 0.3s;
+/* user meta */
+.profile-meta { min-width: 0; }
+.profile-name {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--brew-black);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.profile-email, .profile-phone {
+  font-size: 0.9rem;
+  color: var(--brew-gray);
+  margin-top: 4px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.setting-item:hover i.fa-chevron-right {
-    transform: translateX(5px);
-    color: var(--brew-primary);
+/* right-side action buttons inside profile card */
+.profile-actions {
+  display:flex;
+  flex-direction:column;
+  gap: .5rem;
+  align-items:flex-end;
 }
 
+/* Buttons (lightweight, aligned with global theme) */
+.btn-primary-small {
+  background: linear-gradient(135deg, var(--brew-primary) 0%, var(--brew-primary-dark) 100%);
+  color: white;
+  border: none;
+  padding: 0.5rem 0.9rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  text-decoration: none;
+}
+
+.btn-primary-small:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(198,124,78,0.12); }
+
+.btn-link {
+  background: none;
+  border: none;
+  color: var(--brew-primary);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0.15rem 0.25rem;
+}
+
+/* Form container (white card style) */
+.settings-form {
+  margin-top: 1rem;
+  background: var(--brew-white);
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  border: 1px solid rgba(15, 23, 42, 0.02);
+}
+
+/* row layout for form fields */
+.form-row {
+  display:flex;
+  flex-direction:column;
+  gap: .35rem;
+  margin-bottom: .9rem;
+}
+
+.form-row label {
+  font-size: .9rem;
+  color: var(--brew-gray);
+  font-weight: 600;
+}
+
+/* inputs */
+.form-row input[type="text"],
+.form-row input[type="tel"],
+.form-row input[type="password"],
+.form-row input[type="email"] {
+  padding: .7rem .9rem;
+  border-radius: 8px;
+  border: 1px solid #E6E9EE;
+  font-size: .95rem;
+  outline: none;
+  background: #fff;
+  color: var(--brew-black);
+  transition: box-shadow .15s, border-color .15s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-row input:focus {
+  box-shadow: 0 6px 18px rgba(198,124,78,0.12);
+  border-color: var(--brew-primary);
+}
+
+/* actions line for forms */
+.form-actions {
+  display:flex;
+  gap: .75rem;
+  align-items:center;
+  justify-content:flex-end;
+  margin-top: .5rem;
+}
+
+/* prominent primary action button */
+.btn-primary-action {
+  background: linear-gradient(135deg, var(--brew-primary) 0%, var(--brew-primary-dark) 100%);
+  color: white;
+  padding: .65rem 1rem;
+  border-radius: 10px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: .95rem;
+}
+
+/* small visual helpers */
+.form-note {
+  font-size: .85rem;
+  color: var(--brew-gray);
+  margin-top: .25rem;
+}
+
+/* Success / error messages can be shown inline */
+.form-message {
+  margin-top: .6rem;
+  font-size: .95rem;
+}
+
+/* Accessibility - focus outlines */
+.btn-primary-small:focus, .btn-primary-action:focus, .btn-link:focus, input:focus {
+  outline: 3px solid rgba(198,124,78,0.12);
+  outline-offset: 2px;
+}
+
+/* Card header spacing within settings page */
+.settings .card-header {
+  margin-bottom: 0.75rem;
+}
+
+    #toastContainer {
+      position: fixed;
+      z-index: 1100;
+      bottom: 20px;
+      right: 20px;
+      pointer-events: none; /* allow clicks to pass through except for the toast itself */
+    }
+    #toastContainer .toast {
+      pointer-events: auto;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+      border-radius: .6rem;
+    }
+
+/* Responsive: stack profile card on small screens */
+@media (max-width: 720px) {
+  .profile-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .75rem;
+  }
+  .profile-actions {
+    width: 100%;
+    justify-content: flex-start;
+    flex-direction: row;
+  }
+  .form-actions { justify-content: flex-start; }
+  .profile-name, .profile-email, .profile-phone { white-space: normal; }
+}
+
+/* Small-screen tweaks (mobile) */
+@media (max-width: 480px) {
+  .profile-avatar { width: 60px; height: 60px; border-radius: 10px; }
+  .profile-card { padding: .75rem; }
+  .settings-form { padding: .75rem; }
+  .btn-primary-small { padding: .45rem .75rem; font-size: .9rem; }
+  .btn-primary-action { padding: .55rem .8rem; font-size: .9rem; }
+}
+
+/* OPTIONAL fallback styling in case global theme lacks these button classes */
+.btn-primary-small i, .btn-primary-action i { margin-right: .4rem; }
+
+/* Tiny util */
+.hidden { display: none !important; }
+
+/* End updated settings styles */
+
+/* Responsive tweaks retained for other components (if needed) */
 @media (max-width: 768px) {
     .mobile-menu-toggle {
         display: block;
@@ -836,70 +1040,9 @@ body {
         margin-left: 0;
         padding: 5rem 1rem 1rem;
     }
-    
-    .setting-item {
-        padding: 1rem;
-    }
-    
-    .setting-icon {
-        font-size: 1.5rem;
-    }
-    
-    .setting-text h4 {
-        font-size: 1rem;
-    }
-    
-    .setting-text p {
-        font-size: 0.85rem;
-    }
-    
-    .page-title {
-        font-size: 1.5rem;
-    }
-    
-    .page-subtitle {
-        font-size: 0.95rem;
-    }
 }
 
 @media (max-width: 480px) {
-    .main-content {
-        padding: 4.5rem 0.75rem 0.75rem;
-    }
-    
-    .setting-item {
-        padding: 0.875rem;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.75rem;
-    }
-    
-    .setting-content {
-        width: 100%;
-    }
-    
-    .setting-icon {
-        font-size: 1.35rem;
-    }
-    
-    .setting-text h4 {
-        font-size: 0.95rem;
-    }
-    
-    .setting-text p {
-        font-size: 0.8rem;
-    }
-    
-    .setting-item i.fa-chevron-right {
-        align-self: center;
-        margin-top: -1rem;
-    }
-    
-    .page-title {
-        font-size: 1.25rem;
-    }
-    
-    .page-subtitle {
-        font-size: 0.875rem;
-    }
+    .main-content { padding: 4.5rem 0.75rem 0.75rem; }
 }
+

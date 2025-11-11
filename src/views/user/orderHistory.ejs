@@ -3,91 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Bean & Brew Order History - View all your past orders">
+    <meta name="author" content="Bean & Brew">
+    <meta name="theme-color" content="#C67C4E">
+    
     <title>Order History - Bean & Brew</title>
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/dashboard-new.css">
     <link rel="stylesheet" href="/css/orderHistory.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="/css/bottomNav.css">
 </head>
 <body>
-    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu">
-        <i class="fas fa-mug-hot"></i>
-    </button>
+    <%- include('../partials/navbar', { page: 'order-history', isAuthenticated: typeof isAuthenticated !== 'undefined' ? isAuthenticated : false, user: typeof user !== 'undefined' ? user : null }) %>
 
-    <%- include('../partials/sidebar', { page: 'order-history' }) %>
-
-    <main class="main-content">
-        <header class="content-header">
-            <h1 class="page-title">Order History</h1>
-            <p class="page-subtitle">View all your past orders</p>
-        </header>
-
-        <div class="dashboard-cards">
-            <section class="card" style="grid-column: 1 / -1;">
-                <div class="card-header">
-                    <h2 class="card-title">
-                        <i class="fas fa-history"></i> All Orders
-                    </h2>
+    <!-- Main Content Area -->
+    <main class="dashboard-main">
+        <div class="dashboard-wrapper">
+            <!-- Navigation Cards -->
+            <section class="nav-section">
+                <div class="nav-cards">
+                    <a href="/dashboard" class="nav-card">
+                        <div class="nav-card-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <h3 class="nav-card-title">Dashboard</h3>
+                        <p class="nav-card-desc">Overview & Stats</p>
+                    </a>
+                    <a href="/order-history" class="nav-card active">
+                        <div class="nav-card-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <h3 class="nav-card-title">Order History</h3>
+                        <p class="nav-card-desc">Past Orders</p>
+                    </a>
+                    <a href="/order-preview" class="nav-card">
+                        <div class="nav-card-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h3 class="nav-card-title">Current Order</h3>
+                        <p class="nav-card-desc">Active Order</p>
+                    </a>
+                    <a href="/settings" class="nav-card">
+                        <div class="nav-card-icon">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                        <h3 class="nav-card-title">Settings</h3>
+                        <p class="nav-card-desc">Account Settings</p>
+                    </a>
                 </div>
-                <div class="card-body">
-                    <div class="history-table">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Order #</th>
-                                    <th>Date</th>
-                                    <th>Items</th>
-                                    <th>Total</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>#ORD-2024-1085</td>
-                                    <td>Oct 29, 2:30 PM</td>
-                                    <td>Mocha Frappé, Vanilla Latte</td>
-                                    <td>&#8369;315</td>
-                                    <td><span class="badge badge-success">Completed</span></td>
-                                    <td><button class="icon-btn"><i class="fas fa-download"></i></button></td>
-                                </tr>
-                                <tr>
-                                    <td>#ORD-2024-1084</td>
-                                    <td>Oct 28, 8:00 AM</td>
-                                    <td>Americano (Medium)</td>
-                                    <td>&#8369;125</td>
-                                    <td><span class="badge badge-success">Completed</span></td>
-                                    <td><button class="icon-btn"><i class="fas fa-download"></i></button></td>
-                                </tr>
-                                <tr>
-                                    <td>#ORD-2024-1083</td>
-                                    <td>Oct 27, 3:15 PM</td>
-                                    <td>Caramel Macchiato, Spanish Latte</td>
-                                    <td>&#8369;330</td>
-                                    <td><span class="badge badge-success">Completed</span></td>
-                                    <td><button class="icon-btn"><i class="fas fa-download"></i></button></td>
-                                </tr>
-                                <tr>
-                                    <td>#ORD-2024-1082</td>
-                                    <td>Oct 26, 11:00 AM</td>
-                                    <td>Cappuccino, Flat White</td>
-                                    <td>&#8369;280</td>
-                                    <td><span class="badge badge-success">Completed</span></td>
-                                    <td><button class="icon-btn"><i class="fas fa-download"></i></button></td>
-                                </tr>
-                            </tbody>
-                        </table>
+            </section>
+
+            <!-- Page Header -->
+            <header class="page-header">
+                <div class="header-left">
+                    <h1 class="page-title">Order History</h1>
+                    <p class="page-subtitle">View all your past orders</p>
+                </div>
+            </header>
+
+            <!-- Orders Content Section -->
+            <section class="content-grid">
+                <div class="content-card" style="grid-column: 1 / -1;">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-history"></i> All Orders
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="history-table">
+                            <div id="loadingSpinner" style="text-align: center; padding: 2rem;">
+                                <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #C67C4E;"></i>
+                                <p>Loading order history...</p>
+                            </div>
+                            <div id="emptyState" style="display: none; text-align: center; padding: 3rem;">
+                                <i class="fas fa-receipt" style="font-size: 3rem; color: #ccc;"></i>
+                                <p style="margin-top: 1rem; color: #666;">No orders found</p>
+                                <a href="/menu" class="btn-primary-small" style="margin-top: 1rem;">Browse Menu</a>
+                            </div>
+                            <table id="ordersTable" style="display: none;">
+                                <thead>
+                                    <tr>
+                                        <th>Order #</th>
+                                        <th>Date</th>
+                                        <th>Items</th>
+                                        <th>Branch</th>
+                                        <th>Total</th>
+                                        <th>Status</th>
+                                        <th>Payment</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ordersTableBody">
+                                    <!-- Orders will be loaded here dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </section>
         </div>
     </main>
 
-    <%- include('../partials/bottomNav', { page: 'history' }) %>
+    <!-- Bottom Navigation (Mobile) -->
+    <%- include('../partials/generalBottomNav', { page: 'home' }) %>
 
     <script src="/js/user/orderHistory.js"></script>
-    <!-- <script src="../js/bottom-nav.js"></script> -->
 </body>
 </html>
 

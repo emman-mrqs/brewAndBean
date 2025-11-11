@@ -244,7 +244,15 @@ body {
 .main-content {
     margin-left: var(--sidebar-width);
     min-height: 100vh;
-    padding: 2rem;
+    padding: 2rem 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-content > * {
+    width: 100%;
+    max-width: 1200px;
 }
 
 .content-header {
@@ -769,21 +777,29 @@ body {
 
 /* ===== ORDER HISTORY PAGE SPECIFIC STYLES ===== */
 .history-table {
-    width: 100%;
-    overflow-x: auto;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 60vh;
+  -webkit-overflow-scrolling: touch;
 }
 
+
 table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  table-layout: auto;
 }
 
 thead {
     background: var(--brew-primary);
     color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
 th, td {
@@ -801,11 +817,52 @@ tbody tr:hover {
     border-radius: 20px;
     font-size: 0.8rem;
     font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
 }
 
 .badge-success {
     background: #E8F5E9;
     color: #2E7D32;
+}
+
+.badge-danger {
+    background: #FFEBEE;
+    color: #C62828;
+}
+
+.badge-warning {
+    background: #FFF3E0;
+    color: #EF6C00;
+}
+
+.badge-info {
+    background: #E3F2FD;
+    color: #1565C0;
+}
+
+.badge-secondary {
+    background: #F5F5F5;
+    color: #616161;
+}
+
+.btn-primary-small {
+    background: var(--brew-primary);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+
+.btn-primary-small:hover {
+    background: var(--brew-primary-dark);
+    transform: translateY(-2px);
 }
 
 .icon-btn {
@@ -822,77 +879,111 @@ tbody tr:hover {
     background: var(--brew-primary-dark);
 }
 
+/* ---------------- Mobile / Tablet fixes & responsive card layout ---------------- */
+
+/* General tablet/mobile tweaks */
 @media (max-width: 768px) {
-    .mobile-menu-toggle {
-        display: block;
-    }
-    
-    .sidebar {
-        transform: translateX(-100%);
-    }
-    
-    .sidebar.open {
-        transform: translateX(0);
-    }
-    
-    .main-content {
-        margin-left: 0;
-        padding: 5rem 1rem 1rem;
-    }
-    
-    .history-table {
-        font-size: 14px;
-    }
-    
-    th, td {
-        padding: 0.75rem 0.5rem;
-        font-size: 13px;
-    }
-    
-    table {
-        min-width: 600px;
-    }
-    
-    .badge {
-        font-size: 0.65rem;
-        padding: 0.2rem 0.6rem;
-    }
-    
-    .icon-btn {
-        padding: 0.4rem;
-        font-size: 12px;
-    }
-    
-    .page-title {
-        font-size: 1.5rem;
-    }
-    
-    .page-subtitle {
-        font-size: 0.95rem;
-    }
+  .mobile-menu-toggle { display: block; }
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+
+  .main-content { margin-left: 0; padding: 5rem 1rem 1rem; }
+
+  .history-table {
+    font-size: 14px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-height: 60vh;
+  }
+
+  /* let table shrink naturally - remove forcing min-width */
+  table {
+    min-width: 0;
+    table-layout: auto;
+    width: 100%;
+  }
+
+  th, td {
+    padding: 0.75rem 0.5rem;
+    font-size: 13px;
+    /* allow truncation instead of wrapping when needed */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .badge { font-size: 0.65rem; padding: 0.2rem 0.6rem; }
+  .icon-btn { padding: 0.4rem; font-size: 12px; }
+
+  .page-title { font-size: 1.5rem; }
+  .page-subtitle { font-size: 0.95rem; }
 }
 
+/* Smaller phones - remove any min-width forcing scrolling */
 @media (max-width: 480px) {
-    .main-content {
-        padding: 4.5rem 0.75rem 0.75rem;
-    }
-    
-    .history-table {
-        font-size: 12px;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    th, td {
-        padding: 0.6rem 0.4rem;
-        font-size: 11px;
-    }
-    
-    .page-title {
-        font-size: 1.25rem;
-    }
-    
-    .page-subtitle {
-        font-size: 0.875rem;
-    }
+  .main-content { padding: 4.5rem 0.75rem 0.75rem; }
+
+  .history-table {
+    font-size: 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-height: 55vh;
+  }
+
+  th, td {
+    padding: 0.6rem 0.4rem;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  /* IMPORTANT: remove the min-width:600px that was forcing horizontal scroll */
+  table { min-width: 0; }
+
+  .page-title { font-size: 1.25rem; }
+  .page-subtitle { font-size: 0.875rem; }
+}
+
+/* Very small screens: convert table rows to stacked cards (best UX) */
+@media (max-width: 720px) {
+  /* hide the table header and present each row as a card */
+  thead { display: none; }
+
+  table, tbody, tr, td {
+    display: block;
+    width: 100%;
+  }
+
+  tr {
+    margin: 0 0 12px;
+    background: white;
+    border-radius: 10px;
+    padding: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+
+  td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.45rem 0;
+    border: none;
+    border-bottom: 1px solid #f3f4f6;
+    white-space: normal; /* allow content wrap inside card rows */
+  }
+
+  td:last-child { border-bottom: none; }
+
+  /* show the column label on the left using the data-label attribute */
+  td::before {
+    content: attr(data-label);
+    flex: 0 0 45%;
+    font-weight: 600;
+    color: var(--brew-gray);
+    margin-right: 1rem;
+    font-size: 0.95rem;
+    opacity: 0.95;
+  }
+
+  /* keep badges/links aligned */
+  td > .badge, td > a, td > span { white-space: nowrap; }
 }

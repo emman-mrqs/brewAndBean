@@ -4,19 +4,6 @@ import checkoutNodeJssdk from '@paypal/checkout-server-sdk';
 import paypalClient from '../../config/paypal.js';
 
 class PaymentController {
-    // Render payment settings page
-    static getPaymentSettings(req, res) {
-        try {
-            res.render("user/payment", {
-                title: "Payment Settings - Bean & Brew",
-                page: "payment"
-            });
-        } catch (error) {
-            console.error("Error rendering payment settings page:", error);
-            res.status(500).render("error", { message: "Internal Server Error" });
-        }
-    }
-
     // Render payment checkout page (for completing order payment)
     static getPaymentCheckout(req, res) {
         try {
@@ -235,11 +222,6 @@ class PaymentController {
         } finally {
             client.release();
         }
-    }
-
-    // Legacy method (kept for backward compatibility)
-    static getPayment(req, res) {
-        return PaymentController.getPaymentSettings(req, res);
     }
 
     /* ============================================
