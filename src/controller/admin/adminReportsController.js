@@ -1,4 +1,4 @@
-// Admin Reports Controller
+// src/controller/admin/adminReportsController.js
 import pool from '../../database/db.js';
 
 class AdminReportsController {
@@ -16,12 +16,18 @@ class AdminReportsController {
 
     // Get overview statistics
     static async getOverviewStats(req, res) {
+        const client = await pool.connect();
         try {
-            const client = await pool.connect();
-            
-            // Total revenue
+            // Safe expression to normalize total_amount to numeric:
+            // 1. CAST to text (in case column is numeric or text)
+            // 2. regexp_replace to remove non-digits and non-dot characters
+            // 3. NULLIF empty string -> NULL
+            // 4. CAST to numeric
+            const amountExpr = `CAST(NULLIF(regexp_replace(CAST(total_amount AS text), '[^0-9.]', '', 'g'), '') AS numeric)`;
+
+            // Total revenue (only completed)
             const revenueResult = await client.query(`
-                SELECT COALESCE(SUM(total_amount), 0) as total_revenue
+                SELECT COALESCE(SUM(${amountExpr}), 0) as total_revenue
                 FROM orders
                 WHERE order_status = 'completed'
             `);
@@ -44,9 +50,9 @@ class AdminReportsController {
                 FROM products
             `);
 
-            // Average order value
+            // Average order value (only completed)
             const avgOrderResult = await client.query(`
-                SELECT COALESCE(AVG(total_amount), 0) as avg_order_value
+                SELECT COALESCE(AVG(${amountExpr}), 0) as avg_order_value
                 FROM orders
                 WHERE order_status = 'completed'
             `);
@@ -60,110 +66,127 @@ class AdminReportsController {
                 GROUP BY order_status
             `);
 
+            // release client
             client.release();
 
             res.json({
                 success: true,
                 stats: {
-                    totalRevenue: parseFloat(revenueResult.rows[0].total_revenue),
-                    totalOrders: parseInt(ordersResult.rows[0].total_orders),
-                    totalCustomers: parseInt(customersResult.rows[0].total_customers),
-                    totalProducts: parseInt(productsResult.rows[0].total_products),
-                    avgOrderValue: parseFloat(avgOrderResult.rows[0].avg_order_value),
+                    totalRevenue: parseFloat(revenueResult.rows[0].total_revenue || 0),
+                    totalOrders: parseInt(ordersResult.rows[0].total_orders || 0),
+                    totalCustomers: parseInt(customersResult.rows[0].total_customers || 0),
+                    totalProducts: parseInt(productsResult.rows[0].total_products || 0),
+                    avgOrderValue: parseFloat(avgOrderResult.rows[0].avg_order_value || 0),
                     ordersByStatus: orderStatusResult.rows
                 }
             });
         } catch (error) {
             console.error("Error getting overview stats:", error);
+            try { client.release(); } catch (e) {}
             res.status(500).json({ success: false, message: "Failed to get overview statistics" });
         }
     }
 
     // Get sales report
     static async getSalesReport(req, res) {
-        try {
-            const { period = '30days' } = req.query;
-            const client = await pool.connect();
+  const client = await pool.connect();
+  try {
+    const { period = '30days' } = req.query;
 
-            let dateCondition = '';
-            switch(period) {
-                case '7days':
-                    dateCondition = "created_at >= NOW() - INTERVAL '7 days'";
-                    break;
-                case '30days':
-                    dateCondition = "created_at >= NOW() - INTERVAL '30 days'";
-                    break;
-                case '90days':
-                    dateCondition = "created_at >= NOW() - INTERVAL '90 days'";
-                    break;
-                case 'year':
-                    dateCondition = "created_at >= NOW() - INTERVAL '1 year'";
-                    break;
-                default:
-                    dateCondition = "created_at >= NOW() - INTERVAL '30 days'";
-            }
-
-            // Daily sales data
-            const salesData = await client.query(`
-                SELECT 
-                    DATE(created_at) as date,
-                    COUNT(*) as orders,
-                    SUM(total_amount) as revenue
-                FROM orders
-                WHERE order_status = 'completed' AND ${dateCondition}
-                GROUP BY DATE(created_at)
-                ORDER BY date ASC
-            `);
-
-            // Top selling products
-            const topProducts = await client.query(`
-                SELECT 
-                    p.name,
-                    pv.name as variant_name,
-                    SUM(oi.quantity) as total_sold,
-                    SUM(oi.total_price) as revenue
-                FROM order_items oi
-                JOIN product_variant pv ON oi.product_variant_id = pv.id
-                JOIN products p ON pv.product_id = p.id
-                JOIN orders o ON oi.order_id = o.id
-                WHERE o.order_status = 'completed' AND o.${dateCondition}
-                GROUP BY p.id, p.name, pv.name
-                ORDER BY revenue DESC
-                LIMIT 10
-            `);
-
-            // Payment methods breakdown
-            const paymentMethods = await client.query(`
-                SELECT 
-                    payment_method,
-                    COUNT(*) as count,
-                    SUM(total_amount) as revenue
-                FROM orders
-                WHERE order_status = 'completed' AND ${dateCondition}
-                GROUP BY payment_method
-            `);
-
-            client.release();
-
-            res.json({
-                success: true,
-                report: {
-                    salesData: salesData.rows,
-                    topProducts: topProducts.rows,
-                    paymentMethods: paymentMethods.rows
-                }
-            });
-        } catch (error) {
-            console.error("Error generating sales report:", error);
-            res.status(500).json({ success: false, message: "Failed to generate sales report" });
-        }
+    // Build two date conditions:
+    // - one for unaliased orders table (used in queries where orders is referenced without alias)
+    // - one for aliased orders table (used when orders are referenced as "o")
+    let dateCondition = '';
+    switch (period) {
+      case '7days':
+        dateCondition = "created_at >= NOW() - INTERVAL '7 days'";
+        break;
+      case '30days':
+        dateCondition = "created_at >= NOW() - INTERVAL '30 days'";
+        break;
+      case '90days':
+        dateCondition = "created_at >= NOW() - INTERVAL '90 days'";
+        break;
+      case 'year':
+        dateCondition = "created_at >= NOW() - INTERVAL '1 year'";
+        break;
+      default:
+        dateCondition = "created_at >= NOW() - INTERVAL '30 days'";
     }
+
+    // aliased version for queries that refer to orders as "o"
+    const dateConditionAliased = dateCondition.replace(/\bcreated_at\b/g, 'o.created_at');
+
+    // Safe amount expression (cleanup: cast to text, strip non-digits/dot, NULLIF empty, cast to numeric)
+    const amountExpr = `CAST(NULLIF(regexp_replace(CAST(total_amount AS text), '[^0-9.]', '', 'g'), '') AS numeric)`;
+
+    // 1) Daily sales data (orders referenced without alias)
+    const salesData = await client.query(`
+      SELECT 
+        DATE(created_at) as date,
+        COUNT(*) as orders,
+        COALESCE(SUM(${amountExpr}), 0) as revenue
+      FROM orders
+      WHERE order_status = 'completed' AND ${dateCondition}
+      GROUP BY DATE(created_at)
+      ORDER BY date ASC
+    `);
+
+    // 2) Top selling products (orders referenced with alias 'o')
+    // Use dateConditionAliased so we reference the aliased column correctly
+    const topProducts = await client.query(`
+      SELECT 
+        p.name,
+        pv.name as variant_name,
+        SUM(oi.quantity) as total_sold,
+        COALESCE(SUM(
+          CASE
+            WHEN oi.total_price IS NULL THEN 0
+            ELSE CAST(NULLIF(regexp_replace(CAST(oi.total_price AS text), '[^0-9.]', '', 'g'), '') AS numeric)
+          END
+        ), 0) as revenue
+      FROM order_items oi
+      JOIN product_variant pv ON oi.product_variant_id = pv.id
+      JOIN products p ON pv.product_id = p.id
+      JOIN orders o ON oi.order_id = o.id
+      WHERE o.order_status = 'completed' AND ${dateConditionAliased}
+      GROUP BY p.id, p.name, pv.name
+      ORDER BY revenue DESC
+      LIMIT 10
+    `);
+
+    // 3) Payment methods breakdown (orders referenced without alias)
+    const paymentMethods = await client.query(`
+      SELECT 
+        payment_method,
+        COUNT(*) as count,
+        COALESCE(SUM(${amountExpr}), 0) as revenue
+      FROM orders
+      WHERE order_status = 'completed' AND ${dateCondition}
+      GROUP BY payment_method
+    `);
+
+    client.release();
+
+    res.json({
+      success: true,
+      report: {
+        salesData: salesData.rows,
+        topProducts: topProducts.rows,
+        paymentMethods: paymentMethods.rows
+      }
+    });
+  } catch (error) {
+    console.error('Error generating sales report:', error);
+    try { client.release(); } catch (e) {}
+    res.status(500).json({ success: false, message: 'Failed to generate sales report' });
+  }
+}
 
     // Get customer analytics
     static async getCustomerAnalytics(req, res) {
+        const client = await pool.connect();
         try {
-            const client = await pool.connect();
-
             // Users by auth provider
             const authProviders = await client.query(`
                 SELECT 
@@ -206,15 +229,15 @@ class AdminReportsController {
             });
         } catch (error) {
             console.error("Error generating customer analytics:", error);
+            try { client.release(); } catch (e) {}
             res.status(500).json({ success: false, message: "Failed to generate customer analytics" });
         }
     }
 
     // Get inventory report
     static async getInventoryReport(req, res) {
+        const client = await pool.connect();
         try {
-            const client = await pool.connect();
-
             // Low stock products
             const lowStock = await client.query(`
                 SELECT 
@@ -240,8 +263,7 @@ class AdminReportsController {
                 WHERE pv.stock_quantity = 0
             `);
 
-            // Products by category (removed - no category column)
-            // Using product count instead
+            // Product stats
             const productStats = await client.query(`
                 SELECT 
                     COUNT(DISTINCT p.id) as total_products,
@@ -272,22 +294,24 @@ class AdminReportsController {
             });
         } catch (error) {
             console.error("Error generating inventory report:", error);
+            try { client.release(); } catch (e) {}
             res.status(500).json({ success: false, message: "Failed to generate inventory report" });
         }
     }
 
     // Get branch performance
     static async getBranchPerformance(req, res) {
+        const client = await pool.connect();
         try {
-            const client = await pool.connect();
-
             const branchStats = await client.query(`
                 SELECT 
                     b.id,
                     b.name,
                     b.city,
                     COUNT(o.id) as total_orders,
-                    COALESCE(SUM(o.total_amount), 0) as total_revenue
+                    COALESCE(SUM(
+                        CAST(NULLIF(regexp_replace(CAST(o.total_amount AS text), '[^0-9.]', '', 'g'), '') AS numeric)
+                    ), 0) as total_revenue
                 FROM branches b
                 LEFT JOIN orders o ON b.id = o.branch_id AND o.order_status = 'completed'
                 GROUP BY b.id, b.name, b.city
@@ -302,6 +326,7 @@ class AdminReportsController {
             });
         } catch (error) {
             console.error("Error getting branch performance:", error);
+            try { client.release(); } catch (e) {}
             res.status(500).json({ success: false, message: "Failed to get branch performance" });
         }
     }
