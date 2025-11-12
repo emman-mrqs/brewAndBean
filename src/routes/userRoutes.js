@@ -34,6 +34,8 @@ router.get("/specialties", SpecialtiesController.getSpecialties);
 router.get("/reviews", ReviewsController.getReviews);
 router.get("/contact", ContactController.getContact);
 router.get("/download", DownloadController.getDownload);
+router.get("/download/app", DownloadController.downloadApk);
+
 
 // User dashboard and account routes (protected)
 router.get("/dashboard", requireAuth, DashboardController.getDashboard);

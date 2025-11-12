@@ -10,25 +10,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <!-- Animated Background Elements -->
-    <div class="background-animation">
-        <div class="coffee-bean bean-1"></div>
-        <div class="coffee-bean bean-2"></div>
-        <div class="coffee-bean bean-3"></div>
-        <div class="coffee-bean bean-4"></div>
-        <div class="coffee-bean bean-5"></div>
-        <div class="steam steam-1"></div>
-        <div class="steam steam-2"></div>
-        <div class="steam steam-3"></div>
-    </div>
-
     <%- include('../partials/navbar', { page: 'specialties' }) %>
 
     <!-- Hero Section -->
     <section class="hero hero-specialties">
         <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1>Our Specialties</h1>
+            <div class="hero-badge">OUR SPECIALTIES</div>
+            <h1>Expertise in Every Cup</h1>
             <div class="hero-accent"></div>
             <p>The art and science behind every exceptional cup of coffee we craft</p>
         </div>
@@ -49,7 +38,7 @@
             <div class="specialties-grid">
                 <div class="specialty-card" data-aos="fade-up">
                     <div class="specialty-header">
-                        <div class="specialty-icon">☕</div>
+                        <div class="specialty-icon"><i class="fas fa-coffee"></i></div>
                         <span class="specialty-badge">Master Craft</span>
                     </div>
                     <h3>Artisan Roasting</h3>
@@ -63,7 +52,7 @@
 
                 <div class="specialty-card" data-aos="fade-up" data-delay="100">
                     <div class="specialty-header">
-                        <div class="specialty-icon">🌿</div>
+                        <div class="specialty-icon"><i class="fas fa-leaf"></i></div>
                         <span class="specialty-badge">Ethical</span>
                     </div>
                     <h3>Sustainable Sourcing</h3>
@@ -77,7 +66,7 @@
 
                 <div class="specialty-card" data-aos="fade-up" data-delay="200">
                     <div class="specialty-header">
-                        <div class="specialty-icon">🎯</div>
+                        <div class="specialty-icon"><i class="fas fa-bullseye"></i></div>
                         <span class="specialty-badge">Expert</span>
                     </div>
                     <h3>Expert Brewing</h3>
@@ -91,7 +80,7 @@
 
                 <div class="specialty-card" data-aos="fade-up" data-delay="300">
                     <div class="specialty-header">
-                        <div class="specialty-icon">💎</div>
+                        <div class="specialty-icon"><i class="fas fa-gem"></i></div>
                         <span class="specialty-badge">Premium</span>
                     </div>
                     <h3>Quality Selection</h3>
@@ -156,132 +145,25 @@
         <div class="container">
             <div class="stats-grid">
                 <div class="stat-item" data-aos="fade-up">
-                    <div class="stat-icon">🌍</div>
+                    <div class="stat-icon"><i class="fas fa-globe"></i></div>
                     <div class="stat-number">12+</div>
                     <div class="stat-label">Partner Farms Worldwide</div>
                 </div>
                 <div class="stat-item" data-aos="fade-up" data-delay="100">
-                    <div class="stat-icon">☕</div>
+                    <div class="stat-icon"><i class="fas fa-coffee"></i></div>
                     <div class="stat-number">25+</div>
                     <div class="stat-label">Award-Winning Blends</div>
                 </div>
                 <div class="stat-item" data-aos="fade-up" data-delay="200">
-                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
                     <div class="stat-number">48hrs</div>
                     <div class="stat-label">Roast to Cup Freshness</div>
                 </div>
                 <div class="stat-item" data-aos="fade-up" data-delay="300">
-                    <div class="stat-icon">👥</div>
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
                     <div class="stat-number">15+</div>
                     <div class="stat-label">Expert Baristas</div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Signature Specialties Showcase -->
-    <section class="signature-specialties">
-        <div class="container">
-            <div class="section-intro centered">
-                <span class="section-badge">Exclusive Creations</span>
-                <h2>Our Signature Specialties</h2>
-                <p>Experience our most beloved specialty drinks, crafted with innovation and passion</p>
-            </div>
-            
-            <div class="signature-grid">
-                <div class="signature-card" data-aos="zoom-in">
-                    <div class="signature-image-wrapper">
-                        <img src="../../Assets/Coffee/Special Affogato.webp" alt="Affogato" class="signature-image">
-                        <div class="signature-overlay">
-                            <span class="signature-tag">Signature</span>
-                        </div>
-                    </div>
-                    <div class="signature-info">
-                        <h3>Affogato</h3>
-                        <p>A decadent Italian dessert coffee featuring a shot of hot espresso poured over creamy vanilla gelato</p>
-                        <div class="signature-meta">
-                            <span class="meta-item"><i class="fas fa-fire"></i> Hot</span>
-                            <span class="meta-item"><i class="fas fa-star"></i> Premium</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="signature-card" data-aos="zoom-in" data-aos-delay="100">
-                    <div class="signature-image-wrapper">
-                        <img src="../../Assets/Coffee/Special Greek Coffee Frappe.webp" alt="Greek Coffee Frappe" class="signature-image">
-                        <div class="signature-overlay">
-                            <span class="signature-tag">Signature</span>
-                        </div>
-                    </div>
-                    <div class="signature-info">
-                        <h3>Greek Coffee Frappé</h3>
-                        <p>Authentic Greek-style iced coffee with a thick, frothy foam, perfectly balanced and refreshingly smooth</p>
-                        <div class="signature-meta">
-                            <span class="meta-item"><i class="fas fa-snowflake"></i> Cold</span>
-                            <span class="meta-item"><i class="fas fa-star"></i> Classic</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="signature-card" data-aos="zoom-in" data-aos-delay="200">
-                    <div class="signature-image-wrapper">
-                        <img src="../../Assets/Coffee/Special Java Chip Frappe.webp" alt="Java Chip Frappe" class="signature-image">
-                        <div class="signature-overlay">
-                            <span class="signature-tag">Signature</span>
-                        </div>
-                    </div>
-                    <div class="signature-info">
-                        <h3>Java Chip Frappé</h3>
-                        <p>A blended coffee indulgence with chocolate chips, rich mocha flavors, and topped with whipped cream</p>
-                        <div class="signature-meta">
-                            <span class="meta-item"><i class="fas fa-snowflake"></i> Cold</span>
-                            <span class="meta-item"><i class="fas fa-heart"></i> Favorite</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="signature-card" data-aos="zoom-in" data-aos-delay="300">
-                    <div class="signature-image-wrapper">
-                        <img src="../../Assets/Coffee/Special Mocha Frappe.webp" alt="Mocha Frappe" class="signature-image">
-                        <div class="signature-overlay">
-                            <span class="signature-tag">Signature</span>
-                        </div>
-                    </div>
-                    <div class="signature-info">
-                        <h3>Mocha Frappé</h3>
-                        <p>The perfect marriage of espresso and chocolate, blended with ice and finished with velvety whipped cream</p>
-                        <div class="signature-meta">
-                            <span class="meta-item"><i class="fas fa-snowflake"></i> Cold</span>
-                            <span class="meta-item"><i class="fas fa-star"></i> Bestseller</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="signature-card" data-aos="zoom-in" data-aos-delay="400">
-                    <div class="signature-image-wrapper">
-                        <img src="../../Assets/Coffee/Special Nitro Coffee.webp" alt="Nitro Coffee" class="signature-image">
-                        <div class="signature-overlay">
-                            <span class="signature-tag">Signature</span>
-                        </div>
-                    </div>
-                    <div class="signature-info">
-                        <h3>Nitro Coffee</h3>
-                        <p>Cold brew coffee infused with nitrogen for a smooth, creamy texture with cascading bubbles</p>
-                        <div class="signature-meta">
-                            <span class="meta-item"><i class="fas fa-snowflake"></i> Cold</span>
-                            <span class="meta-item"><i class="fas fa-bolt"></i> Energizing</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="signature-cta" data-aos="fade-up">
-                <a href="menu.html" class="btn btn-primary">
-                    <span>View Full Menu</span>
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </a>
             </div>
         </div>
     </section>

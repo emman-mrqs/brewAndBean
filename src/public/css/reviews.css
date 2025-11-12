@@ -2,6 +2,15 @@
    REVIEWS PAGE STYLES
    ============================================ */
 
+/* Hero Section */
+.hero-reviews {
+    background-image: linear-gradient(135deg, rgba(198, 124, 78, 0.9), rgba(44, 44, 44, 0.85)), 
+                      url('../../Assets/Hero Sections/Reviews.png');
+    background-size: cover;
+    background-position: center;
+    min-height: 70vh;
+}
+
 /* Page Hero Section */
 .page-hero {
     padding: 8rem 0 4rem;
@@ -198,9 +207,14 @@
 }
 
 .stars {
-    font-size: 1.5rem;
+    display: flex;
+    gap: 0.25rem;
     margin-bottom: 1.5rem;
+}
+
+.stars i {
     color: #FFB300;
+    font-size: 1.5rem;
     text-shadow: 0 2px 4px rgba(255, 179, 0, 0.3);
 }
 
@@ -343,6 +357,10 @@
     font-size: 3rem;
     margin-bottom: 1rem;
     animation: pulse 2s infinite;
+}
+
+.stat-icon i {
+    color: var(--brew-primary);
 }
 
 .stat-card:nth-child(2) .stat-icon {

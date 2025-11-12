@@ -12,27 +12,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <!-- Animated Background Elements -->
-    <div class="background-animation">
-        <div class="coffee-bean bean-1"></div>
-        <div class="coffee-bean bean-2"></div>
-        <div class="coffee-bean bean-3"></div>
-        <div class="coffee-bean bean-4"></div>
-        <div class="coffee-bean bean-5"></div>
-        <div class="steam steam-1"></div>
-        <div class="steam steam-2"></div>
-        <div class="steam steam-3"></div>
-    </div>
-
     <%- include('../partials/navbar', { page: 'reviews' }) %>
 
     <!-- Hero Section -->
     <section class="hero hero-reviews">
         <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1>Customer Reviews</h1>
+            <div class="hero-badge">CUSTOMER REVIEWS</div>
+            <h1>Real Stories from Coffee Lovers</h1>
             <div class="hero-accent"></div>
-            <p>Real stories from coffee lovers who've discovered their perfect brew</p>
+            <p>Discover why thousands of customers choose Bean & Brew for their perfect coffee experience</p>
         </div>
         <div class="hero-scroll-indicator">
             <i class="fas fa-chevron-down"></i>
@@ -62,7 +51,13 @@
 
                 <div class="testimonials-track">
                     <div class="testimonial-card active">
-                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
                         <p class="testimonial-text">"Bean and Brew has become my second home. The quality of their coffee is unmatched, and the baristas remember my order every single time. It's the little things that make this place so special."</p>
                         <div class="testimonial-author">
                             <div class="author-avatar">SK</div>
@@ -74,7 +69,13 @@
                     </div>
 
                     <div class="testimonial-card">
-                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
                         <p class="testimonial-text">"As a coffee connoisseur, I'm extremely picky about my beans. Bean and Brew's single-origin selection is phenomenal. You can taste the care they put into sourcing and roasting every batch."</p>
                         <div class="testimonial-author">
                             <div class="author-avatar">MJ</div>
@@ -86,7 +87,13 @@
                     </div>
 
                     <div class="testimonial-card">
-                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
                         <p class="testimonial-text">"The atmosphere here is perfect for getting work done. Great WiFi, comfortable seating, and the best cold brew in town. Plus, the staff is incredibly friendly and accommodating."</p>
                         <div class="testimonial-author">
                             <div class="author-avatar">EP</div>
@@ -98,7 +105,13 @@
                     </div>
 
                     <div class="testimonial-card">
-                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
                         <p class="testimonial-text">"I've tried coffee shops all over the city, and Bean and Brew stands out. Their commitment to sustainability and supporting local farmers shows in every cup. Delicious coffee with a conscience!"</p>
                         <div class="testimonial-author">
                             <div class="author-avatar">DT</div>
@@ -130,25 +143,33 @@
             </div>
             <div class="stats-grid">
                 <div class="stat-card" data-aos="fade-up">
-                    <div class="stat-icon">⭐</div>
+                    <div class="stat-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
                     <div class="stat-number">4.9</div>
                     <p>Average Rating</p>
                 </div>
 
                 <div class="stat-card" data-aos="fade-up" data-delay="100">
-                    <div class="stat-icon">💬</div>
+                    <div class="stat-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
                     <div class="stat-number" data-target="2500">0</div>
                     <p>Customer Reviews</p>
                 </div>
 
                 <div class="stat-card" data-aos="fade-up" data-delay="200">
-                    <div class="stat-icon">🏆</div>
+                    <div class="stat-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
                     <div class="stat-number">98%</div>
                     <p>Would Recommend</p>
                 </div>
 
                 <div class="stat-card" data-aos="fade-up" data-delay="300">
-                    <div class="stat-icon">❤️</div>
+                    <div class="stat-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
                     <div class="stat-number" data-target="15000">0</div>
                     <p>Happy Customers</p>
                 </div>

@@ -12,18 +12,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <!-- Animated Background Elements -->
-    <div class="background-animation">
-        <div class="coffee-bean bean-1"></div>
-        <div class="coffee-bean bean-2"></div>
-        <div class="coffee-bean bean-3"></div>
-        <div class="coffee-bean bean-4"></div>
-        <div class="coffee-bean bean-5"></div>
-        <div class="steam steam-1"></div>
-        <div class="steam steam-2"></div>
-        <div class="steam steam-3"></div>
-    </div>
-
     <!-- Navigation -->
     <%- include('../partials/navbar', { page: 'about' }) %>
 
@@ -31,7 +19,8 @@
     <section class="hero hero-about">
         <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1>About Us</h1>
+            <div class="hero-badge">ABOUT US</div>
+            <h1>Our Story</h1>
             <div class="hero-accent"></div>
             <p>Where passion meets perfection in every cup we brew</p>
         </div>
@@ -84,19 +73,19 @@
             </div>
             <div class="values-grid">
                 <div class="value-card" data-aos="fade-up">
-                    <div class="value-icon">🌱</div>
+                    <div class="value-icon"><i class="fas fa-seedling"></i></div>
                     <h3>Sustainability</h3>
                     <p>We're committed to environmental responsibility, from direct trade partnerships with eco-conscious farms to compostable packaging and zero-waste initiatives in our cafés.</p>
                 </div>
 
                 <div class="value-card" data-aos="fade-up" data-delay="100">
-                    <div class="value-icon">🤝</div>
+                    <div class="value-icon"><i class="fas fa-handshake"></i></div>
                     <h3>Community</h3>
                     <p>More than a coffee shop, we're a gathering place. We support local artists, host community events, and create spaces where everyone feels welcome and valued.</p>
                 </div>
 
                 <div class="value-card" data-aos="fade-up" data-delay="200">
-                    <div class="value-icon">⭐</div>
+                    <div class="value-icon"><i class="fas fa-star"></i></div>
                     <h3>Excellence</h3>
                     <p>From bean selection to the final pour, we pursue perfection. Our baristas train continuously, and we never compromise on quality or craft.</p>
                 </div>
@@ -148,70 +137,70 @@
                 <!-- Developer 1: Redd Vincent Ambong -->
                 <article class="developer-card" data-aos="fade-up">
                     <figure class="developer-image-wrapper">
-                        <img src="../../Assets/Developers/Ambong.png" alt="Redd Vincent Ambong - Developer" class="developer-image">
+                        <img src="/uploads/img/Ambong.png" alt="Redd Vincent Ambong - Developer" class="developer-image">
                         <div class="developer-overlay">
                             <span class="developer-view">View Profile</span>
                         </div>
                     </figure>
                     <div class="developer-info">
                         <h3 class="developer-name">Redd Vincent Ambong</h3>
-                        <p class="developer-role">Front-End Developer</p>
+                        <p class="developer-role">Back-End Developer</p>
                     </div>
                 </article>
 
                 <!-- Developer 2: Luis David Espino -->
                 <article class="developer-card" data-aos="fade-up" data-delay="100">
                     <figure class="developer-image-wrapper">
-                        <img src="../../Assets/Developers/Espino.png" alt="Luis David Espino - Developer" class="developer-image">
+                        <img src="/uploads/img/Espino.png" alt="Luis David Espino - Developer" class="developer-image">
                         <div class="developer-overlay">
                             <span class="developer-view">View Profile</span>
                         </div>
                     </figure>
                     <div class="developer-info">
                         <h3 class="developer-name">Luis David Espino</h3>
-                        <p class="developer-role">Full-Stack Developer</p>
+                        <p class="developer-role">Front-End Developer</p>
                     </div>
                 </article>
 
                 <!-- Developer 3: Emmanuel Marqueses -->
                 <article class="developer-card" data-aos="fade-up" data-delay="200">
                     <figure class="developer-image-wrapper">
-                        <img src="../../Assets/Developers/Marqueses.png" alt="Emmanuel Marqueses - Developer" class="developer-image">
+                        <img src="/uploads/img/Marqueses.png" alt="Emmanuel Marqueses - Developer" class="developer-image">
                         <div class="developer-overlay">
                             <span class="developer-view">View Profile</span>
                         </div>
                     </figure>
                     <div class="developer-info">
                         <h3 class="developer-name">Emmanuel Marqueses</h3>
-                        <p class="developer-role">UI/UX Designer</p>
+                        <p class="developer-role">Lead Developer / Full-Stack Developer</p>
                     </div>
                 </article>
 
                 <!-- Developer 4: Annil Jairus Timoteo -->
                 <article class="developer-card" data-aos="fade-up" data-delay="300">
                     <figure class="developer-image-wrapper">
-                        <img src="../../Assets/Developers/Timoteo.png" alt="Annil Jairus Timoteo - Developer" class="developer-image">
+                        <img src="/uploads/img/Timoteo.png" alt="Annil Jairus Timoteo - Developer" class="developer-image">
                         <div class="developer-overlay">
                             <span class="developer-view">View Profile</span>
                         </div>
                     </figure>
                     <div class="developer-info">
                         <h3 class="developer-name">Annil Jairus Timoteo</h3>
-                        <p class="developer-role">Back-End Developer</p>
+                        <p class="developer-role">UI / UX Designer</p>
                     </div>
                 </article>
 
                 <!-- Developer 5: Lance Cedrick Fernandez -->
                 <article class="developer-card" data-aos="fade-up" data-delay="400">
                     <figure class="developer-image-wrapper">
-                        <img src="../../Assets/Developers/Fernandez.png" alt="Lance Cedrick Fernandez - Developer" class="developer-image">
+                        <img src="/uploads/img/Fernandez.png" alt="Lance Cedrick Fernandez - Developer" class="developer-image">
                         <div class="developer-overlay">
                             <span class="developer-view">View Profile</span>
                         </div>
                     </figure>
                     <div class="developer-info">
                         <h3 class="developer-name">Lance Cedrick Fernandez</h3>
-                        <p class="developer-role">Full-Stack Developer</p>
+                        <p class="developer-role">UI / UX Designer</p>
                     </div>
                 </article>
             </div>

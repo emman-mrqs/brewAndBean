@@ -1,15 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Contact Us - Bean and Brew</title>
+
+    <!-- Google fonts & your CSS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/contact.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Bootstrap 5 (for toast) - remove if already loaded globally -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUa6zsFf6cU5xL6GM6Q7qZ6oY2Izj7xg4Q5qXb7G2qKfJ6g1f2Q4Z6qJQ8Q+" crossorigin="anonymous">
+
+    <style>
+      /* Toast container fine-tuning */
+      .toast-container-custom {
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+        z-index: 1080; /* above most site elements */
+      }
+
+      /* Optional: slightly larger toast for better legibility */
+      .bootstrap-toast {
+        min-width: 320px;
+        max-width: 420px;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      }
+
+      /* Keep your existing floating message styles if you want, but we use Bootstrap toast now */
+    </style>
 </head>
 <body>
     <!-- Animated Background Elements -->
@@ -27,12 +52,24 @@
     <%- include('../partials/navbar', { page: 'contact' }) %>
 
     <!-- Hero Section -->
-    <section class="hero hero-contact">
+    <section class="hero hero-home">
         <div class="hero-overlay"></div>
         <div class="hero-content">
+            <div class="hero-badge">GET IN TOUCH</div>
             <h1>Contact Us</h1>
             <div class="hero-accent"></div>
-            <p>We'd love to hear from you - let's start a conversation over coffee</p>
+            <p>Your destination for exceptional coffee experiences. We'd love to hear from you - let's start a conversation over coffee and connect with our passionate team.</p>
+            <div class="hero-buttons">
+                <a href="#contactForm" class="btn btn-primary">
+                    <span>Send Message</span>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M2.5 10H17.5M17.5 10L11.25 3.75M17.5 10L11.25 16.25" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+                <a href="#map-section" class="btn btn-secondary">
+                    <span>Find Our Location</span>
+                </a>
+            </div>
         </div>
         <div class="hero-scroll-indicator">
             <i class="fas fa-chevron-down"></i>
@@ -44,52 +81,42 @@
         <div class="container">
             <div class="contact-grid">
                 <!-- Contact Form -->
-                <div class="contact-form-wrapper" data-aos="fade-right">
+                <div class="contact-form-container" data-aos="fade-right" data-aos-delay="100">
                     <div class="section-header">
-                        <span class="section-label">Send Message</span>
+                        <span class="section-label">Get In Touch</span>
                         <h2 class="section-title">Send Us a Message</h2>
-                        <p class="section-description">Have questions or feedback? We're here to help!</p>
+                        <p class="section-description">Have questions or feedback? We'd love to hear from you!</p>
                     </div>
-                    <form class="contact-form" id="contactForm">
-                        <div class="form-group">
-                            <input type="text" id="name" name="name" required>
-                            <label for="name">Your Name</label>
-                            <div class="form-line"></div>
-                        </div>
 
-                        <div class="form-group">
-                            <input type="email" id="email" name="email" required>
-                            <label for="email">Email Address</label>
-                            <div class="form-line"></div>
-                        </div>
+                    <!-- Inline message region for accessibility -->
+                    <div id="formMessage" aria-live="polite" class="form-message-container" style="min-height: 0;"></div>
 
-                        <div class="form-group">
-                            <input type="tel" id="phone" name="phone">
-                            <label for="phone">Phone Number (Optional)</label>
-                            <div class="form-line"></div>
+                    <form class="contact-form" id="contactForm" novalidate>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">Full Name</label>
+                                <input type="text" id="name" name="name" required autocomplete="name">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" name="email" required autocomplete="email">
+                            </div>
                         </div>
-
-                        <div class="form-group">
-                            <select id="subject" name="subject" required>
-                                <option value="">Select Subject</option>
-                                <option value="general">General Inquiry</option>
-                                <option value="catering">Catering Request</option>
-                                <option value="wholesale">Wholesale Inquiry</option>
-                                <option value="feedback">Feedback</option>
-                                <option value="careers">Careers</option>
-                                <option value="other">Other</option>
-                            </select>
-                            <label for="subject" class="select-label">Subject</label>
-                            <div class="form-line"></div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" autocomplete="tel">
+                            </div>
+                            <div class="form-group">
+                                <label for="subject">Subject</label>
+                                <input type="text" id="subject" name="subject" required>
+                            </div>
                         </div>
-
-                        <div class="form-group">
-                            <textarea id="message" name="message" rows="5" required></textarea>
-                            <label for="message">Your Message</label>
-                            <div class="form-line"></div>
+                        <div class="form-group full-width">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="6" required placeholder="Tell us how we can help you..."></textarea>
                         </div>
-
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn-submit">
                             <span>Send Message</span>
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                                 <path d="M2.5 10H17.5M17.5 10L11.25 3.75M17.5 10L11.25 16.25" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -99,7 +126,7 @@
                 </div>
 
                 <!-- Contact Info -->
-                <div class="contact-info" data-aos="fade-left">
+                <div class="contact-info" data-aos="fade-left" data-aos-delay="200">
                     <div class="section-header">
                         <span class="section-label">Contact Info</span>
                         <h2 class="section-title">Visit or Call Us</h2>
@@ -107,62 +134,75 @@
                     </div>
                     
                     <div class="info-cards">
-                        <div class="info-card">
-                            <div class="info-icon">📍</div>
-                            <div class="info-content">
-                                <h3>Visit Us</h3>
-                                <p>123 Coffee Street<br>Brew City, BC 12345</p>
+                        <div class="info-card" data-aos="zoom-in" data-aos-delay="300">
+                            <div class="info-icon">
+                                <i class="fas fa-map-marker-alt"></i>
                             </div>
+                            <h3>Visit Us</h3>
+                            <p>123 Coffee Street<br>Brew City, BC 12345</p>
                         </div>
 
-                        <div class="info-card">
-                            <div class="info-icon">📞</div>
-                            <div class="info-content">
-                                <h3>Call Us</h3>
-                                <p>Phone: (555) 123-4567<br>Fax: (555) 123-4568</p>
+                        <div class="info-card" data-aos="zoom-in" data-aos-delay="400">
+                            <div class="info-icon">
+                                <i class="fas fa-phone"></i>
                             </div>
+                            <h3>Call Us</h3>
+                            <p>Phone: (555) 123-4567<br>Fax: (555) 123-4568</p>
                         </div>
 
-                        <div class="info-card">
-                            <div class="info-icon">✉️</div>
-                            <div class="info-content">
-                                <h3>Email Us</h3>
-                                <p>info@beanandbrew.com<br>support@beanandbrew.com</p>
+                        <div class="info-card" data-aos="zoom-in" data-aos-delay="500">
+                            <div class="info-icon">
+                                <i class="fas fa-envelope"></i>
                             </div>
+                            <h3>Email Us</h3>
+                            <p>info@beanandbrew.com<br>support@beanandbrew.com</p>
                         </div>
 
-                        <div class="info-card">
-                            <div class="info-icon">🕐</div>
-                            <div class="info-content">
-                                <h3>Opening Hours</h3>
-                                <p>Monday - Friday: 6am - 8pm<br>Saturday - Sunday: 7am - 9pm</p>
+                        <div class="info-card" data-aos="zoom-in" data-aos-delay="600">
+                            <div class="info-icon">
+                                <i class="fas fa-clock"></i>
                             </div>
+                            <h3>Opening Hours</h3>
+                            <p>Monday - Friday: 6am - 8pm<br>Saturday - Sunday: 7am - 9pm</p>
                         </div>
                     </div>
-                </div> <!-- ✅ properly closed contact-info -->
-            </div> <!-- ✅ closed contact-grid -->
-        </div> <!-- ✅ closed container -->
-    </section> <!-- ✅ closed contact section -->
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Map Section -->
-    <section class="map-section">
+    <section class="map-section" id="map-section">
         <div class="container">
             <div class="section-header">
                 <span class="section-label">Location</span>
                 <h2 class="section-title">Find Our Café</h2>
-                <p class="section-description">Visit us at our convenient downtown location</p>
+                <p class="section-description">Visit us at our convenient location in the heart of the Philippines</p>
             </div>
-            <div class="map-placeholder" data-aos="fade-up">
-                <div class="map-content">
-                    <div class="map-icon">🗺️</div>
-                    <h3>Find Us on the Map</h3>
-                    <p>123 Coffee Street, Brew City, BC 12345</p>
-                    <a href="https://maps.google.com" target="_blank" class="btn btn-secondary">
-                        <span>Open in Google Maps</span>
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path d="M11 3H15.2C15.48 3 15.62 3 15.727 3.055C15.821 3.104 15.896 3.179 15.945 3.273C16 3.38 16 3.52 16 3.8V16.2C16 16.48 16 16.62 15.945 16.727C15.896 16.821 15.821 16.896 15.727 16.945C15.62 17 15.48 17 15.2 17H4.8C4.52 17 4.38 17 4.273 16.945C4.179 16.896 4.104 16.821 4.055 16.727C4 16.62 4 16.48 4 16.2V12M13 7L7 13M7 7H13.4C13.76 7 13.94 7 14.054 6.891C14.167 6.782 14.167 6.598 14.167 6.23V2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </a>
+            <div class="map-container" data-aos="fade-up">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3861.792!2d120.979!3d14.5995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397ca03571ec6b%3A0x2c5b0c8b8b8b8b8b!2sManila%2C%20Philippines!5e0!3m2!1sen!2sph!4v1698765432109!5m2!1sen!2sph"
+                    width="100%" 
+                    height="400" 
+                    style="border:0; border-radius: 20px;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+                <div class="map-overlay">
+                    <div class="map-info">
+                        <div class="map-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3>Bean & Brew Café</h3>
+                        <p>123 Coffee Street<br>Brew City, BC 12345<br>Philippines</p>
+                        <a href="https://maps.google.com/maps?q=14.5995,120.979" target="_blank" class="btn btn-primary">
+                            <span>Get Directions</span>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M11 3H15.2C15.48 3 15.62 3 15.727 3.055C15.821 3.104 15.896 3.179 15.945 3.273C16 3.38 16 3.52 16 3.8V16.2C16 16.48 16 16.62 15.945 16.727C15.896 16.821 15.821 16.896 15.727 16.945C15.62 17 15.48 17 15.2 17H4.8C4.52 17 4.38 17 4.273 16.945C4.179 16.896 4.104 16.821 4.055 16.727C4 16.62 4 16.48 4 16.2V12M13 7L7 13M7 7H13.4C13.76 7 13.94 7 14.054 6.891C14.167 6.782 14.167 6.598 14.167 6.23V2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -180,54 +220,33 @@
     <!-- Bottom Navigation (Mobile) -->
     <%- include('../partials/generalBottomNav', { page: 'contact' }) %>
 
-    <!-- <script src="../js/shared.js"></script> -->
-    <script>
-        // Form handling
-        const contactForm = document.getElementById('contactForm');
-        
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const formData = new FormData(contactForm);
-            const data = Object.fromEntries(formData);
-            console.log('Form submitted:', data);
-            alert("Thank you for your message! We'll get back to you soon.");
-            contactForm.reset();
-            resetFormLabels();
-        });
+    <!-- TOAST: Bootstrap toast container anchored bottom-right -->
+    <div class="toast-container-custom">
+    <div id="siteToast"
+        class="toast bootstrap-toast"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+        data-bs-autohide="true"
+        data-bs-delay="4000"
+        style="display: none;">
+        <div class="toast-header">
+        <!-- optional icon -->
+        <strong id="siteToastTitle" class="me-auto">Message</strong>
+        <small class="text-muted" id="siteToastTime">now</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" id="siteToastBody">
+        <!-- dynamic message body -->
+        </div>
+    </div>
+    </div>
 
-        // Floating label behavior
-        const formGroups = document.querySelectorAll('.form-group');
-        function resetFormLabels() {
-            formGroups.forEach(group => group.classList.remove('focused', 'has-value'));
-        }
-        formGroups.forEach(group => {
-            const input = group.querySelector('input, textarea, select');
-            if (!input) return;
-            input.addEventListener('focus', () => group.classList.add('focused'));
-            input.addEventListener('blur', () => { if (!input.value) group.classList.remove('focused'); });
-            input.addEventListener('input', () => group.classList.toggle('has-value', !!input.value));
-            if (input.value) group.classList.add('has-value');
-        });
 
-        // Scroll animations
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const delay = entry.target.getAttribute('data-delay') || 0;
-                    setTimeout(() => entry.target.classList.add('animate-in'), parseInt(delay));
-                }
-            });
-        }, { threshold: 0.2, rootMargin: '0px 0px -50px 0px' });
-        document.querySelectorAll('[data-aos]').forEach(el => observer.observe(el));
+    <!-- Bootstrap JS bundle (includes Popper) - remove if already loaded -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6/0Y2F0h8rCp2qQ0h6m6QZ5mY5u5w4uJfD7g6Q6u6w6Q6u6w6Q+" crossorigin="anonymous"></script>
 
-        // Back to top
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-        window.addEventListener('scroll', () => {
-            const backToTopBtn = document.getElementById('backToTop');
-            backToTopBtn.classList.toggle('visible', window.scrollY > 300);
-        });
-    </script>
+    <script src="/js/user/contact.js"></script>
+
 </body>
 </html>

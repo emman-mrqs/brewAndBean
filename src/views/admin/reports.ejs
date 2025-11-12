@@ -27,28 +27,28 @@
 
             <!-- Overview Stats -->
             <div class="reports-grid" id="overviewStats">
-<div class="stat-card">
-  <div class="stat-card-header">
-    <div class="stat-content">
-      <!-- server can inject totalRevenueFallback (number) when rendering -->
-      <div
-        class="stat-value"
-        id="totalRevenue"
-        data-server-value="<%= typeof totalRevenue !== 'undefined' ? totalRevenue : '' %>"
-      >
-        <% if (typeof totalRevenue !== 'undefined') { %>
-          ₱<%= Number(totalRevenue).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
-        <% } else { %>
-          ₱0.00
-        <% } %>
-      </div>
-      <div class="stat-label">Total Revenue</div>
-    </div>
-    <div class="stat-icon revenue">
-      <i class="fas fa-peso-sign"></i>
-    </div>
-  </div>
-</div>
+            <div class="stat-card">
+            <div class="stat-card-header">
+                <div class="stat-content">
+                <!-- server can inject totalRevenueFallback (number) when rendering -->
+                <div
+                    class="stat-value"
+                    id="totalRevenue"
+                    data-server-value="<%= typeof totalRevenue !== 'undefined' ? totalRevenue : '' %>"
+                >
+                    <% if (typeof totalRevenue !== 'undefined') { %>
+                    ₱<%= Number(totalRevenue).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+                    <% } else { %>
+                    ₱0.00
+                    <% } %>
+                </div>
+                <div class="stat-label">Total Revenue</div>
+                </div>
+                <div class="stat-icon revenue">
+                <i class="fas fa-peso-sign"></i>
+                </div>
+            </div>
+            </div>
 
 
                 <div class="stat-card">

@@ -12,18 +12,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <!-- Animated Background Elements -->
-    <div class="background-animation">
-        <div class="coffee-bean bean-1"></div>
-        <div class="coffee-bean bean-2"></div>
-        <div class="coffee-bean bean-3"></div>
-        <div class="coffee-bean bean-4"></div>
-        <div class="coffee-bean bean-5"></div>
-        <div class="steam steam-1"></div>
-        <div class="steam steam-2"></div>
-        <div class="steam steam-3"></div>
-    </div>
-
     <%- include('../partials/navbar', { page: 'download' }) %>
 
     <!-- Hero Section -->
@@ -51,28 +39,28 @@
                     
                     <div class="features-list">
                         <div class="feature-item">
-                            <div class="feature-icon">🚀</div>
+                            <div class="feature-icon"><i class="fas fa-rocket"></i></div>
                             <div class="feature-content">
                                 <h3>Quick Order</h3>
                                 <p>Order ahead and skip the wait. Your coffee will be ready when you arrive.</p>
                             </div>
                         </div>
                         <div class="feature-item">
-                            <div class="feature-icon">⭐</div>
+                            <div class="feature-icon"><i class="fas fa-star"></i></div>
                             <div class="feature-content">
                                 <h3>Rewards Program</h3>
                                 <p>Earn points with every purchase and unlock exclusive rewards and discounts.</p>
                             </div>
                         </div>
                         <div class="feature-item">
-                            <div class="feature-icon">🎯</div>
+                            <div class="feature-icon"><i class="fas fa-bullseye"></i></div>
                             <div class="feature-content">
                                 <h3>Personalized Menu</h3>
                                 <p>Save your favorites and get personalized recommendations based on your taste.</p>
                             </div>
                         </div>
                         <div class="feature-item">
-                            <div class="feature-icon">🔔</div>
+                            <div class="feature-icon"><i class="fas fa-bell"></i></div>
                             <div class="feature-content">
                                 <h3>Special Offers</h3>
                                 <p>Get notified about limited-time offers, new menu items, and exclusive deals.</p>
@@ -81,19 +69,9 @@
                     </div>
 
                     <div class="download-buttons">
-                        <a href="#" class="store-button app-store">
-                            <i class="fab fa-apple"></i>
-                            <div class="store-text">
-                                <span class="store-label">Download on the</span>
-                                <span class="store-name">App Store</span>
-                            </div>
-                        </a>
-                        <a href="#" class="store-button google-play">
-                            <i class="fab fa-google-play"></i>
-                            <div class="store-text">
-                                <span class="store-label">Get it on</span>
-                                <span class="store-name">Google Play</span>
-                            </div>
+                        <a href="/download/app" class="download-btn">
+                            <i class="fas fa-download"></i>
+                            <span>Download App</span>
                         </a>
                     </div>
                 </div>
@@ -103,52 +81,80 @@
                         <div class="phone-frame">
                             <div class="phone-screen">
                                 <div class="app-preview">
-                                    <div class="app-header">
-                                        <div class="app-logo">☕</div>
-                                        <h3>Bean & Brew</h3>
+                                    <!-- App Top Bar -->
+                                    <div class="app-top-bar">
+                                        <div class="app-status-bar">
+                                            <span class="time">9:41</span>
+                                            <div class="status-icons">
+                                                <i class="fas fa-signal"></i>
+                                                <i class="fas fa-wifi"></i>
+                                                <i class="fas fa-battery-full"></i>
+                                            </div>
+                                        </div>
+                                        <div class="app-nav-bar">
+                                            <div class="app-logo">
+                                                <i class="fas fa-mug-hot"></i>
+                                                <span>Bean & Brew</span>
+                                            </div>
+                                            <div class="app-nav-icons">
+                                                <i class="fas fa-search"></i>
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="app-content">
-                                        <div class="preview-item">
-                                            <div class="preview-icon">📱</div>
-                                            <p>Order Ahead</p>
+
+                                    <!-- App Main Content -->
+                                    <div class="app-main-content">
+                                        <div class="app-welcome">
+                                            <h3>Good Morning! ☀️</h3>
+                                            <p>Ready for your perfect coffee?</p>
                                         </div>
-                                        <div class="preview-item">
-                                            <div class="preview-icon">🎁</div>
-                                            <p>Earn Rewards</p>
+
+                                        <div class="app-quick-actions">
+                                            <div class="quick-action-card">
+                                                <div class="action-icon">
+                                                    <i class="fas fa-mobile-alt"></i>
+                                                </div>
+                                                <span>Order</span>
+                                            </div>
+                                            <div class="quick-action-card">
+                                                <div class="action-icon">
+                                                    <i class="fas fa-gift"></i>
+                                                </div>
+                                                <span>Rewards</span>
+                                            </div>
+                                            <div class="quick-action-card">
+                                                <div class="action-icon">
+                                                    <i class="fas fa-bolt"></i>
+                                                </div>
+                                                <span>Fast</span>
+                                            </div>
                                         </div>
-                                        <div class="preview-item">
-                                            <div class="preview-icon">⚡</div>
-                                            <p>Fast Checkout</p>
+                                    </div>
+
+                                    <!-- App Bottom Navigation -->
+                                    <div class="app-bottom-nav">
+                                        <div class="nav-item active">
+                                            <i class="fas fa-home"></i>
+                                            <span>Home</span>
+                                        </div>
+                                        <div class="nav-item">
+                                            <i class="fas fa-search"></i>
+                                            <span>Search</span>
+                                        </div>
+                                        <div class="nav-item">
+                                            <i class="fas fa-shopping-cart"></i>
+                                            <span>Cart</span>
+                                        </div>
+                                        <div class="nav-item">
+                                            <i class="fas fa-user"></i>
+                                            <span>Profile</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="stats-section">
-        <div class="container">
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number" data-count="50000">0</div>
-                    <div class="stat-label">Active Users</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" data-count="4.8">0</div>
-                    <div class="stat-label">App Rating</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" data-count="100000">0</div>
-                    <div class="stat-label">Orders Placed</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" data-count="99">0</div>
-                    <div class="stat-label">Satisfaction Rate</div>
                 </div>
             </div>
         </div>
@@ -165,32 +171,32 @@
             
             <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-card-icon">💳</div>
+                    <div class="feature-card-icon"><i class="fas fa-credit-card"></i></div>
                     <h3>Easy Payment</h3>
                     <p>Save your payment methods and checkout in seconds with secure mobile payments.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-card-icon">📍</div>
+                    <div class="feature-card-icon"><i class="fas fa-map-marker-alt"></i></div>
                     <h3>Location Finder</h3>
                     <p>Find the nearest Bean & Brew location and get directions with one tap.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-card-icon">🎨</div>
+                    <div class="feature-card-icon"><i class="fas fa-palette"></i></div>
                     <h3>Customize Orders</h3>
                     <p>Personalize every aspect of your drink, from milk type to sweetness level.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-card-icon">📜</div>
+                    <div class="feature-card-icon"><i class="fas fa-scroll"></i></div>
                     <h3>Order History</h3>
                     <p>Access your past orders and reorder your favorites with a single tap.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-card-icon">🏆</div>
+                    <div class="feature-card-icon"><i class="fas fa-trophy"></i></div>
                     <h3>Loyalty Tiers</h3>
                     <p>Unlock higher tiers for better rewards as you continue to enjoy our coffee.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-card-icon">🎉</div>
+                    <div class="feature-card-icon"><i class="fas fa-birthday-cake"></i></div>
                     <h3>Birthday Rewards</h3>
                     <p>Celebrate your special day with exclusive birthday treats and offers.</p>
                 </div>
@@ -205,19 +211,9 @@
                 <h2>Ready to Get Started?</h2>
                 <p>Join thousands of coffee lovers who are already enjoying the convenience of our app</p>
                 <div class="cta-buttons">
-                    <a href="#" class="store-button app-store">
-                        <i class="fab fa-apple"></i>
-                        <div class="store-text">
-                            <span class="store-label">Download on the</span>
-                            <span class="store-name">App Store</span>
-                        </div>
-                    </a>
-                    <a href="#" class="store-button google-play">
-                        <i class="fab fa-google-play"></i>
-                        <div class="store-text">
-                            <span class="store-label">Get it on</span>
-                            <span class="store-name">Google Play</span>
-                        </div>
+                    <a href="/download/app" class="download-btn">
+                        <i class="fas fa-download"></i>
+                        <span>Download App</span>
                     </a>
                 </div>
             </div>
@@ -236,80 +232,6 @@
     <!-- Bottom Navigation (Mobile) -->
     <%- include('../partials/generalBottomNav', { page: 'download' }) %>
 
-    <!-- <script src="../js/shared.js"></script> -->
-    <script>
-        // Back to top functionality
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
-        
-        // Show/hide back to top button based on scroll position
-        window.addEventListener('scroll', function() {
-            const backToTopBtn = document.getElementById('backToTop');
-            if (window.scrollY > 300) {
-                backToTopBtn.classList.add('visible');
-            } else {
-                backToTopBtn.classList.remove('visible');
-            }
-        });
-
-        // Animate counter numbers
-        function animateCounter(element) {
-            const target = parseFloat(element.getAttribute('data-count'));
-            const isDecimal = target % 1 !== 0;
-            const duration = 2000;
-            const increment = target / (duration / 16);
-            let current = 0;
-
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= target) {
-                    if (isDecimal) {
-                        element.textContent = target.toFixed(1) + '★';
-                    } else if (element.parentElement.querySelector('.stat-label').textContent.includes('Rate')) {
-                        element.textContent = target + '%';
-                    } else {
-                        element.textContent = target.toLocaleString() + '+';
-                    }
-                    clearInterval(timer);
-                } else {
-                    if (isDecimal) {
-                        element.textContent = current.toFixed(1);
-                    } else {
-                        element.textContent = Math.floor(current).toLocaleString();
-                    }
-                }
-            }, 16);
-        }
-
-        // Intersection Observer for animations
-        const observerOptions = {
-            threshold: 0.2,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-in');
-                    
-                    // Animate counters in stats section
-                    if (entry.target.classList.contains('stats-section')) {
-                        entry.target.querySelectorAll('[data-count]').forEach(counter => {
-                            animateCounter(counter);
-                        });
-                    }
-                }
-            });
-        }, observerOptions);
-
-        // Observe sections
-        document.querySelectorAll('.stats-section, .download-section, .app-features, .cta-section').forEach(el => {
-            observer.observe(el);
-        });
-    </script>
+    <script src="/js/user/download.js"></script>
 </body>
 </html>
