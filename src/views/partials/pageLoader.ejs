@@ -1,10 +1,29 @@
+<!-- Ionic Core (Web Components) + Ionicons via CDN -->
+<!-- ESM + nomodule fallback for broad compatibility -->
+<script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core@6.2.0/dist/ionic/ionic.esm.js"></script>
+<script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core@6.2.0/dist/ionic/ionic.js"></script>
+
+<!-- Ionicons (optional, ionic has icons but available separately) -->
+<script type="module" src="https://unpkg.com/ionicons@6.1.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@6.1.2/dist/ionicons/ionicons.js"></script>
+
 <!-- Page Loader -->
-<div class="page-loader">
+<div class="page-loader" aria-hidden="false" role="status">
     <div class="loader-content">
-        <div class="loader-icon">☕</div>
-        <div class="loader-text">Brew & Bean</div>
-        <div class="loader-spinner"></div>
-        <div class="loader-tagline">Brewing Your Experience...</div>
+        <!-- Logo from navbar -->
+        <div class="loader-logo">
+            <i class="fas fa-mug-hot logo-icon"></i>
+            <span class="logo-text">Brew & Bean</span>
+        </div>
+
+        <div class="loader-text">Brewing Your Experience...</div>
+
+        <!-- Ionic spinner -->
+        <div class="loader-spinner">
+            <ion-spinner name="dots"></ion-spinner>
+        </div>
+
+        <div class="loader-tagline">Please wait while we prepare your coffee</div>
     </div>
 </div>
 
@@ -20,6 +39,7 @@
                 loader.classList.add('fade-out');
                 setTimeout(() => {
                     loader.style.display = 'none';
+                    loader.setAttribute('aria-hidden', 'true');
                 }, 500);
             }, 300);
         }
@@ -50,6 +70,7 @@
                         loader.classList.remove('fade-out');
                         loader.style.opacity = '1';
                         loader.style.visibility = 'visible';
+                        loader.setAttribute('aria-hidden', 'false');
                     }
                     
                     setTimeout(() => {
@@ -64,14 +85,15 @@
 </script>
 
 <style>
-/* Page Loader Styles */
+/* Page Loader Styles with Brew & Bean Theme */
 .page-loader {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #6B4423 0%, #8B4513 50%, #6B4423 100%);
+    /* Brand-consistent gradient background */
+    background: linear-gradient(135deg, var(--brew-surface) 0%, var(--brew-white) 50%, var(--brew-surface) 100%);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -79,6 +101,8 @@
     opacity: 1;
     visibility: visible;
     transition: opacity 0.5s ease, visibility 0.5s ease;
+    /* ensure Ionic components inherit desired color */
+    color: var(--brew-black);
 }
 
 .page-loader.fade-out {
@@ -86,51 +110,76 @@
     visibility: hidden;
 }
 
+/* Keep original loader content styling but modernized */
 .loader-content {
     text-align: center;
-    color: white;
+    color: var(--brew-black);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    align-items: center;
 }
 
-.loader-icon {
-    font-size: 4rem;
-    margin-bottom: 1rem;
+/* Logo section - copied from navbar */
+.loader-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.logo-icon {
+    font-size: 3rem;
+    color: var(--brew-primary);
     animation: bounce 1.5s infinite;
 }
 
-.loader-text {
+.logo-text {
     font-size: 2rem;
-    font-weight: 600;
+    font-weight: 700;
     font-family: 'Playfair Display', serif;
-    margin-bottom: 1rem;
-    letter-spacing: 2px;
+    color: var(--brew-black);
+    white-space: nowrap;
 }
 
+/* Loader title */
+.loader-text {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--brew-gray-dark);
+    margin-bottom: 0.5rem;
+}
+
+/* Ionic spinner container */
 .loader-spinner {
-    width: 50px;
-    height: 50px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    border-top: 3px solid white;
-    border-radius: 50%;
-    margin: 1rem auto;
-    animation: spin 1s linear infinite;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+/* Make ionic spinner inherit primary color */
+ion-spinner {
+    width: 48px;
+    height: 48px;
+    --spinner-color: var(--brew-primary);
+}
+
+/* Tagline */
 .loader-tagline {
-    font-size: 1rem;
+    font-size: 0.95rem;
     opacity: 0.8;
     font-style: italic;
+    color: var(--brew-gray);
     animation: pulse 2s infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
 }
 
 @keyframes bounce {
     0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-    40% { transform: translateY(-10px); }
-    60% { transform: translateY(-5px); }
+    40% { transform: translateY(-8px); }
+    60% { transform: translateY(-4px); }
 }
 
 @keyframes pulse {
@@ -140,17 +189,12 @@
 
 /* Mobile optimizations */
 @media (max-width: 768px) {
-    .loader-icon {
-        font-size: 3rem;
-    }
-    
-    .loader-text {
-        font-size: 1.5rem;
-    }
-    
-    .loader-spinner {
-        width: 40px;
-        height: 40px;
-    }
+    .loader-logo { gap: 0.5rem; }
+    .logo-icon { font-size: 2.5rem; }
+    .logo-text { font-size: 1.6rem; }
+    .loader-text { font-size: 1rem; }
+    .loader-spinner { width: 44px; height: 44px; }
+    ion-spinner { width: 36px; height: 36px; }
+    .loader-tagline { font-size: 0.85rem; }
 }
 </style>
