@@ -1,10 +1,9 @@
-/* BEAN & BREW — Signup CSS (full)
-   - Full stylesheet for the signup page
-   - Preserves all IDs/classes used by your JS
-   - Icons on text fields get primary background when focused/filled
-   - Toggle (eye) button will NOT get a colored background — only its color changes
-   - Scoped inside .signup-container to avoid affecting other pages
-*/
+/* ===========================
+   Bean & Brew — Login CSS (full)
+   Overwrites/hard-resets left-branding, preserves JS hooks & form behavior.
+   Add Bootstrap Icons in <head>:
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+   =========================== */
 
 /* ===== CSS VARIABLES ===== */
 :root{
@@ -24,6 +23,70 @@
   --max-width:1400px;
 }
 
+
+/* ===== Login-like focus/typing + addon tint ===== */
+/* Make input-group behave like the login input-wrapper when focused/has value */
+.input-group.focused .input-group-text,
+.input-group:focus-within .input-group-text {
+  color: var(--brew-primary-dark) !important;
+  background: var(--white) !important;
+  border-color: var(--brew-primary) !important;
+}
+
+/* When input has focus or contains text, make input background white and border primary */
+.input-group.focused .form-control,
+.input-group:focus-within .form-control {
+  background: var(--white) !important;
+  border-color: var(--brew-primary) !important;
+  box-shadow: 0 0 0 6px rgba(198,124,78,0.06) !important;
+  color: var(--brew-text) !important;
+  caret-color: var(--brew-text) !important;
+}
+
+/* Tint the toggle button when focused */
+.input-group.focused .btn-toggle,
+.input-group:focus-within .btn-toggle {
+  border-color: var(--brew-primary) !important;
+  color: var(--brew-primary-dark) !important;
+  background: var(--white) !important;
+}
+
+/* ensure icon color inherits */
+.input-group.focused .input-group-text i,
+.input-group:focus-within .input-group-text i,
+.input-group.focused .btn-toggle i,
+.input-group:focus-within .btn-toggle i {
+  color: inherit !important;
+  fill: currentColor !important;
+}
+
+/* Reduce overlap with browser autofill popup by ensuring toggle sits visually above it */
+.btn-toggle { position: relative; z-index: 10; }
+
+/* Force consistent padding so toggle and browser overlay don't visually cut into text while typing */
+.input-group .form-control,
+.input-wrapper input {
+  padding-right: 3.8rem; /* space for toggle; prevents overlap */
+}
+
+/* ensure placeholder & typed text are correct color */
+.input-group .form-control::placeholder,
+.input-wrapper input::placeholder {
+  color: var(--brew-text-light) !important;
+}
+.input-group .form-control,
+.input-wrapper input {
+  color: var(--brew-text) !important;
+}
+
+/* If autofill still applies, prefer white background on focus (keeps login style) */
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px var(--white) inset !important;
+  box-shadow: 0 0 0px 1000px var(--white) inset !important;
+}
+
+
 /* ===== Reset & Base ===== */
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
@@ -31,524 +94,346 @@ body{
   font-family:'Poppins',sans-serif;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
-  background:linear-gradient(135deg,#FFF5EB 0%,var(--brew-primary-10) 50%,var(--brew-surface) 100%);
+  background:linear-gradient(135deg,var(--brew-surface) 0%,var(--brew-primary-10) 100%);
   color:var(--brew-text);
   min-height:100vh;
   position:relative;
-  overflow:hidden;
-  padding:1rem;
+  overflow:auto;
 }
 
-/* ===== Animated background (kept) ===== */
-.background-animation{ position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:0; overflow:hidden }
-.coffee-bean{ position:absolute; width:30px; height:40px; background:radial-gradient(ellipse at center,var(--brew-primary-dark) 0%,var(--brew-primary) 50%,var(--brew-primary-light) 100%); border-radius:50% 50% 50% 50%/60% 60% 40% 40%; opacity:.12; animation:float 20s infinite ease-in-out }
-.coffee-bean::before{ content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:2px; height:60%; background:rgba(255,255,255,.3); border-radius:2px }
-.bean-1{ top:10%; left:10%; animation-duration:17s } .bean-2{ top:65%; left:20%; animation-duration:23s; animation-delay:3s } .bean-3{ top:30%; left:80%; animation-duration:19s; animation-delay:5s } .bean-4{ top:80%; left:60%; animation-duration:21s; animation-delay:2s } .bean-5{ top:40%; left:40%; animation-duration:25s; animation-delay:4s } .bean-6{ top:20%; left:90%; animation-duration:20s; animation-delay:6s }
-@keyframes float{ 0%,100%{ transform:translateY(0) rotate(0deg) } 25%{ transform:translateY(-30px) rotate(8deg) } 50%{ transform:translateY(-50px) rotate(-8deg) } 75%{ transform:translateY(-30px) rotate(5deg) } }
-.steam-container{ position:absolute; bottom:10%; right:25% }
-.steam{ position:absolute; bottom:0; width:5px; height:70px; background:linear-gradient(to top, rgba(198,124,78,0.25), transparent); border-radius:50%; animation:steam-rise 4s infinite ease-in-out; opacity:.4 }
-.steam-1{ left:-20px; animation-delay:0s } .steam-2{ left:0; animation-delay:1.2s } .steam-3{ left:20px; animation-delay:2.4s } .steam-4{ left:40px; animation-delay:.6s }
-@keyframes steam-rise{ 0%{ transform:translateY(0) scaleX(1); opacity:.4 } 50%{ transform:translateY(-35px) scaleX(1.3); opacity:.6 } 100%{ transform:translateY(-70px) scaleX(0.7); opacity:0 } }
+/* ===== Background animation (kept) ===== */
+.background-animation{
+  position:fixed;top:0;left:0;width:100%;height:100%;overflow:hidden;pointer-events:none;z-index:0;
+}
+.coffee-bean{
+  position:absolute;width:40px;height:50px;
+  background:radial-gradient(ellipse at center,var(--brew-primary-dark) 0%,var(--brew-primary) 50%,var(--brew-primary-light) 100%);
+  border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
+  opacity:0.08; animation:float 20s infinite ease-in-out;
+}
+.coffee-bean::before{
+  content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:2px;height:60%;background:rgba(255,255,255,0.25);border-radius:2px;
+}
+.bean-1{top:10%;left:10%;animation-duration:18s}
+.bean-2{top:60%;left:20%;animation-duration:22s;animation-delay:2s}
+.bean-3{top:30%;left:80%;animation-duration:20s;animation-delay:4s}
+.bean-4{top:80%;left:70%;animation-duration:19s;animation-delay:1s}
+.bean-5{top:50%;left:50%;animation-duration:24s;animation-delay:3s}
+.bean-6{top:20%;left:60%;animation-duration:21s;animation-delay:5s}
+@keyframes float{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  25%{transform:translateY(-30px) rotate(5deg)}
+  50%{transform:translateY(-50px) rotate(-5deg)}
+  75%{transform:translateY(-30px) rotate(3deg)}
+}
 
-/* ===== Main wrapper (centered single-column) ===== */
-.signup-container{ position:relative; z-index:1; min-height:calc(100vh - 2rem); display:flex; align-items:center; justify-content:center; gap:1.5rem; max-width:var(--max-width); margin:0 auto; padding:1rem }
-.signup-form-container{ width:100%; max-width:540px; background:var(--white); padding:1.5rem; border-radius:20px; box-shadow:var(--shadow-xl); position:relative; z-index:2; animation:slide-up .6s ease-out; overflow:hidden }
-@keyframes slide-up{ from{ opacity:0; transform:translateY(30px) } to{ opacity:1; transform:translateY(0) } }
-.signup-form-container::before{ content:''; position:absolute; left:0; right:0; top:0; height:6px; background:linear-gradient(90deg,var(--brew-primary),var(--brew-primary-light),var(--brew-primary)); border-radius:20px 20px 0 0 }
+.steam-container{position:absolute;bottom:20%;left:50%;transform:translateX(-50%);pointer-events:none}
+.steam{position:absolute;bottom:0;width:6px;height:80px;background:linear-gradient(to top,rgba(198,124,78,0.3),transparent);border-radius:50%;animation:steam-rise 4s infinite ease-in-out;opacity:0.4}
+.steam-1{left:-20px;animation-delay:0s}.steam-2{left:0;animation-delay:1s}.steam-3{left:20px;animation-delay:2s}.steam-4{left:40px;animation-delay:0.5s}
+@keyframes steam-rise{0%{transform:translateY(0) scaleX(1);opacity:0.4}50%{transform:translateY(-40px) scaleX(1.2);opacity:0.6}100%{transform:translateY(-80px) scaleX(0.8);opacity:0}}
 
-/* header */
-.form-header{ text-align:center; margin-bottom:.9rem }
-.form-header h2{ font-family:'Playfair Display',serif; font-size:1.7rem; margin:0; color:var(--brew-text) }
-.form-header p{ font-size:.85rem; color:var(--brew-text-light); margin-top:.35rem }
+/* ===== Main container (centered single column) ===== */
+/* ===== Main container (centered single column) ===== */
+.login-container{
+  position:relative;
+  z-index:1;
+  min-height:100vh;
+  width:100%;
+  max-width:var(--max-width);
+  margin:0 auto;
+  /* larger top/bottom padding + large side gutters to center a narrow card on wide screens */
+  padding:4.5rem 10vw;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:1.5rem;
+  overflow:visible;
+}
 
-/* alerts */
-.alert{ border-radius:10px; padding:.6rem .8rem; font-size:.92rem; display:flex; align-items:center; gap:.6rem }
-.alert i{ font-size:1.05rem }
 
-/* ===== Inputs — support both login-style (input-wrapper) and Bootstrap input-group ===== */
 
-/* wrapper */
-.input-wrapper{ position:relative; display:flex; align-items:center; width:100% }
+/* Hide branding markup visually (keeps DOM unchanged) */
+.login-brand, .brand-content, .brand-decoration, .brand-features, .coffee-cup { display:none !important }
 
-/* default icon style (subtle) */
-/* Both .input-wrapper .input-icon and Bootstrap addon share base look */
-.input-wrapper .input-icon,
-.input-group .input-group-text {
+/* ===== Form wrapper & card ===== */
+.login-form-wrapper{display:flex;align-items:center;justify-content:center;padding:1rem;width:100%;z-index:2}
+.login-form-container{
+  width: 100%;
+  /* larger card width so content fits comfortably on large displays */
+  width: min(960px, 66vw);
+  max-width: 960px;                    /* new larger cap */
+  background: var(--white);
+  padding: 3.25rem 3rem;               /* more horizontal room for inputs/buttons */
+  border-radius: 20px;
+  box-shadow: 0 30px 70px rgba(46,45,44,0.12), 0 12px 28px rgba(198,124,78,0.10);
+  position:relative;
+  animation:slide-up 0.6s ease-out;
+  box-sizing: border-box;
+  overflow: visible; /* ensure page scrolls not card */
+}
+
+
+
+/* decorative top accent (thin warm strip) */
+.login-form-container::before{
+  content:'';
+  position:absolute;
+  top:-8px;
+  left:18px;
+  right:18px;
+  height:8px;
+  border-radius:10px 10px 0 0;
+  background: linear-gradient(90deg, var(--brew-primary-dark), var(--brew-primary));
+  box-shadow: 0 4px 12px rgba(198,124,78,0.08);
   z-index:3;
+}
+
+/* Add a subtle warm outline to help card pop on wide background */
+.login-form-container{
+  outline: 1px solid rgba(198,124,78,0.03);
+  outline-offset: 6px;
+}
+
+
+.login-form-container::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,var(--brew-primary),var(--brew-primary-light));border-radius:20px 20px 0 0}
+@keyframes slide-up{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== Form header ===== */
+.form-header{text-align:center;margin-bottom:1.2rem}
+.form-header h2{
+  font-family:'Playfair Display',serif;
+  font-size:2.2rem; /* larger heading like screenshot */
+  font-weight:700;
+  color:var(--brew-text);
+  margin-bottom:0.25rem;
+  text-align:center;
+  letter-spacing:0.2px;
+}
+.form-header p{
+  text-align:center;
+  font-size:1rem; /* slightly larger subheading */
+  color:var(--brew-text-light);
+  margin:0;
+}
+
+/* ===== Alerts ===== */
+.alert{padding:12px 16px;border-radius:10px;margin-bottom:16px;display:flex;align-items:center;font-size:0.95rem;animation:slideIn 0.25s ease-out}
+.alert i{margin-right:10px;font-size:1.1rem}
+.alert-success{background:#d4edda;color:#155724;border:1px solid #c3e6cb}
+.alert-error{background:#f8d7da;color:#721c24;border:1px solid #f5c6cb}
+.alert-info{background:#cce7ff;color:#004085;border:1px solid #b3d7ff}
+.alert-warning{background:#fff3cd;color:#856404;border:1px solid #ffeaa7}
+@keyframes slideIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== Form groups & labels & icons ===== */
+.form-group{margin-bottom:1rem;transition:all 0.25s ease}
+.form-group label{
+  display:inline-flex;align-items:center;gap:0.6rem;font-size:0.92rem;font-weight:600;color:var(--brew-text);
+  margin-bottom:0.45rem;cursor:text;
+}
+.form-group label .bi{font-size:1.05rem;color:var(--brew-primary);line-height:1;display:inline-block;vertical-align:middle}
+
+/* When input inside the group is focused, tint the label icon (keyboard users) */
+/* Use focus-within for broad compatibility */
+.form-group:focus-within label .bi{color:var(--brew-primary-dark)}
+
+/* ===== Inputs ===== */
+/* input-wrapper kept (icon is inside the input box) */
+.input-wrapper{position:relative;display:flex;align-items:center;width:100%}
+
+/* ICON INSIDE INPUT (left) */
+.input-icon{
+  position:absolute;
+  left:12px;                 /* distance from left edge of input box */
+  z-index:3;
+  font-size:1.05rem;
+  color:var(--brew-primary);
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  pointer-events:none;
-  color:var(--brew-text-light);
-  font-size:1.05rem;
-  transition: all .18s ease;
-  width: auto;                    /* let content determine width */
-  height: calc(100% - 8px);       /* slightly inset so it sits inside input border */
-  min-height: 36px;
-  padding: 0 12px;                /* left/right gap inside the pill */
-  border-radius: 12px 0 0 12px;   /* rounded left side to match input */
-  background: transparent;
-  box-sizing: border-box;
+  pointer-events:none;       /* icon doesn't intercept clicks */
 }
 
-
-/* inputs look */
-.input-wrapper input[type="text"], .input-wrapper input[type="email"], .input-wrapper input[type="tel"], .input-wrapper input[type="password"], .input-wrapper input {
+/* ensure input padding-left accounts for the icon (space for icon) */
+.form-group input[type="email"], .form-group input[type="password"], .form-group input{
   width:100%;
-  padding-left: 64px; /* reserve room for pill (36px height + 12px left padding + gap) */
-  font-size:0.95rem;
+  padding:0.95rem 1rem 0.95rem 3.1rem; /* taller inputs */
+  font-size:0.98rem;
   color:var(--brew-text);
   background:var(--brew-surface);
   border:2px solid var(--brew-line);
   border-radius:12px;
-  transition:all .2s ease;
+  transition:all 0.18s ease;
   outline:none;
   font-family:'Poppins',sans-serif;
-  box-shadow:none;
-  -webkit-appearance:none;
-  -moz-appearance:none;
-}
-.input-wrapper input:focus{ background:var(--white); border-color:var(--brew-primary); box-shadow:0 0 0 6px rgba(198,124,78,0.06) }
-.input-wrapper input::placeholder{ color:var(--brew-text-light) }
-
-/* toggle (eye) button: keep compact — NO background on focus/filled */
-.toggle-password{
-  position:absolute;
-  right:10px;
-  top:50%;
-  transform:translateY(-50%);
-  background:transparent;    /* IMPORTANT: no background added to the toggle */
-  border:none;
-  color:var(--brew-text-light);
-  font-size:1.05rem;
-  cursor:pointer;
-  z-index:4;
-  padding:6px;
-  border-radius:6px;
-  transition: color .12s ease, transform .12s ease;
+  height:52px; /* consistent tall control */
+  box-sizing:border-box;
 }
 
-/* When toggle is focused (accessibility) keep a subtle focus ring but not colored bg */
-.toggle-password:focus {
-  outline:none;
-  box-shadow:0 0 0 4px rgba(198,124,78,0.07);
-}
+/* Focus state */
+.form-group input:focus{background:var(--white);border-color:var(--brew-primary);box-shadow:0 0 0 6px rgba(198,124,78,0.06)}
+.form-group input::placeholder{color:var(--brew-text-light)}
 
-/* BOOTSTRAP .input-group support (signup markup uses input-group) */
-.input-group .input-group-text,
-.input-group .input-group-text.bg-white,
-.input-group .input-group-text.bg-white.border-end-0 {
-  background:var(--brew-surface) !important;
-  border:2px solid var(--brew-line) !important;
-  border-right:0 !important;
-  color:var(--brew-text-light) !important;
-  min-width:44px;
-  height:44px;
-  padding:.35rem .6rem;
-  border-radius:10px 0 0 10px !important;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:none !important;
-}
+/* Toggle password (keeps your JS hook) */
+.toggle-password{position:absolute;right:12px;background:none;border:none;font-size:1.15rem;cursor:pointer;padding:0.45rem;transition:transform .12s;z-index:4}
+.toggle-password:hover{transform:scale(1.06)}
 
-/* ensure svg/icon inherits color */
-.input-group .input-group-text .bi, .input-group .input-group-text i, .input-group .input-group-text svg, .input-group .input-group-text svg * {
-  color:inherit; fill:currentColor; stroke:currentColor; width:18px; height:18px; line-height:1;
-}
+/* When input has focus, darken the icon */
+.form-group:focus-within .input-icon{color:var(--brew-primary-dark)}
 
-/* bootstrap control tuned */
-.input-group .form-control, .form-control.border-start-0 {
-  background:var(--brew-surface) !important;
-  border:2px solid var(--brew-line) !important;
-  border-left:0 !important;
-  padding:.6rem .75rem;
-  border-radius:0 10px 10px 0 !important;
-  color:var(--brew-text) !important;
-  outline:none;
-  transition:all .2s ease;
-  box-shadow:none !important;
-  height:44px;
-}
-.input-group .form-control::placeholder{ color:var(--brew-text-light) !important }
-.input-group .form-control:focus, .input-group .input-group-text:focus {
-  background:var(--white) !important;
-  border-color:var(--brew-primary) !important;
-  box-shadow:0 0 0 4px rgba(198,124,78,0.07) !important;
-}
+/* ===== Form options ===== */
+.form-options{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.forgot-link{font-size:0.9rem;color:var(--brew-primary);text-decoration:none;font-weight:500}
+.forgot-link:hover{color:var(--brew-primary-dark);text-decoration:underline}
 
-/* neutral toggle for group (kept) */
-.btn-toggle, .input-group .btn.btn-toggle {
-  border:2px solid var(--brew-line);
-  border-left:0;
-  border-radius:0 10px 10px 0;
-  background:var(--white);
-  color:var(--brew-text-light);
-  min-width:44px;
-  height:44px;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:none;
-}
-.btn-toggle:focus, .btn-toggle:active { box-shadow:0 0 0 4px rgba(198,124,78,0.07) !important; outline:none !important; }
-
-/* small label style */
-.form-label{ font-size:.78rem; font-weight:600; color:var(--brew-text); display:block; margin-bottom:.35rem }
-
-/* two-column spacing */
-.row.g-2{ --bs-gutter-x: .6rem; --bs-gutter-y: .6rem }
-
-/* password strength */
-.password-strength{ margin-top:.45rem }
-.strength-bar{ width:100%; height:4px; background:var(--brew-line); border-radius:4px; overflow:hidden; margin-bottom:.45rem }
-.strength-fill{ height:100%; width:0%; background:linear-gradient(90deg,var(--brew-primary),var(--brew-primary-light)); border-radius:4px; transition:width .25s ease }
-.strength-text{ font-size:.75rem; color:var(--brew-text-light); font-weight:500 }
-
-/* primary CTA */
-.btn-signup{
-  width:100%; padding:.75rem; font-size:.95rem; font-weight:700; color:var(--white); border:none; border-radius:12px;
+/* ===== Primary login button ===== */
+.btn-login{
+  width:100%;
+  padding:0.95rem;
+  font-size:1.02rem;
+  font-weight:700;
+  color:var(--white);
   background:linear-gradient(135deg,var(--brew-primary),var(--brew-primary-light));
-  box-shadow:0 6px 18px rgba(198,124,78,0.18); cursor:pointer; position:relative; overflow:hidden;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+  transition:transform .18s,box-shadow .18s;
+  box-shadow: 0 18px 40px rgba(198,124,78,0.14), 0 6px 18px rgba(46,45,44,0.06);
+  margin-bottom:1rem;
+  height:52px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
 }
-.btn-signup:hover{ transform:translateY(-3px); box-shadow:0 10px 26px rgba(198,124,78,0.22) }
-.btn-shine{ position:absolute; top:0; left:-120%; width:120%; height:100%; background:linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent); transition:left .55s }
-.btn-signup:hover .btn-shine{ left:120% }
+.btn-login span{display:inline-block}
 
-/* divider */
-.divider{ position:relative; text-align:center; margin:1rem 0 }
-.divider::before, .divider::after{ content:''; position:absolute; top:50%; width:40%; height:1px; background:var(--brew-line) }
-.divider::before{ left:0 } .divider::after{ right:0 }
-.divider span{ background:var(--white); padding:0 .65rem; font-size:.82rem; color:var(--brew-text-light) }
+.btn-login:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(198,124,78,0.28)}
+.btn-login:active{transform:translateY(0)}
+.btn-shine{position:absolute;top:0;left:-120%;width:120%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.22),transparent);transition:left .55s}
+.btn-login:hover .btn-shine{left:120%}
+.btn-login.loading{pointer-events:none;opacity:0.85}
 
-/* social google */
-.social-signup{ display:flex; flex-direction:column; gap:.6rem; margin-bottom:.6rem }
-.btn-social{ display:flex; align-items:center; justify-content:center; gap:.6rem; padding:.7rem; font-size:.95rem; font-weight:600; border-radius:10px; background:var(--white); border:2px solid var(--brew-line); color:var(--brew-text); transition:all .18s }
-.btn-social svg{ width:18px; height:18px; flex-shrink:0 }
-.btn-social:hover{ background:var(--brew-surface); border-color:var(--brew-primary); transform:translateY(-2px); box-shadow:var(--shadow-md) }
-.btn-social.google{ width:100%; background:linear-gradient(90deg, rgba(66,133,244,0.04), rgba(198,124,78,0.01)); border:1px solid var(--brew-line); color:var(--brew-text) }
+/* ===== Divider ===== */
+.divider{position:relative;text-align:center;margin:1rem 0}
+.divider::before,.divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:var(--brew-line)}
+.divider::before{left:0}.divider::after{right:0}
+.divider span{display:inline-block;padding:0 1rem;font-size:0.85rem;color:var(--brew-text-light);background:transparent;position:relative;font-weight:600}
 
-/* prompts & back link */
-.login-prompt, .signup-prompt{ text-align:center; border-top:1px solid var(--brew-line); padding-top:.7rem; margin-top:.5rem }
-.login-prompt p, .signup-prompt p{ font-size:.82rem; color:var(--brew-text-light); margin:0 }
-.login-link, .signup-link{ color:var(--brew-primary); font-weight:700; text-decoration:none }
-.login-link:hover, .signup-link:hover{ color:var(--brew-primary-dark); text-decoration:underline }
+/* ===== Social login (Google only) ===== */
+.social-login{display:grid;grid-template-columns:1fr;gap:0.75rem;margin-bottom:1rem}
+.btn-social{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;padding:.75rem;font-size:.95rem;font-weight:600;color:var(--brew-text);background:var(--white);border:2px solid var(--brew-line);border-radius:10px;cursor:pointer;transition:all .18s;font-family:'Poppins',sans-serif}
+.btn-social:hover{border-color:var(--brew-primary);background:var(--brew-surface);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.btn-social svg{width:20px;height:20px;flex-shrink:0}
+.btn-social.google{width:100%;background:linear-gradient(90deg,rgba(66,133,244,0.04),rgba(198,124,78,0.01));border:1px solid var(--brew-line);color:var(--brew-text)}
+.btn-social.facebook{display:none} /* in case facebook markup remains, hide visually */
 
-.back-link{ text-align:center; margin-top:.6rem }
-.back-link a{ color:var(--brew-text-light); text-decoration:none; display:inline-flex; gap:.4rem; align-items:center }
-.back-link a:hover{ color:var(--brew-primary); gap:.6rem }
+/* ===== Signup & Back links ===== */
+.signup-prompt{ text-align:center;padding-top:1rem;border-top:1px solid var(--brew-line);margin-top:0.5rem }
+.signup-prompt p{font-size:0.9rem;color:var(--brew-text-light)}
+.signup-link{color:var(--brew-primary);text-decoration:none;font-weight:600}
+.signup-link:hover{color:var(--brew-primary-dark);text-decoration:underline}
 
-/* alerts rounding */
-.alert{ border-radius:10px }
+.back-link{text-align:center;margin-top:0.75rem}
+.back-link a{display:inline-flex;align-items:center;gap:.5rem;font-size:0.9rem;color:var(--brew-text-light);text-decoration:none;transition:all .18s}
+.back-link a:hover{color:var(--brew-primary);gap:.75rem}
 
-/* legacy classes kept */
-.input-wrapper {
-  position: relative;
-  width: 100%;
-}
-
-/* Left-pill icon for inputs (absolute + vertically centered) */
-.signup-container .input-wrapper .input-icon {
-  position: absolute;
-  left: 8px;                         /* distance from input left edge */
-  top: 50%;
-  transform: translateY(-50%);       /* vertical center */
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 36px;                      /* fixed pill height to match input */
-  padding: 0 12px;                   /* horizontal padding inside pill */
-  border-radius: 12px 0 0 12px;      /* left-rounded pill */
-  color: var(--brew-text-light);
-  background: transparent;           /* becomes gradient on focus/fill */
+.toggle-password i.bi {
   font-size: 1.05rem;
-  z-index: 3;
-  pointer-events: none;
-  box-sizing: border-box;
-  transition: color .18s ease, background .18s ease, transform .18s ease;
-}
-
-/* ensure form-control inside input-wrapper matches reserved padding */
-.input-wrapper .form-control {
-  background: var(--brew-surface);
-  border: 2px solid var(--brew-line);
-  border-radius: 12px;
-  padding-left: 54px;   /* left offset + icon width + gap */
-  padding-right: 44px;
-  height: 44px;
-  color: var(--brew-text);
-  transition: all .18s ease;
-  box-shadow: none !important;
-}
-
-/* placeholder + focus */
-.input-wrapper .form-control::placeholder { color: var(--brew-text-light); }
-.input-wrapper .form-control:focus {
-  background: var(--white);
-  border-color: var(--brew-primary);
-  box-shadow: 0 0 0 6px rgba(198,124,78,0.06);
-  outline: none;
-}
-
-/* toggle (right eye) inside input */
-.input-wrapper .toggle-password {
-  /* already defined above to keep transparent background */
-}
-
-/* preserve previous accessibility focus styles for toggle */
-.input-wrapper .toggle-password:focus {
-  box-shadow: 0 0 0 4px rgba(198,124,78,0.07);
-  outline: none;
-}
-
-/* make sure bootstrap input-group rules don't unintentionally override */
-.input-wrapper .form-control, .input-wrapper .toggle-password, .input-wrapper .input-icon {
-  border-radius: 12px;
-}
-
-/* ===== New: CSS-only visual behavior for focused / filled fields (scoped) =====
-   Uses :focus-within and :has(input:not(:placeholder-shown)) to detect filled inputs.
-   Scoped under .signup-container to avoid affecting other pages.
-   NOTE: :has() is well supported in modern browsers (Chrome/Edge/Safari).
-*/
-
-/* Focused / filled: make the left pill use primary gradient and white icon */
-/* Focused / filled state — same pill but fixed height so it stays vertically centered */
-.signup-container .input-wrapper:focus-within .input-icon,
-.signup-container .input-wrapper:has(input:not(:placeholder-shown)) .input-icon {
-  color: var(--white) !important;
-  background: linear-gradient(90deg, var(--brew-primary), var(--brew-primary-light));
-  height: 36px;                      /* fixed height to match baseline */
-  padding: 0 12px;
-  border-radius: 12px 0 0 12px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: none;
+  line-height: 1;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 
-
-/* Toggle button color change only (no background) on focus/filled */
-.signup-container .input-wrapper:focus-within .toggle-password,
-.signup-container .input-wrapper:has(input:not(:placeholder-shown)) .toggle-password {
-  color: var(--brew-primary-dark) !important; /* accent color for icon only */
-  transform: translateY(-50%); /* keep position */
-  background: transparent; /* ensure no bg */
-}
-
-/* Bootstrap input-group: focused -> white addon on primary gradient */
-.signup-container .input-group:focus-within .input-group-text {
-  color: var(--white) !important;
-  background: linear-gradient(90deg, var(--brew-primary), var(--brew-primary-light)) !important;
-  border-color: var(--brew-primary) !important;
-  box-shadow: 0 0 0 6px rgba(198,124,78,0.06) !important;
-}
-
-/* Bootstrap input-group: has non-empty control -> keep addon styled */
-.signup-container .input-group:has(.form-control:not(:placeholder-shown)) .input-group-text {
-  color: var(--white) !important;
-  background: linear-gradient(90deg, var(--brew-primary), var(--brew-primary-light)) !important;
-  border-color: var(--brew-primary) !important;
-  box-shadow: none !important;
-}
-
-/* Ensure SVG / icon elements inherit the color */
-.signup-container .input-group .input-group-text svg,
-.signup-container .input-wrapper .input-icon svg,
-.signup-container .input-group .input-group-text i,
-.signup-container .input-wrapper .input-icon i {
-  fill: currentColor;
-  color: currentColor;
-}
-
-/* Reset browser autofill visuals so our styles remain consistent */
-.signup-container input:-webkit-autofill,
-.signup-container input:-webkit-autofill:focus,
-.signup-container input:-webkit-autofill:hover {
-  -webkit-box-shadow: 0 0 0px 1000px var(--white) inset !important;
-  box-shadow: 0 0 0px 1000px var(--white) inset !important;
-  -webkit-text-fill-color: var(--brew-text) !important;
+/* ===== Responsive adjustments ===== */
+@media (min-width:1025px){
+  .login-container{padding:2rem}
+  .login-form-container{
+    max-width:960px;    /* match the new desktop cap */
+    padding:3.25rem 3rem; /* larger breathing room on desktop */
+    border-radius:20px;
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+  }
 }
 
 
+@media (max-width:1024px){
+  .login-container{padding:1rem;min-height:100vh}
+  .login-form-container{max-width:560px;padding:1.6rem}
+  .login-brand{display:none!important}
+}
 
-/* ===== Responsive (kept & scoped) ===== */
+@media (max-width:768px){
+  /* let the page scroll normally on small screens */
+  body{overflow:auto}
 
-/* Large desktops (wide screens) — make the form feel proportionate and balanced */
-@media (min-width: 1200px) and (max-width: 1599px) {
-  .signup-container {
-    align-items: center;
-    justify-content: center;
-    padding-top: 2.5rem;
-    padding-bottom: 2.5rem;
-    min-height: calc(100vh - 5rem);
+  .login-container{
+    padding:0.75rem 0.6rem;
+    min-height:100vh;
+    align-items:flex-start;
+    justify-content:center;
   }
 
-  .signup-container .signup-form-container {
-    max-width: 640px;
-    padding: 2rem 2.2rem;
-    border-radius: 20px;
-    box-shadow: var(--shadow-lg);
+  .login-form-container{
+    /* allow the card to still scale down smoothly on tablets/phones */
+    width: clamp(340px, 86vw, 920px);
+    max-width: 920px;
+    background: var(--white);
+    padding: 2rem 1.1rem; /* slightly reduced horizontal padding on smaller screens */
+    border-radius:16px;
+    box-shadow: 0 26px 60px rgba(46,45,44,0.10), 0 10px 22px rgba(198,124,78,0.08);
+    position:relative;
+    animation:slide-up 0.6s ease-out;
+    box-sizing: border-box;
+    overflow: visible;
   }
 
-  .signup-container .form-header h2 { font-size: 1.9rem; }
-  .signup-container .form-header p  { font-size: 0.9rem; }
+  .form-header{margin-bottom:0.9rem}
+  .form-header h2{font-size:1.5rem}
+  .form-group{margin-bottom:1rem}
+  .divider{margin:0.8rem 0}
+  .divider span{font-size:.8rem;padding:0 .6rem}
+  .btn-login{padding:.7rem;font-size:.9rem;height:44px}
+  .social-login{gap:.4rem;margin-bottom:.5rem}
+  .btn-social{padding:.6rem;font-size:.85rem;border-radius:10px}
+  .login-prompt{margin-top:0.8rem}
+  .back-link{margin-top:0.5rem}
+  .coffee-bean{width:20px;height:28px;opacity:0.06}
 }
 
-/* Ultra-wide / very large monitors */
-@media (min-width: 1600px) {
-  .signup-container {
-    align-items: center;
-    padding-top: 3rem;
-    padding-bottom: 3rem;
-  }
-  .signup-container .signup-form-container { max-width: 720px; }
-}
 
-/* Desktop / small-laptop range */
-@media (min-width: 1025px) and (max-width: 1199px) {
-  .signup-container {
-    align-items: flex-start;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-  }
-  .signup-container .signup-form-container {
-    max-width: 600px;
-    padding: 1.6rem 1.8rem;
-  }
-  .signup-container .form-header h2 { font-size: 1.7rem; }
-}
 
-/* Tablets and small laptops (scoped; doesn't touch body) */
-@media (max-width:1024px) {
-  .signup-container {
-    padding: 0.8rem;
-    min-height: calc(100vh - 1.2rem);
-    align-items: flex-start;
-    justify-content: center;
-  }
-  .signup-container .signup-form-container {
-    padding: 1.4rem;
-    border-radius: 16px;
-    max-width: 500px;
-    width: 100%;
-  }
-  .signup-container .form-header h2 { font-size: 1.6rem; }
-  .signup-container .form-header p  { font-size: 0.86rem; }
-}
-
-/* Narrow / short viewports (phones, small tablets, and short devtools viewports)
-   Targets either a narrow width OR a short height so layout fits without scrollbars. */
-@media (max-width: 820px), (max-height: 820px) {
-  .signup-container {
-    align-items: flex-start;
-    justify-content: center;
-    padding: 0.6rem 0.3rem;
-    gap: 0.6rem;
-    min-height: auto;
-  }
-
-  .signup-container .signup-form-container {
-    padding: 0.8rem 0.9rem;
-    border-radius: 12px;
-    max-width: 96%;
-    width: 100%;
-    box-shadow: var(--shadow-md);
-  }
-
-  .signup-container .form-header { margin-bottom: 0.5rem; }
-  .signup-container .form-header h2 { font-size: 1.25rem; line-height: 1.1; }
-  .signup-container .form-header p  { font-size: 0.72rem; margin-top: 0.2rem; }
-
-  .signup-container .input-wrapper .form-control,
-  .signup-container .input-group .form-control,
-  .signup-container .input-group .input-group-text {
-    height: 40px;
-    padding-top: .45rem;
-    padding-bottom: .45rem;
-    font-size: 0.9rem;
-  }
-
-  .signup-container .row.g-2 { --bs-gutter-y: .35rem; --bs-gutter-x: .5rem; }
-  .signup-container .mt-3 { margin-top: .5rem !important; }
-  .signup-container .mb-2 { margin-bottom: .4rem !important; }
-
-  .signup-container .password-strength { display: none; }
-  .signup-container .input-wrapper .toggle-password { right: 8px; }
-
-  .signup-container .btn-signup {
-    padding: 0.55rem;
-    font-size: 0.9rem;
-    border-radius: 10px;
-  }
-  .signup-container .btn-shine { display: none; }
-  .signup-container .divider { margin: 0.6rem 0; }
-  .signup-container .divider span { font-size: 0.75rem; padding: 0 .45rem; }
-  .signup-container .social-signup { gap: .45rem; margin-bottom: .4rem; }
-  .signup-container .btn-social { padding: .55rem; font-size: .9rem; border-radius: 8px; }
-
-  .signup-container .login-prompt,
-  .signup-container .back-link { margin-top: .35rem; padding-top: .45rem; }
-
-  .signup-container .steam-container,
-  .signup-container .coffee-bean { display: none !important; }
-
-  .signup-container .col-md-6 { flex: 0 0 100% !important; max-width: 100% !important; }
-}
-
-/* Mobile landscape / small tablets */
-@media (max-width:768px) {
-  .signup-container .signup-form-container {
-    padding: 1rem 1.1rem;
-    border-radius: 14px;
-    max-width: 90%;
-  }
-  .signup-container .form-header h2 { font-size: 1.3rem; }
-  .signup-container .form-header p  { font-size: 0.78rem; }
-  .signup-container .input-group .form-control,
-  .signup-container .input-group .input-group-text {
-    height: 44px;
-    font-size: 0.9rem;
-  }
-  .signup-container .password-strength .strength-text { font-size: 0.72rem; }
-  .signup-container .btn-signup { font-size: 0.9rem; padding: 0.6rem; }
-}
-
-/* Small phones / portrait mode */
-@media (max-width:480px) {
-  .signup-container .signup-form-container {
-    padding: 0.9rem;
-    border-radius: 12px;
+@media (max-width:480px){
+  .login-form-container{
+    padding:.7rem;
+    border-radius:12px;
+    width: calc(100% - 0.5rem);
     max-width: 100%;
-    margin: 0 auto;
+    box-sizing: border-box;
   }
-  .signup-container .form-header h2 { font-size: 1.15rem; }
-  .signup-container .input-group .form-control,
-  .signup-container .input-wrapper .form-control { height: 42px; font-size: 0.88rem; }
-  .signup-container .input-wrapper .input-icon,
-  .signup-container .input-wrapper .toggle-password { font-size: 1rem; }
-  .signup-container .btn-signup { padding: 0.6rem; font-size: 0.9rem; }
-  .signup-container .divider span { font-size: 0.75rem; }
-  .signup-container .login-prompt p { font-size: 0.75rem; }
-  .signup-container .social-signup button { font-size: 0.9rem; padding: 0.6rem; }
+  .form-header h2{font-size:1.2rem;margin-bottom:.15rem}
+  .form-header p{font-size:.75rem}
+  .form-group{margin-bottom:0.9rem}
+  .form-group input{padding:.65rem .6rem .65rem 2.3rem;font-size:.88rem;border-radius:10px;height:42px}
+  .toggle-password{right:.55rem;font-size:.95rem;padding:.3rem}
+  .btn-login{height:42px;font-size:.9rem;padding:.65rem}
+  .divider{margin:0.7rem 0}
+  .social-login{margin-bottom:.4rem}
+  .login-prompt{margin-top:0.7rem;font-size:.85rem}
+  .back-link{margin-top:0.4rem}
 }
 
-/* Very small devices (under 360px width) */
-@media (max-width:360px) {
-  .signup-container .form-header h2 { font-size: 1rem; }
-  .signup-container .form-header p  { font-size: 0.7rem; }
-  .signup-container .btn-signup { padding: 0.5rem; font-size: 0.85rem; }
+/* ===== Accessibility ===== */
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
 
-/* Extra micro-adjust when viewport height is especially small.
-   Scoped to avoid global changes. */
-@media (max-height: 740px) {
-  .signup-container .signup-form-container { padding: 0.6rem; }
-  .signup-container .form-header h2 { font-size: 1.12rem; }
-  .signup-container .btn-signup { padding: 0.5rem; font-size: 0.86rem; }
-  .signup-container .input-wrapper .form-control,
-  .signup-container .input-group .form-control { height: 38px; font-size: 0.86rem; }
-  .signup-container .login-prompt p { font-size: 0.74rem; }
-  .signup-container .back-link a { font-size: 0.78rem; }
+/* Focus outlines for keyboard users */
+.btn-social:focus, .btn-login:focus, input:focus, .forgot-link:focus, .signup-link:focus, .back-link a:focus{
+  outline:3px solid rgba(198,124,78,0.12);outline-offset:2px;
 }
+
+/* ===== End of file ===== */

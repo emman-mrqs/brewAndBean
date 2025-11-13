@@ -1,20 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Email Verification - Bean & Brew</title>
-    <link rel="stylesheet" href="/css/styles.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&family=Poppins:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <!-- Your custom CSS -->
     <link rel="stylesheet" href="/css/login.css">
-    <link rel="stylesheet" href="/css/verification.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <!-- Page Loader -->
     <%- include('../partials/pageLoader') %>
 
-    <!-- Animated Background Elements -->
-    <div class="background-animation">
+    <!-- Animated Background Elements (kept) -->
+    <div class="background-animation" aria-hidden="true">
         <div class="coffee-bean bean-1"></div>
         <div class="coffee-bean bean-2"></div>
         <div class="coffee-bean bean-3"></div>
@@ -29,106 +39,75 @@
         </div>
     </div>
 
-    <div class="login-container">
-        <!-- Left Side - Branding -->
-        <div class="login-left">
-            <div class="brand-section">
-                <div class="brand-logo">
-                    <span class="logo-icon">☕</span>
-                    <h1 class="brand-name">Bean & Brew</h1>
-                </div>
-                <p class="brand-tagline">Verify Your Email</p>
-                <p class="brand-description">
-                    We've sent a 6-digit verification code to your email address. 
-                    Enter the code below to complete your registration.
-                </p>
-                
-                <div class="verification-info">
-                    <div class="info-item">
-                        <i class="fas fa-clock"></i>
-                        <span>Code expires in <span id="timer">5:00</span></span>
-                    </div>
-                    <div class="info-item">
-                        <i class="fas fa-envelope"></i>
-                        <span id="user-email"><%= email || 'your email' %></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Right Side - Verification Form -->
-        <div class="login-right">
-            <div class="form-container">
+    <!-- Centered Login Container -->
+    <div class="login-container" role="main">
+        <div class="login-form-wrapper">
+            <div class="login-form-container" role="form" aria-labelledby="verify-heading">
                 <div class="form-header">
-                    <h2>Email Verification</h2>
+                    <h2 id="verify-heading">Email Verification</h2>
                     <p>Enter the 6-digit code sent to your email</p>
                 </div>
 
                 <!-- Success/Error Messages -->
                 <% if (typeof message !== 'undefined' && message) { %>
-                    <div class="alert alert-<%= messageType || 'info' %>">
+                    <div class="alert alert-<%= messageType || 'info' %>" role="alert">
                         <i class="fas fa-<%= messageType === 'success' ? 'check-circle' : messageType === 'error' ? 'exclamation-circle' : 'info-circle' %>"></i>
                         <%= message %>
                     </div>
                 <% } %>
 
-                <!-- Verification Form -->
-                <form id="verificationForm" action="/auth/verify" method="POST" class="auth-form">
+                <form class="login-form" id="verificationForm" action="/verify" method="POST" novalidate>
                     <input type="hidden" name="email" value="<%= email %>">
-                    
+
                     <div class="form-group">
                         <label for="verificationCode">Verification Code</label>
-                        <div class="code-input-container">
-                            <input type="text" 
-                                   id="verificationCode" 
-                                   name="verificationCode" 
-                                   maxlength="6" 
-                                   pattern="[0-9]{6}"
-                                   placeholder="000000"
-                                   class="code-input"
-                                   autocomplete="off"
-                                   required>
-                            <div class="code-helper">Enter 6-digit code</div>
+                        <div class="input-wrapper">
+                            <i class="bi bi-key-fill input-icon" aria-hidden="true"></i>
+                            <input
+                                type="text"
+                                id="verificationCode"
+                                name="verificationCode"
+                                placeholder="Enter 6-digit code"
+                                maxlength="6"
+                                pattern="[0-9]{6}"
+                                value="<%= typeof formData !== 'undefined' && formData.verificationCode ? formData.verificationCode : '' %>"
+                                required
+                                autocomplete="off"
+                                aria-required="true"
+                            >
                         </div>
+                        <small class="form-help">Enter the 6-digit code from your email</small>
                     </div>
 
-                    <button type="submit" class="btn-primary" id="verifyBtn">
-                        <i class="fas fa-check"></i>
-                        Verify Email
+                    <button type="button" class="btn-login" id="verifyBtn" aria-label="Verify Email">
+                        <span>Verify Email</span>
+                        <div class="btn-shine" aria-hidden="true"></div>
                     </button>
                 </form>
 
-                <!-- Resend Section -->
-                <div class="resend-section">
-                    <p class="resend-text">Didn't receive the code?</p>
-                    <form id="resendForm" action="/auth/resend-code" method="POST" style="display: inline;">
+                <div class="signup-prompt">
+                    <p>Didn't receive the code? <a href="#" onclick="handleResendCode(); return false;" class="signup-link">Resend Code</a></p>
+                    <form id="resendForm" action="/resend-code" method="POST" style="display: none;">
                         <input type="hidden" name="email" value="<%= email %>">
-                        <button type="submit" class="btn-link" id="resendBtn">
-                            <i class="fas fa-redo"></i>
-                            Resend Code
-                        </button>
                     </form>
-                    <div id="resendCooldown" class="cooldown-text" style="display: none;">
-                        Please wait <span id="cooldownTimer">30</span> seconds before requesting a new code
-                    </div>
                 </div>
 
-                <!-- Skip for now option -->
-                <div class="skip-section">
-                    <p class="skip-text">Want to verify later?</p>
-                    <a href="/auth/login" class="btn-secondary">
-                        <i class="fas fa-arrow-right"></i>
-                        Continue to Login
+                <div class="back-link">
+                    <a href="/login" class="text-decoration-none">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
+                            <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Back to Login
                     </a>
-                    <p class="skip-note">
-                        <i class="fas fa-info-circle"></i>
-                        You can verify your email anytime from your account settings
-                    </p>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Keep auth JS unchanged -->
     <script src="/js/auth/verification.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

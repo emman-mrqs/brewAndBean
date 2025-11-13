@@ -104,7 +104,7 @@ export async function handleSignup(req, res) {
                     firstName: existingUser.first_name
                 };
                 
-                return res.redirect('/signup?showVerify=true&email=' + encodeURIComponent(email));
+                return res.redirect('/verification?email=' + encodeURIComponent(email));
             }
         }
         
@@ -155,8 +155,8 @@ export async function handleSignup(req, res) {
         req.session.message = 'Account created successfully! Please check your email for the 6-digit verification code.';
         req.session.messageType = 'success';
         
-        // Redirect to verification form on same page
-        res.redirect('/signup?showVerify=true&email=' + encodeURIComponent(email));
+        // Redirect to verification form
+        res.redirect('/verification?email=' + encodeURIComponent(email));
         
     } catch (error) {
         console.error('Signup error:', error);

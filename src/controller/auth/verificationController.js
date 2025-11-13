@@ -1,10 +1,5 @@
 //src/controller/auth/verificationController.js
-import { 
-    verifyUserWithCode, 
-    getUserVerificationStatus, 
-    updateVerificationCode, 
-    findUserByEmail 
-} from '../../database/authQueries.js';
+import db from '../../database/db.js';
 import { generateVerificationCode, sendVerificationEmail, sendWelcomeEmail } from '../../utils/emailService.js';
 
 export function renderVerification(req, res) {
@@ -13,7 +8,7 @@ export function renderVerification(req, res) {
     if (!email) {
         req.session.message = 'No email specified for verification';
         req.session.messageType = 'error';
-        return res.redirect('/auth/signup');
+        return res.redirect('/signup');
     }
     
     const message = req.session.message;
@@ -49,17 +44,41 @@ export async function handleVerification(req, res) {
         }
         
         // Verify the code
-        const verificationResult = await verifyUserWithCode(email, verificationCode);
+        const checkQuery = `
+            SELECT id, email, first_name, last_name, verification_code, verification_expires, is_verified
+            FROM users 
+            WHERE email = $1 AND verification_code = $2
+        `;
         
-        if (!verificationResult.success) {
+        const checkResult = await db.query(checkQuery, [email, verificationCode]);
+        
+        if (checkResult.rows.length === 0) {
             return res.json({
                 success: false,
-                message: verificationResult.message
+                message: 'Invalid verification code'
             });
         }
         
-        // Send welcome email
-        const user = verificationResult.user;
+        const user = checkResult.rows[0];
+        
+        // Check if code has expired
+        if (new Date() > new Date(user.verification_expires)) {
+            return res.json({
+                success: false,
+                message: 'Verification code has expired'
+            });
+        }
+        
+        // Update user as verified and clear verification fields
+        const updateQuery = `
+            UPDATE users 
+            SET is_verified = true, verification_code = NULL, verification_expires = NULL, updated_at = NOW()
+            WHERE id = $1
+            RETURNING id, email, first_name, last_name, is_verified
+        `;
+        
+        const updateResult = await db.query(updateQuery, [user.id]);
+        const updatedUser = updateResult.rows[0];
         try {
             await sendWelcomeEmail(user.email, user.first_name);
         } catch (emailError) {
@@ -77,7 +96,7 @@ export async function handleVerification(req, res) {
         return res.json({
             success: true,
             message: 'Email successfully verified! Redirecting to login...',
-            redirectTo: '/auth/login?verified=true'
+            redirectTo: '/login?verified=true'
         });
         
     } catch (error) {
@@ -101,13 +120,22 @@ export async function handleResendCode(req, res) {
         }
         
         // Find user
-        const user = await findUserByEmail(email);
-        if (!user) {
+        const findUserQuery = `
+            SELECT id, email, first_name, last_name, phone, is_verified, verification_code, verification_expires, created_at
+            FROM users
+            WHERE email = $1
+        `;
+        
+        const findUserResult = await db.query(findUserQuery, [email]);
+        
+        if (findUserResult.rows.length === 0) {
             return res.json({ 
                 success: false, 
                 message: 'User not found' 
             });
         }
+        
+        const user = findUserResult.rows[0];
         
         if (user.is_verified) {
             return res.json({ 
@@ -117,12 +145,28 @@ export async function handleResendCode(req, res) {
         }
         
         // Check current verification status
-        const verificationStatus = await getUserVerificationStatus(email);
+        const statusQuery = `
+            SELECT id, email, first_name, is_verified, verification_code, verification_expires
+            FROM users
+            WHERE email = $1
+        `;
+        
+        const statusResult = await db.query(statusQuery, [email]);
+        
+        if (statusResult.rows.length === 0) {
+            return res.json({ 
+                success: false, 
+                message: 'User not found' 
+            });
+        }
+        
+        const verificationStatus = statusResult.rows[0];
+        const now = new Date();
+        const expiry = new Date(verificationStatus.verification_expires);
+        const isCodeExpired = verificationStatus.verification_expires ? now > expiry : false;
         
         // If code exists and not expired, inform user
-        if (verificationStatus && 
-            verificationStatus.verification_code && 
-            !verificationStatus.isCodeExpired) {
+        if (verificationStatus.verification_code && !isCodeExpired) {
             return res.json({ 
                 success: false, 
                 message: 'A verification code was already sent recently. Please check your email or wait for it to expire.' 
@@ -131,7 +175,15 @@ export async function handleResendCode(req, res) {
         
         // Generate new verification code
         const verificationCode = generateVerificationCode();
-        await updateVerificationCode(user.id, verificationCode);
+        const expiryTime = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes from now
+        
+        const updateCodeQuery = `
+            UPDATE users 
+            SET verification_code = $1, verification_expires = $2, updated_at = NOW()
+            WHERE id = $3
+        `;
+        
+        await db.query(updateCodeQuery, [verificationCode, expiryTime, user.id]);
         
         // Send verification email
         const emailResult = await sendVerificationEmail(email, verificationCode, user.first_name);
@@ -169,14 +221,25 @@ export async function checkVerificationStatus(req, res) {
             });
         }
         
-        const verificationStatus = await getUserVerificationStatus(email);
+        const statusQuery = `
+            SELECT id, email, first_name, is_verified, verification_code, verification_expires
+            FROM users
+            WHERE email = $1
+        `;
         
-        if (!verificationStatus) {
+        const statusResult = await db.query(statusQuery, [email]);
+        
+        if (statusResult.rows.length === 0) {
             return res.json({ 
                 success: false, 
                 message: 'User not found' 
             });
         }
+        
+        const verificationStatus = statusResult.rows[0];
+        const now = new Date();
+        const expiry = new Date(verificationStatus.verification_expires);
+        const isCodeExpired = verificationStatus.verification_expires ? now > expiry : false;
         
         return res.json({
             success: true,

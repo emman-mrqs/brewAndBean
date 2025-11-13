@@ -18,8 +18,10 @@ document.addEventListener('DOMContentLoaded', function() {
     let resendCooldownTime = 0;
     let resendCooldownInterval;
 
-    // Start countdown timer
+    // Start countdown timer (only if timer element exists)
     function startTimer() {
+        if (!timerElement) return;
+        
         timerInterval = setInterval(() => {
             if (timeLeft <= 0) {
                 clearInterval(timerInterval);
@@ -42,8 +44,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1000);
     }
 
-    // Start resend cooldown
+    // Start resend cooldown (only if elements exist)
     function startResendCooldown() {
+        if (!resendBtn || !resendCooldown || !cooldownTimer) return;
+        
         resendCooldownTime = 30; // 30 seconds
         resendBtn.style.display = 'none';
         resendCooldown.style.display = 'block';
@@ -113,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Auto-submit when 6 digits entered
         if (this.value.length === 6) {
             setTimeout(() => {
-                verificationForm.submit();
+                verificationForm.dispatchEvent(new Event('submit'));
             }, 500);
         }
     });
@@ -133,29 +137,44 @@ document.addEventListener('DOMContentLoaded', function() {
         // Show loading state
         verifyBtn.disabled = true;
         verifyBtn.classList.add('loading');
+        console.log('Making fetch request to /verify');
         
         try {
-            const formData = new FormData(this);
+            const payload = {
+                email: document.querySelector('input[name="email"]').value,
+                verificationCode: code
+            };
+            
             const response = await fetch('/verify', {
                 method: 'POST',
-                body: formData
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
             });
+            
+            console.log('Response received:', response);
+            const result = await response.json();
+            console.log('Parsed result:', result);
 
-            if (response.ok) {
-                showMessage('Email verified successfully!', 'success');
+            if (result.success) {
+                showMessage(result.message || 'Email verified successfully!', 'success');
                 
-                // Clear timer
-                clearInterval(timerInterval);
-                timerElement.textContent = 'Verified ✓';
-                timerElement.style.color = '#27ae60';
+                // Clear timer if it exists
+                if (timerInterval) {
+                    clearInterval(timerInterval);
+                }
+                if (timerElement) {
+                    timerElement.textContent = 'Verified ✓';
+                    timerElement.style.color = '#27ae60';
+                }
                 
-                // Redirect to login after 2 seconds
+                // Redirect after 2 seconds
                 setTimeout(() => {
-                    window.location.href = '/login?verified=true';
+                    console.log('Redirecting to:', result.redirectTo || '/login?verified=true');
+                    window.location.href = result.redirectTo || '/login?verified=true';
                 }, 2000);
                 
             } else {
-                showMessage('Invalid or expired verification code', 'error');
+                showMessage(result.message || 'Invalid or expired verification code', 'error');
                 codeInput.value = '';
                 codeInput.focus();
             }
@@ -169,20 +188,61 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Handle resend - simplified (redirect back to signup)
+    // Handle verification button click (fallback)
+    verifyBtn.addEventListener('click', function(e) {
+        verificationForm.dispatchEvent(new Event('submit'));
+    });    // Handle resend - make AJAX request
     if (resendForm) {
-        resendForm.addEventListener('submit', function(e) {
+        resendForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const email = new URLSearchParams(window.location.search).get('email');
-            if (email) {
-                showMessage('Redirecting to signup page to resend code...', 'info');
-                setTimeout(() => {
-                    window.location.href = '/signup';
-                }, 1500);
+            const email = document.querySelector('input[name="email"]').value;
+            if (!email) {
+                showMessage('Email not found', 'error');
+                return;
+            }
+
+            // Show loading state
+            const resendBtn = document.querySelector('.signup-link');
+            if (resendBtn) {
+                resendBtn.textContent = 'Sending...';
+                resendBtn.style.pointerEvents = 'none';
+            }
+
+            try {
+                const payload = { email };
+                
+                const response = await fetch('/resend-code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage(result.message || 'New verification code sent to your email', 'success');
+                    startResendCooldown();
+                } else {
+                    showMessage(result.message || 'Failed to resend code', 'error');
+                }
+                
+            } catch (error) {
+                console.error('Resend error:', error);
+                showMessage('An error occurred while resending the code', 'error');
+            } finally {
+                if (resendBtn) {
+                    resendBtn.textContent = 'Resend Code';
+                    resendBtn.style.pointerEvents = 'auto';
+                }
             }
         });
     }
+
+    // Global function for onclick handler
+    window.handleResendCode = function() {
+        resendForm.dispatchEvent(new Event('submit'));
+    };
 
     // Keyboard shortcuts
     document.addEventListener('keydown', function(e) {
