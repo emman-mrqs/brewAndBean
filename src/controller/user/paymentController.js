@@ -352,7 +352,7 @@ class PaymentController {
             // Start database transaction - NOW we insert into DB
             await client.query('BEGIN');
 
-            const userId = req.user?.id || null;
+            const userId = req.session.user?.id;
 
             // Insert order into database
             const orderQuery = `

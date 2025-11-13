@@ -8,7 +8,7 @@ class OrderController {
                 title: "Order History - Bean & Brew",
                 page: "orderHistory",
                 isAuthenticated: req.isAuthenticated ? req.isAuthenticated() : false,
-                user: req.user || null
+                user: req.session.user || null
             });
         } catch (error) {
             console.error("Error rendering order history page:", error);
@@ -19,7 +19,7 @@ class OrderController {
     // Get order history data (API) - only completed and cancelled orders
     static async getOrderHistoryData(req, res) {
         try {
-            const userId = req.user?.id;
+            const userId = req.session.user?.id;
 
             if (!userId) {
                 return res.status(401).json({
@@ -75,7 +75,7 @@ class OrderController {
                 title: "Current Orders - Bean & Brew",
                 page: "orderPreview",
                 isAuthenticated: req.isAuthenticated ? req.isAuthenticated() : false,
-                user: req.user || null
+                user: req.session.user || null
             });
         } catch (error) {
             console.error("Error rendering order preview page:", error);
@@ -86,7 +86,7 @@ class OrderController {
     // Get current orders (API) - all orders except completed and cancelled
     static async getCurrentOrders(req, res) {
         try {
-            const userId = req.user?.id;
+            const userId = req.session.user?.id;
 
             if (!userId) {
                 return res.status(401).json({
@@ -152,7 +152,7 @@ class OrderController {
     static async cancelOrder(req, res) {
         try {
             const { orderId } = req.params;
-            const userId = req.user?.id || req.session?.user?.id;
+            const userId = req.session.user?.id;
 
             if (!userId) {
                 return res.status(401).json({
@@ -267,8 +267,23 @@ class OrderController {
                 });
             }
 
-            // Get user ID from session (if logged in)
-            const userId = req.user?.id || null;
+            // Get user ID from session (required since route is protected)
+            const userId = req.session.user?.id;
+            if (!userId) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'User authentication required'
+                });
+            }
+
+            // Validate branchId is a number
+            const branchIdNum = parseInt(branchId, 10);
+            if (isNaN(branchIdNum) || branchIdNum <= 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Invalid branch selection'
+                });
+            }
 
             // Insert order
             const orderQuery = `
@@ -296,7 +311,7 @@ class OrderController {
                 'pending', // order_status - will be updated based on payment method
                 total,
                 shippingAddress,
-                branchId
+                branchIdNum
             ]);
 
             const orderId = orderResult.rows[0].id;
@@ -409,7 +424,7 @@ class OrderController {
     // Get user orders (API)
     static async getUserOrders(req, res) {
         try {
-            const userId = req.user?.id;
+            const userId = req.session.user?.id;
 
             if (!userId) {
                 return res.status(401).json({
