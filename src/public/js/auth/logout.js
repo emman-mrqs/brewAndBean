@@ -1,103 +1,122 @@
-// Shared Logout Utility
-// This file provides a consistent logout function for all pages
+// /public/js/auth/logout.js
+// Robust logout utility — attach globals early and use delegation.
 
-// Main logout function that properly handles session destruction
+// Define functions immediately so inline onclick() won't fail.
 function logout() {
-    if (confirm('Are you sure you want to logout?')) {
-        // Show loading state on logout button
-        const logoutBtn = document.querySelector('.btn-logout');
-        if (logoutBtn) {
-            logoutBtn.disabled = true;
-            logoutBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing Out...';
-        }
-        
-        // Create a form to submit POST request to logout endpoint
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '/logout';
-        
-        // Add CSRF token if available
-        const csrfToken = document.querySelector('meta[name="csrf-token"]');
-        if (csrfToken) {
-            const csrfInput = document.createElement('input');
-            csrfInput.type = 'hidden';
-            csrfInput.name = '_csrf';
-            csrfInput.value = csrfToken.getAttribute('content');
-            form.appendChild(csrfInput);
-        }
-        
-        // Hide the form and submit
-        form.style.display = 'none';
-        document.body.appendChild(form);
-        form.submit();
-    }
-}
+    if (!confirm('Are you sure you want to logout?')) return;
 
-// Alternative logout function using fetch API (more modern approach)
-async function logoutAsync() {
-    if (confirm('Are you sure you want to logout?')) {
+    // Show loading state on all matching logout buttons
+    document.querySelectorAll('.btn-logout, [data-logout]').forEach(btn => {
         try {
-            // Show loading state
-            const logoutBtn = document.querySelector('.btn-logout');
-            if (logoutBtn) {
-                logoutBtn.disabled = true;
-                logoutBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing Out...';
-            }
-            
-            const response = await fetch('/logout', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'same-origin'
+            btn.disabled = true;
+            btn.dataset.originalHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing Out...';
+        } catch (e) { /* ignore */ }
+    });
+
+    // Create and submit a POST form to /logout (works even without JS on server)
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/logout';
+
+    // If you use CSRF meta tag, include it
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+    if (csrfToken) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = '_csrf';
+        input.value = csrfToken;
+        form.appendChild(input);
+    }
+
+    form.style.display = 'none';
+    document.body.appendChild(form);
+    form.submit();
+}
+
+async function logoutAsync() {
+    if (!confirm('Are you sure you want to logout?')) return;
+
+    document.querySelectorAll('.btn-logout, [data-logout]').forEach(btn => {
+        try {
+            btn.disabled = true;
+            btn.dataset.originalHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing Out...';
+        } catch (e) {}
+    });
+
+    try {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+        const headers = { 'Content-Type': 'application/json' };
+        if (csrfToken) headers['CSRF-Token'] = csrfToken;
+
+        const res = await fetch('/logout', {
+            method: 'POST',
+            headers,
+            credentials: 'same-origin'
+        });
+
+        if (res.ok) {
+            // redirect to login (server also redirects for non-fetch)
+            window.location.href = '/login?message=Successfully logged out';
+        } else {
+            console.error('Logout failed:', res.status, res.statusText);
+            alert('Logout failed. Please try again.');
+
+            // restore buttons
+            document.querySelectorAll('.btn-logout, [data-logout]').forEach(btn => {
+                try {
+                    btn.disabled = false;
+                    if (btn.dataset.originalHtml) btn.innerHTML = btn.dataset.originalHtml;
+                } catch (e) {}
             });
-            
-            if (response.ok) {
-                // Successful logout - redirect to login page
-                window.location.href = '/login?message=Successfully logged out';
-            } else {
-                // Handle error
-                console.error('Logout failed:', response.statusText);
-                alert('Logout failed. Please try again.');
-                
-                // Reset button state
-                if (logoutBtn) {
-                    logoutBtn.disabled = false;
-                    logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
-                }
-            }
-        } catch (error) {
-            console.error('Logout error:', error);
-            alert('An error occurred during logout. Please try again.');
-            
-            // Reset button state
-            const logoutBtn = document.querySelector('.btn-logout');
-            if (logoutBtn) {
-                logoutBtn.disabled = false;
-                logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
-            }
         }
+    } catch (err) {
+        console.error('Logout error:', err);
+        alert('An error occurred during logout. Please try again.');
+        document.querySelectorAll('.btn-logout, [data-logout]').forEach(btn => {
+            try {
+                btn.disabled = false;
+                if (btn.dataset.originalHtml) btn.innerHTML = btn.dataset.originalHtml;
+            } catch (e) {}
+        });
     }
 }
 
-// Quick logout without confirmation (for admin or forced logout)
 function quickLogout() {
     window.location.href = '/logout';
 }
 
-// Initialize logout functionality when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    // Add logout event listener to logout buttons
-    const logoutButtons = document.querySelectorAll('.btn-logout, [data-logout]');
-    logoutButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            logout();
-        });
-    });
-});
-
-// Make logout function globally available
+// Make functions global immediately to avoid "not defined" inline errors
 window.logout = logout;
 window.logoutAsync = logoutAsync;
 window.quickLogout = quickLogout;
+window.confirmLogout = logout; // alias for older inline calls
+
+// Use event delegation so markup only needs data-logout attribute.
+// This attaches one listener and handles dynamically added buttons too.
+// Delegated logout click handler with debug traces
+document.addEventListener('click', (e) => {
+  const el = e.target.closest('[data-logout], .btn-logout');
+  if (!el) return;
+
+  // Debug: confirm the listener fired and show the element
+  console.log('Logout click detected on:', el);
+  try {
+    console.trace('Trace logout click'); // optional deeper trace
+  } catch (err) {}
+
+  e.preventDefault();
+
+  // Show which action we will take (helps verify data-* attr)
+  const action = el.dataset.action;
+  console.log('Logout action attribute:', action || '(none)');
+
+  if (action === 'async') {
+    logoutAsync();
+  } else {
+    logout();
+  }
+});
+

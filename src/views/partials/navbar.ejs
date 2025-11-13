@@ -92,10 +92,11 @@
                             <span>Order History</span>
                         </a>
                         <div class="dropdown-divider"></div>
-                        <button onclick="return confirmLogout()" class="dropdown-item logout-item">
+                        <button type="button" class="dropdown-item logout-item btn-logout" data-logout>
                             <i class="fas fa-sign-out-alt"></i>
                             <span>Logout</span>
                         </button>
+
                     </div>
                 </div>
             <% } else { %>
@@ -192,10 +193,11 @@
                     <i class="fas fa-cog"></i>
                     <span>Settings</span>
                 </a>
-                <button onclick="return confirmLogout()" class="sidebar-footer-item logout">
+                <button type="button" class="sidebar-footer-item logout btn-logout" data-logout>
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Logout</span>
                 </button>
+
             </div>
         <% } else { %>
             <div class="sidebar-footer">
@@ -226,6 +228,9 @@
             <i class="fas fa-bell-slash"></i>
             <p>No notifications yet</p>
         </div>
+    </div>
+    <div class="mobile-notification-footer">
+        <a href="/notifications" class="mobile-view-all-link">View All Notifications</a>
     </div>
 </div>
 
@@ -420,7 +425,14 @@
         console.error('Failed to fetch notification count:', res.status);
         return;
       }
-      const json = await res.json();
+      const responseText = await res.text();
+      let json;
+      try {
+        json = JSON.parse(responseText);
+      } catch (e) {
+        console.error('Response is not JSON:', responseText);
+        return;
+      }
       console.log('Notification count response:', json);
       setBadges(Number(json.count) || 0);
     } catch (err) {
@@ -500,13 +512,13 @@
   markAllReadBtn?.addEventListener('click', markAllRead);
   mobileMarkAllReadBtn?.addEventListener('click', markAllRead);
 
-  // Initial load + polling
-  updateCartBadge();
+// Initial load + polling
+updateCartBadge();
+if (document.getElementById('desktopNotificationBadgeMain')) {
   updateNotificationBadge();
-  setInterval(updateCartBadge, 30000);
   setInterval(updateNotificationBadge, 30000);
-
-  // allow external triggers
+}
+setInterval(updateCartBadge, 30000);  // allow external triggers
   window.addEventListener('cartUpdated', updateCartBadge);
   window.addEventListener('notificationUpdated', updateNotificationBadge);
 
@@ -534,9 +546,43 @@
 
   // Check for bottom notification button immediately and after DOM loads
   initBottomNotificationBtn();
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initBottomNotificationBtn);
-  }
-
+  document.addEventListener('DOMContentLoaded', initBottomNotificationBtn);
 })();
+
+// Logout function
+function logout() {
+    // Create and submit a POST form to /logout to end the session
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/logout';
+
+    // Include CSRF token if present
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+    if (csrfToken) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = '_csrf';
+        input.value = csrfToken;
+        form.appendChild(input);
+    }
+
+    form.style.display = 'none';
+    document.body.appendChild(form);
+    form.submit();
+}
+
+// Make function global
+window.logout = logout;
+window.confirmLogout = logout; // alias for older inline calls
+
+// Use event delegation for logout buttons
+document.addEventListener('click', (e) => {
+    const el = e.target.closest('[data-logout], .btn-logout');
+    if (!el) return;
+    e.preventDefault();
+    logout();
+});
+
 </script>
+
+
