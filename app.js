@@ -1,3 +1,5 @@
+import http from "http";  
+
 // Load environment variables FIRST
 import dotenv from "dotenv";
 dotenv.config({ debug: false });
@@ -12,7 +14,23 @@ import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
+
+ // Only if you're behind nginx/Heroku/etc.
+app.set('trust proxy', 1);
+
 const port = process.env.PORT || 3000;
+
+app.use(session({
+  secret: process.env.SESSION_SECRET || "supersecretkey", // Use .env in production!
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: false, // Set to true if using HTTPS
+    // secure cookies in production (works because of trust proxy)
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 1000 * 60 * 60 * 24, // 1 day
+  },
+}));
 
 // Import middleware
 import { sessionConfig, attachUserToViews } from "./src/middleware/auth.js";
@@ -72,6 +90,12 @@ app.use("/", adminRoutes);
 // Notification Routes
 app.use("/", notificationRoutes);
 
-app.listen(port, () => {
-    console.log(`Backend server is running on http://localhost:${port}`);
-});
+// app.listen(port, () => {
+//     console.log(`Backend server is running on http://localhost:${port}`);
+// });
+
+    const server = http.createServer(app);
+    server.listen(port, '0.0.0.0', () => {
+      console.log('ENV PORT =', process.env.PORT);
+      console.log(`Server listening on 0.0.0.0:${port}`);
+    });
