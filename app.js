@@ -54,6 +54,8 @@ import signupRoutes from "./src/routes/signupRoutes.js";
 import userRoutes from "./src/routes/userRoutes.js";
 import adminRoutes from "./src/routes/adminRoutes.js";
 import adminAuthRoutes from "./src/routes/adminAuthRoutes.js";
+import notificationRoutes from './src/routes/notificationRoutes.js';
+
 
 //Auth Routes (simplified to direct routes)
 app.use("/", loginRoutes);
@@ -66,6 +68,9 @@ app.use("/", userRoutes);
 
 //Admin Routes
 app.use("/", adminRoutes);
+
+// Notification Routes
+app.use("/", notificationRoutes);
 
 app.listen(port, () => {
     console.log(`Backend server is running on http://localhost:${port}`);

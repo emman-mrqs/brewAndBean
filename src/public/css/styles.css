@@ -2698,7 +2698,7 @@ body {
         pointer-events: auto;
     }
 
-    .bn-link {
+    .bn-link, .bn-link button {
         flex: 1;
         height: 100%;
         display: flex;
@@ -2708,27 +2708,59 @@ body {
         text-decoration: none;
         color: #6B7280;
         gap: 3px;
+        position: relative;
         font-size: 0.68rem;
         -webkit-tap-highlight-color: transparent;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        font-family: inherit;
     }
 
-    .bn-link i {
+    .bn-link i, .bn-link button i {
         font-size: 1.15rem;
         line-height: 1;
         color: #6B7280;
         transition: color 0.2s ease, transform 0.2s ease;
     }
 
-    .bn-link:active i { transform: scale(0.92); }
+    .bn-link:active i, .bn-link button:active i { transform: scale(0.92); }
 
     .bn-link.active,
-    .bn-link:hover {
+    .bn-link:hover,
+    .bn-link.active button,
+    .bn-link:hover button {
         color: var(--brew-primary);
     }
 
     .bn-link.active i,
-    .bn-link:hover i {
+    .bn-link:hover i,
+    .bn-link.active button i,
+    .bn-link:hover button i {
         color: var(--brew-primary);
+    }
+
+    /* Notification badge styles for bottom nav */
+    .bn-link .sidebar-notification-badge {
+        position: absolute;
+        top: 6px;
+        right: 50%;
+        transform: translateX(12px);
+        background: #EF4444;
+        color: white;
+        font-size: 0.65rem;
+        font-weight: 700;
+        padding: 2px 5px;
+        border-radius: 10px;
+        min-width: 16px;
+        height: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 6px rgba(239, 68, 68, 0.5);
+        border: 2px solid white;
+        z-index: 10;
     }
 
     /* .bn-login removed: login is now a standard tab (.bn-link) */

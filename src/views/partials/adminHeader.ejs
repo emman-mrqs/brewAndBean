@@ -7,10 +7,27 @@
         <i class="fas fa-bars"></i>
     </button>
     <div class="header-actions">
-        <button class="notification-btn">
-            <i class="fas fa-bell"></i>
-            <span class="notification-badge">3</span>
-        </button>
+        <!-- Notifications -->
+        <div class="notification-dropdown">
+            <button class="notification-btn" id="adminNotificationBtn" title="Notifications">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge" id="adminNotificationBadgeMain">0</span>
+            </button>
+
+            <div class="notification-dropdown-menu" id="adminNotificationDropdown">
+                <div class="notification-header">
+                    <h4>Notifications</h4>
+                    <button class="mark-all-read-btn" id="adminMarkAllReadBtn">Mark all read</button>
+                </div>
+                <div class="notification-list" id="adminNotificationList">
+                    <!-- Notifications will be loaded here -->
+                    <div class="notification-empty">
+                        <i class="fas fa-bell-slash"></i>
+                        <p>No notifications yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Profile dropdown (replaces standalone logout button) -->
         <div class="profile-dropdown" style="position: relative;">
@@ -33,6 +50,8 @@
         const profileBtn = document.getElementById('profileBtn');
         const profileMenu = document.getElementById('profileMenu');
         const adminLogout = document.getElementById('adminLogout');
+        const adminNotificationBtn = document.getElementById('adminNotificationBtn');
+        const adminNotificationDropdown = document.getElementById('adminNotificationDropdown');
 
         function closeProfileMenu() {
             if (profileMenu) {
@@ -43,6 +62,12 @@
             }
         }
 
+        function closeNotificationDropdown() {
+            if (adminNotificationDropdown) {
+                adminNotificationDropdown.classList.remove('active');
+            }
+        }
+
         if (profileBtn && profileMenu) {
             profileBtn.addEventListener('click', function(e){
                 e.preventDefault();
@@ -50,6 +75,8 @@
                 const isOpen = profileMenu.style.display === 'block';
                 profileMenu.style.display = isOpen ? 'none' : 'block';
                 profileBtn.setAttribute('aria-expanded', String(!isOpen));
+                // Close notification dropdown if open
+                closeNotificationDropdown();
             });
 
             // Consolidated click handler - close profile menu when clicking outside OR sidebar toggle
@@ -59,6 +86,7 @@
                 // Check if clicked sidebar toggle
                 if (sidebarToggle && sidebarToggle.contains(ev.target)) {
                     closeProfileMenu();
+                    closeNotificationDropdown();
                     return;
                 }
                 
@@ -66,10 +94,128 @@
                 if (!profileBtn.contains(ev.target) && !profileMenu.contains(ev.target)) {
                     closeProfileMenu();
                 }
+
+                // Check if clicked outside notification dropdown
+                if (adminNotificationDropdown && !adminNotificationBtn.contains(ev.target) && !adminNotificationDropdown.contains(ev.target)) {
+                    closeNotificationDropdown();
+                }
             });
 
             // Close profile menu when a modal opens
             document.addEventListener('show.bs.modal', closeProfileMenu);
+        }
+
+        // Notification dropdown toggle
+        if (adminNotificationBtn && adminNotificationDropdown) {
+            adminNotificationBtn.addEventListener('click', async function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const isActive = adminNotificationDropdown.classList.toggle('active');
+                // Close profile menu if open
+                closeProfileMenu();
+
+                // Load notifications when opening dropdown
+                if (isActive) {
+                    await loadAdminNotifications();
+                }
+            });
+        }
+
+        // Load admin notifications
+        async function loadAdminNotifications() {
+            try {
+                const response = await fetch('/admin/api/notifications');
+                if (response.ok) {
+                    const data = await response.json();
+                    const notificationList = document.getElementById('adminNotificationList');
+                    if (notificationList) {
+                        if (data.items && data.items.length > 0) {
+                            const notificationsHtml = data.items.map(notification => `
+                                <div class="notification-item ${notification.is_read ? 'read' : 'unread'}" data-id="${notification.id}" onclick="markAdminNotificationRead(${notification.id})">
+                                    <div class="notification-content">
+                                        <div class="notification-title">${notification.title}</div>
+                                        <div class="notification-message">${notification.message}</div>
+                                        <div class="notification-time">${new Date(notification.created_at).toLocaleDateString()}</div>
+                                    </div>
+                                    ${!notification.is_read ? '<div class="notification-unread-dot"></div>' : ''}
+                                </div>
+                            `).join('');
+                            notificationList.innerHTML = notificationsHtml;
+                        } else {
+                            notificationList.innerHTML = `
+                                <div class="notification-empty">
+                                    <i class="fas fa-bell-slash"></i>
+                                    <p>No notifications yet</p>
+                                </div>
+                            `;
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading admin notifications:', error);
+            }
+        }
+
+        // Mark individual admin notification as read
+        async function markAdminNotificationRead(notificationId) {
+            try {
+                const response = await fetch(`/admin/api/notifications/${notificationId}/read`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (response.ok) {
+                    // Refresh notifications and badge
+                    await loadAdminNotifications();
+                    await updateAdminNotificationBadge();
+                }
+            } catch (error) {
+                console.error('Error marking admin notification as read:', error);
+            }
+        }
+
+        // Update notification badge
+        async function updateAdminNotificationBadge() {
+            try {
+                const response = await fetch('/admin/api/notifications/count');
+                if (response.ok) {
+                    const data = await response.json();
+                    const badge = document.getElementById('adminNotificationBadgeMain');
+                    if (badge) {
+                        badge.textContent = data.count || 0;
+                        badge.style.display = data.count > 0 ? 'flex' : 'none';
+                    }
+                }
+            } catch (error) {
+                console.error('Error updating admin notification badge:', error);
+            }
+        }
+
+        // Update badge on page load and periodically
+        updateAdminNotificationBadge();
+        setInterval(updateAdminNotificationBadge, 30000);
+
+        // Mark all admin notifications as read
+        const adminMarkAllReadBtn = document.getElementById('adminMarkAllReadBtn');
+        if (adminMarkAllReadBtn) {
+            adminMarkAllReadBtn.addEventListener('click', async () => {
+                try {
+                    const response = await fetch('/admin/api/notifications/mark-all-read', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    if (response.ok) {
+                        // Refresh notifications and badge
+                        await loadAdminNotifications();
+                        await updateAdminNotificationBadge();
+                    }
+                } catch (error) {
+                    console.error('Error marking admin notifications as read:', error);
+                }
+            });
         }
 
         if (adminLogout) {
@@ -87,6 +233,24 @@
             });
         }
     })();
+// Mark individual admin notification as read
+async function markAdminNotificationRead(notificationId) {
+    try {
+        const response = await fetch(`/admin/api/notifications/${notificationId}/read`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        if (response.ok) {
+            // Refresh notifications and badge
+            await loadAdminNotifications();
+            await updateAdminNotificationBadge();
+        }
+    } catch (error) {
+        console.error('Error marking admin notification as read:', error);
+    }
+}
     </script>
     <script src="/js/admin/adminHeader.js"></script>
 </header>

@@ -70,7 +70,6 @@ router.get("/api/orders/:orderId", requireAuth, OrderController.getOrder);
 router.get("/api/orders/:orderId/payment", requireAuth, OrderController.getOrderPayment); // Get payment details
 router.get("/api/orders", requireAuth, OrderController.getUserOrders);
 router.put("/api/orders/:orderId/status", requireAuth, OrderController.updateOrderStatus);
-router.get("/api/notifications/count", requireAuthAPI, OrderController.getNotificationCount);
 
 // Public API for branches (for checkout page)
 router.get("/api/branches", OrderController.getBranches);

@@ -13,10 +13,11 @@
         <i class="fas fa-gauge" aria-hidden="true"></i>
         <span>Dashboard</span>
     </a>
-    <a href="/specialties" class="bn-link <%= page === 'specialties' ? 'active' : '' %>" aria-label="Special">
-        <i class="bi bi-star-fill" aria-hidden="true"></i>
-        <span>Specialties</span>
-    </a>
+    <button class="bn-link" id="bottomNotificationBtn" aria-label="Notifications">
+        <i class="fas fa-bell" aria-hidden="true"></i>
+        <span class="sidebar-notification-badge" id="bottomNotificationBadgeMain" style="display: none;">0</span>
+        <span>Notifications</span>
+    </button>
     <a href="/contact" class="bn-link <%= page === 'contact' ? 'active' : '' %>" aria-label="Contact">
         <i class="bi bi-envelope-fill" aria-hidden="true"></i>
         <span>Contact</span>

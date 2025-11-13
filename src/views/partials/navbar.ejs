@@ -36,6 +36,28 @@
                 <span class="cart-badge" id="desktopCartBadge">0</span>
             </a>
 
+            <!-- Notifications -->
+            <div class="notification-dropdown">
+                <button class="action-btn notification-btn" id="desktopNotificationBtn" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="desktopNotificationBadgeMain" style="display: none;">0</span>
+                </button>
+
+                <div class="notification-dropdown-menu" id="desktopNotificationDropdown">
+                    <div class="notification-header">
+                        <h4>Notifications</h4>
+                        <button class="mark-all-read-btn" id="markAllReadBtn">Mark all read</button>
+                    </div>
+                    <div class="notification-list" id="notificationList">
+                        <!-- Notifications will be loaded here -->
+                        <div class="notification-empty">
+                            <i class="fas fa-bell-slash"></i>
+                            <p>No notifications yet</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- User Menu -->
             <% if (isAuthenticated && user) { %>
                 <div class="user-dropdown">
@@ -157,6 +179,11 @@
                     <span>Cart</span>
                     <span class="sidebar-cart-badge" id="mobileCartBadge">0</span>
                 </a>
+                <button class="sidebar-footer-item notification-btn-mobile" id="mobileNotificationBtn">
+                    <i class="fas fa-bell"></i>
+                    <span>Notifications</span>
+                    <span class="sidebar-notification-badge" id="mobileNotificationBadgeMain" style="display: none;">0</span>
+                </button>
                 <a href="/dashboard" class="sidebar-footer-item">
                     <i class="fas fa-tachometer-alt"></i>
                     <span>Dashboard</span>
@@ -177,8 +204,28 @@
                     <span>Cart</span>
                     <span class="sidebar-cart-badge" id="mobileCartBadge">0</span>
                 </a>
+                <button class="sidebar-footer-item notification-btn-mobile" id="mobileNotificationBtn">
+                    <i class="fas fa-bell"></i>
+                    <span>Notifications</span>
+                    <span class="sidebar-notification-badge" id="mobileNotificationBadgeMain" style="display: none;">0</span>
+                </button>
             </div>
         <% } %>
+    </div>
+</div>
+
+<!-- Mobile Notification Dropdown -->
+<div class="mobile-notification-dropdown" id="mobileNotificationDropdown">
+    <div class="mobile-notification-header">
+        <h4>Notifications</h4>
+        <button class="mobile-mark-all-read-btn" id="mobileMarkAllReadBtn">Mark all read</button>
+    </div>
+    <div class="mobile-notification-list" id="mobileNotificationList">
+        <!-- Notifications will be loaded here -->
+        <div class="notification-empty">
+            <i class="fas fa-bell-slash"></i>
+            <p>No notifications yet</p>
+        </div>
     </div>
 </div>
 
@@ -186,149 +233,310 @@
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
 <script>
-(function() {
-    'use strict';
+(function () {
+  'use strict';
 
-    // Cached DOM elements
-    const navbar = document.getElementById('navbar');
-    const backToTop = document.getElementById('backToTop');
-    const navToggle = document.getElementById('navToggle');
-    const mobileSidebar = document.getElementById('mobileSidebar');
-    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
-    const desktopUserBtn = document.getElementById('desktopUserBtn');
-    const desktopUserDropdown = document.getElementById('desktopUserDropdown');
+  // Cached DOM elements
+  const navbar = document.getElementById('navbar');
+  const backToTop = document.getElementById('backToTop');
+  const navToggle = document.getElementById('navToggle');
+  const mobileSidebar = document.getElementById('mobileSidebar');
+  const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+  const desktopUserBtn = document.getElementById('desktopUserBtn');
+  const desktopUserDropdown = document.getElementById('desktopUserDropdown');
+  const desktopNotificationBtn = document.getElementById('desktopNotificationBtn');
+  const desktopNotificationDropdown = document.getElementById('desktopNotificationDropdown');
+  const mobileNotificationBtn = document.getElementById('mobileNotificationBtn');
+  const mobileNotificationDropdown = document.getElementById('mobileNotificationDropdown');
+  const markAllReadBtn = document.getElementById('markAllReadBtn');
+  const mobileMarkAllReadBtn = document.getElementById('mobileMarkAllReadBtn');
 
-    // Navbar scroll effect with throttle
-    let scrollTimeout;
-    window.addEventListener('scroll', function() {
-        if (!scrollTimeout) {
-            scrollTimeout = setTimeout(function() {
-                const scrolled = window.scrollY > 50;
-                if (navbar) {
-                    navbar.classList.toggle('scrolled', scrolled);
-                }
-                if (backToTop) {
-                    backToTop.classList.toggle('visible', scrolled);
-                }
-                scrollTimeout = null;
-            }, 100);
-        }
-    }, { passive: true });
+  // --- Helpers for badges ---
+  const badgeIds = [
+    'desktopNotificationBadgeMain',
+    'mobileNotificationBadgeMain',
+    'bottomNotificationBadgeMain'
+  ];
 
-    // Mobile sidebar toggle
-    if (navToggle && mobileSidebar) {
-        const toggleSidebar = () => {
-            const isActive = mobileSidebar.classList.toggle('active');
-            navToggle.classList.toggle('active', isActive);
-            if (sidebarBackdrop) {
-                sidebarBackdrop.classList.toggle('active', isActive);
-            }
-            document.body.style.overflow = isActive ? 'hidden' : '';
-        };
-
-        navToggle.addEventListener('click', toggleSidebar);
-        
-        if (sidebarBackdrop) {
-            sidebarBackdrop.addEventListener('click', toggleSidebar);
-        }
-
-        // Close sidebar on link click
-        mobileSidebar.querySelectorAll('.sidebar-nav-item, .sidebar-footer-item').forEach(link => {
-            link.addEventListener('click', function() {
-                if (!this.classList.contains('logout')) {
-                    toggleSidebar();
-                }
-            });
-        });
-    }
-
-    // Desktop user dropdown toggle
-    if (desktopUserBtn && desktopUserDropdown) {
-        desktopUserBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            desktopUserDropdown.classList.toggle('active');
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            if (desktopUserDropdown && !desktopUserBtn.contains(e.target) && !desktopUserDropdown.contains(e.target)) {
-                desktopUserDropdown.classList.remove('active');
-            }
-        });
-    }
-
-    // Update cart badge (both mobile and desktop)
-    async function updateCartBadge() {
-        try {
-            const response = await fetch('/api/cart/count');
-            if (response.ok) {
-                const data = await response.json();
-                const mobileCartBadge = document.getElementById('mobileCartBadge');
-                const desktopCartBadge = document.getElementById('desktopCartBadge');
-                
-                // Update mobile cart badge
-                if (mobileCartBadge) {
-                    mobileCartBadge.textContent = data.count || 0;
-                    mobileCartBadge.style.display = data.count > 0 ? 'flex' : 'none';
-                }
-                
-                // Update desktop cart badge
-                if (desktopCartBadge) {
-                    desktopCartBadge.textContent = data.count || 0;
-                    desktopCartBadge.style.display = data.count > 0 ? 'flex' : 'none';
-                }
-            }
-        } catch (error) {
-            console.error('Error updating cart badge:', error);
-        }
-    }
-
-    // Update notification badge (both mobile and desktop)
-    async function updateNotificationBadge() {
-        try {
-            const response = await fetch('/api/notifications/count');
-            if (response.ok) {
-                const data = await response.json();
-                const mobileNotificationBadge = document.getElementById('mobileNotificationBadge');
-                const desktopNotificationBadge = document.getElementById('desktopNotificationBadge');
-                
-                // Update mobile notification badge
-                if (mobileNotificationBadge) {
-                    mobileNotificationBadge.textContent = data.count || 0;
-                    mobileNotificationBadge.style.display = data.count > 0 ? 'flex' : 'none';
-                }
-                
-                // Update desktop notification badge
-                if (desktopNotificationBadge) {
-                    desktopNotificationBadge.textContent = data.count || 0;
-                    desktopNotificationBadge.style.display = data.count > 0 ? 'flex' : 'none';
-                }
-            }
-        } catch (error) {
-            console.error('Error updating notification badge:', error);
-        }
-    }
-
-    // Update badges on page load
-    updateCartBadge();
-    updateNotificationBadge();
+  function setBadges(count) {
+    console.log('Setting notification badge count to:', count);
+    const num = Number(count) || 0;
     
-    // Update badges periodically (every 30 seconds)
-    setInterval(updateCartBadge, 30000);
-    setInterval(updateNotificationBadge, 30000);
+    badgeIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) {
+        console.log('Badge element not found:', id);
+        return;
+      }
+      console.log('Updating badge', id, 'to count:', num);
+      el.textContent = String(num);
+      el.style.display = num > 0 ? 'flex' : 'none';
+    });
+  }
 
-    // Listen for update events
-    window.addEventListener('cartUpdated', updateCartBadge);
-    window.addEventListener('notificationUpdated', updateNotificationBadge);
+  // Navbar scroll effect
+  let scrollTimeout;
+  window.addEventListener('scroll', () => {
+    if (!scrollTimeout) {
+      scrollTimeout = setTimeout(() => {
+        const scrolled = window.scrollY > 50;
+        navbar?.classList.toggle('scrolled', scrolled);
+        backToTop?.classList.toggle('visible', scrolled);
+        scrollTimeout = null;
+      }, 100);
+    }
+  }, { passive: true });
+
+  // Mobile sidebar toggle
+  if (navToggle && mobileSidebar) {
+    const toggleSidebar = () => {
+      const isActive = mobileSidebar.classList.toggle('active');
+      navToggle.classList.toggle('active', isActive);
+      sidebarBackdrop?.classList.toggle('active', isActive);
+      document.body.style.overflow = isActive ? 'hidden' : '';
+    };
+    navToggle.addEventListener('click', toggleSidebar);
+    sidebarBackdrop?.addEventListener('click', toggleSidebar);
+    mobileSidebar.querySelectorAll('.sidebar-nav-item, .sidebar-footer-item').forEach(link => {
+      link.addEventListener('click', () => {
+        if (!link.classList.contains('logout')) toggleSidebar();
+      });
+    });
+  }
+
+  // Desktop user dropdown toggle
+  if (desktopUserBtn && desktopUserDropdown) {
+    desktopUserBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      desktopUserDropdown.classList.toggle('active');
+      desktopNotificationDropdown?.classList.remove('active');
+    });
+    document.addEventListener('click', (e) => {
+      if (!desktopUserBtn.contains(e.target) && !desktopUserDropdown.contains(e.target)) {
+        desktopUserDropdown.classList.remove('active');
+      }
+    });
+  }
+
+  // Desktop notification dropdown toggle
+  if (desktopNotificationBtn && desktopNotificationDropdown) {
+    desktopNotificationBtn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const isActive = desktopNotificationDropdown.classList.toggle('active');
+      desktopUserDropdown?.classList.remove('active');
+      if (isActive) await loadUserNotifications();
+    });
+    document.addEventListener('click', (e) => {
+      if (!desktopNotificationBtn.contains(e.target) && !desktopNotificationDropdown.contains(e.target)) {
+        desktopNotificationDropdown.classList.remove('active');
+      }
+    });
+  }
+
+  // Mobile notification dropdown toggle
+  if (mobileNotificationBtn && mobileNotificationDropdown) {
+    mobileNotificationBtn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const isActive = mobileNotificationDropdown.classList.toggle('active');
+      // Close sidebar if open
+      mobileSidebar?.classList.remove('active');
+      navToggle?.classList.remove('active');
+      sidebarBackdrop?.classList.remove('active');
+      document.body.style.overflow = '';
+      if (isActive) await loadUserNotifications();
+    });
+    document.addEventListener('click', (e) => {
+      if (!mobileNotificationBtn.contains(e.target) && !mobileNotificationDropdown.contains(e.target)) {
+        mobileNotificationDropdown.classList.remove('active');
+      }
+    });
+  }
+
+  // --- Cart badge ---
+  async function updateCartBadge() {
+    try {
+      const res = await fetch('/api/cart/count', { credentials: 'same-origin' });
+      if (!res.ok) return;
+      const data = await res.json();
+      const mobileCartBadge = document.getElementById('mobileCartBadge');
+      const desktopCartBadge = document.getElementById('desktopCartBadge');
+      if (mobileCartBadge) {
+        mobileCartBadge.textContent = data.count || 0;
+        mobileCartBadge.style.display = data.count > 0 ? 'flex' : 'none';
+      }
+      if (desktopCartBadge) {
+        desktopCartBadge.textContent = data.count || 0;
+        desktopCartBadge.style.display = data.count > 0 ? 'flex' : 'none';
+      }
+    } catch (err) {
+      console.error('updateCartBadge error', err);
+    }
+  }
+
+  // --- Notifications list & badge ---
+  async function loadUserNotifications() {
+    try {
+      const res = await fetch('/api/notifications', { credentials: 'same-origin' });
+      if (!res.ok) return;
+      const data = await res.json();
+      const desktopList = document.getElementById('notificationList');
+      const mobileList = document.getElementById('mobileNotificationList');
+
+      const render = (container) => {
+        if (!container) return;
+        if (!data.items || data.items.length === 0) {
+          container.innerHTML = `
+            <div class="notification-empty">
+              <i class="fas fa-bell-slash"></i>
+              <p>No notifications yet</p>
+            </div>`;
+          return;
+        }
+
+        container.innerHTML = data.items.map(n => `
+          <div class="notification-item ${n.is_read ? 'read' : 'unread'}" data-id="${n.id}" onclick="markNotificationRead(${n.id})">
+            <div class="notification-content">
+              <div class="notification-title">${escapeHtml(n.title)}</div>
+              <div class="notification-message">${escapeHtml(n.message)}</div>
+              <div class="notification-time">${new Date(n.created_at).toLocaleDateString()}</div>
+            </div>
+            ${!n.is_read ? '<div class="notification-unread-dot"></div>' : ''}
+          </div>
+        `).join('');
+      };
+
+      render(desktopList);
+      render(mobileList);
+    } catch (err) {
+      console.error('loadUserNotifications error', err);
+    }
+  }
+
+  async function updateNotificationBadge() {
+    try {
+      console.log('Fetching notification count...');
+      const res = await fetch('/api/notifications/count', { credentials: 'same-origin' });
+      if (!res.ok) {
+        console.error('Failed to fetch notification count:', res.status);
+        return;
+      }
+      const json = await res.json();
+      console.log('Notification count response:', json);
+      setBadges(Number(json.count) || 0);
+    } catch (err) {
+      console.error('updateNotificationBadge error', err);
+    }
+  }
+
+  // Mark all read (uses server-canonical count returned)
+  async function markAllRead() {
+    try {
+      // optimistic hide while request is in-flight
+      setBadges(0);
+
+      const res = await fetch('/api/notifications/mark-all-read', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin'
+      });
+
+      if (!res.ok) {
+        console.error('mark-all-read failed', res.status);
+        // re-sync
+        await updateNotificationBadge();
+        await loadUserNotifications();
+        return;
+      }
+
+      const json = await res.json();
+      setBadges(Number(json.count) || 0);
+      await loadUserNotifications();
+      window.dispatchEvent(new Event('notificationUpdated'));
+    } catch (err) {
+      console.error('markAllRead error', err);
+      await updateNotificationBadge();
+    }
+  }
+
+  // Mark single notification read (uses server-canonical count returned)
+  async function markNotificationRead(id) {
+    try {
+      if (!id) return;
+      const res = await fetch(`/api/notifications/${id}/read`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin'
+      });
+      if (!res.ok) {
+        console.error('markNotificationRead failed', res.status);
+        await updateNotificationBadge();
+        await loadUserNotifications();
+        return;
+      }
+      const json = await res.json();
+      setBadges(Number(json.count) || 0);
+      await loadUserNotifications();
+      window.dispatchEvent(new Event('notificationUpdated'));
+    } catch (err) {
+      console.error('markNotificationRead error', err);
+      await updateNotificationBadge();
+    }
+  }
+
+  // global for inline onclick in markup
+  window.markNotificationRead = markNotificationRead;
+
+  // --- small helper ---
+  function escapeHtml(str = '') {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  // Wire up Mark All buttons
+  markAllReadBtn?.addEventListener('click', markAllRead);
+  mobileMarkAllReadBtn?.addEventListener('click', markAllRead);
+
+  // Initial load + polling
+  updateCartBadge();
+  updateNotificationBadge();
+  setInterval(updateCartBadge, 30000);
+  setInterval(updateNotificationBadge, 30000);
+
+  // allow external triggers
+  window.addEventListener('cartUpdated', updateCartBadge);
+  window.addEventListener('notificationUpdated', updateNotificationBadge);
+
+  // Handle bottom notification button (may load after navbar)
+  function initBottomNotificationBtn() {
+    const bottomNotificationBtn = document.getElementById('bottomNotificationBtn');
+    if (bottomNotificationBtn && mobileNotificationDropdown) {
+      bottomNotificationBtn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const isActive = mobileNotificationDropdown.classList.toggle('active');
+        // Close sidebar if open
+        mobileSidebar?.classList.remove('active');
+        navToggle?.classList.remove('active');
+        sidebarBackdrop?.classList.remove('active');
+        document.body.style.overflow = '';
+        if (isActive) await loadUserNotifications();
+      });
+      document.addEventListener('click', (e) => {
+        if (!bottomNotificationBtn.contains(e.target) && !mobileNotificationDropdown.contains(e.target)) {
+          mobileNotificationDropdown.classList.remove('active');
+        }
+      });
+    }
+  }
+
+  // Check for bottom notification button immediately and after DOM loads
+  initBottomNotificationBtn();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBottomNotificationBtn);
+  }
 
 })();
-
-// Logout confirmation function
-function confirmLogout() {
-    if (confirm('Are you sure you want to logout?')) {
-        window.location.href = '/logout';
-        return false;
-    }
-    return false;
-}
 </script>
