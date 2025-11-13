@@ -6,15 +6,15 @@
   "scripts": {
     "start": "node app.js",
     "dev": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"No tests\""
   },
-  "engines": {
-    "node": "24.x"
-  }
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
+  "engines": {
+    "node": ">=18 <=24"
+  },
   "dependencies": {
     "@paypal/checkout-server-sdk": "^1.0.3",
     "bcrypt": "^6.0.0",
