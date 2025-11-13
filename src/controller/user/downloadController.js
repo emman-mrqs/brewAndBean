@@ -26,7 +26,7 @@ class DownloadController {
     static downloadApk(req, res) {
         try {
             // Resolve path from project root (where you run node)
-            const apkPath = path.join(process.cwd(), "src", "public", "uploads", "app", "Techora.apk");
+            const apkPath = path.join(process.cwd(), "src", "public", "uploads", "app", "brewAndBean.apk");
 
             console.log(`[DownloadController] APK download requested from ${req.ip} at ${new Date().toISOString()}`);
             console.log(`[DownloadController] Checking file: ${apkPath}`);
@@ -44,7 +44,7 @@ class DownloadController {
             // If you want auth/rate-limit, check req.session / req.user here.
 
             // Send file (sets Content-Disposition and appropriate headers)
-            res.download(apkPath, "BeanAndBrew.apk", (err) => {
+            res.download(apkPath, "brewAndBean.apk", (err) => {
                 if (err) {
                     console.error(`[DownloadController] Error sending APK to ${req.ip}:`, err);
                     // If headers not sent, respond with 500 and message
