@@ -8,14 +8,14 @@ import db from '../database/db.js';
 export const sessionConfig = {
     secret: process.env.SESSION_SECRET || 'brew-and-bean-secret-key-change-in-production',
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true, // only for cyber testing purposes; consider setting to false in production
     cookie: {
         secure: process.env.NODE_ENV === 'production', // HTTPS only in production
         httpOnly: true, // Prevent XSS attacks
         maxAge: 24 * 60 * 60 * 1000, // 24 hours
         sameSite: 'lax' // CSRF protection
     },
-    name: 'brew.session.id' // Custom session name
+    // name: 'brew.session.id' // Custom session name 
 };
 
 // Authentication middleware

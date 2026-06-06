@@ -6,6 +6,7 @@ class CartController {
     static async getCart(req, res) {
         try {
             const userId = req.session.user.id;
+            console.log(req.session);
             
             // Get or create cart for user
             let cartResult = await db.query(

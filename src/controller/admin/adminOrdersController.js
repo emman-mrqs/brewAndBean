@@ -31,7 +31,7 @@ class AdminOrdersController {
                     o.shipping_address,
                     o.branch_id,
                     o.created_at,
-                    o.updated_at,
+                    o.updated_at,   
                     u.first_name,
                     u.last_name,
                     u.email,
