@@ -20,7 +20,9 @@ export function renderSignup(req, res) {
 
 export async function handleSignup(req, res) {
     try {
-        const { firstName, lastName, email, phone, password, confirmPassword } = req.body;
+
+        // is_verified is only used for testing purposes to allow bypassing email verification during automated tests. It should not be set to true during normal signup flow.
+        const { firstName, lastName, email, phone, password, confirmPassword, is_verified } = req.body;
         
         // Basic validation
         if (!firstName || !lastName || !email || !phone || !password) {
@@ -118,8 +120,8 @@ export async function handleSignup(req, res) {
             VALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW())
             RETURNING id, first_name, last_name, email, phone, is_verified, created_at
         `;
-        
-        const createValues = [firstName, lastName, email, phone, hashedPassword, false];
+        // is verified is set to false by default, but we allow it to be overridden for testing purposes (e.g. during automated tests)
+        const createValues = [firstName, lastName, email, phone, hashedPassword, is_verified || false];
         const createResult = await db.query(createQuery, createValues);
         const newUser = createResult.rows[0];
         
