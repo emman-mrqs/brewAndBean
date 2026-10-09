@@ -21,11 +21,30 @@ class MenuController {
     // Get products with optional search
     static async getProducts(req, res) {
         try {
-            // Get search input from URL
             const search =
                 typeof req.query.search === "string"
                     ? req.query.search.trim()
                     : "";
+
+            // Enable vulnerable query ONLY for local SQLi lab
+            const isLocalDatabase = [
+                "localhost",
+                "127.0.0.1"
+            ].includes(process.env.DB_HOST);
+
+            const redTeamMode =
+                process.env.NODE_ENV === "development" &&
+                process.env.SQLI_LAB_ENABLED === "true" &&
+                isLocalDatabase;
+
+            // RED TEAM: Intentionally vulnerable SQL
+            // BLUE TEAM: Secure parameterized SQL
+            const whereClause = redTeamMode
+                ? `WHERE p.name ILIKE '%${search}%'`
+                : `WHERE (
+                    $1::text = ''
+                    OR p.name ILIKE '%' || $1 || '%'
+                )`;
 
             const query = `
                 SELECT
@@ -48,16 +67,14 @@ class MenuController {
                 FROM products p
                 LEFT JOIN product_variant pv
                     ON p.id = pv.product_id
-                WHERE (
-                    $1::text = ''
-                    OR p.name ILIKE '%' || $1 || '%'
-                )
+                ${whereClause}
                 GROUP BY p.id
                 ORDER BY p.created_at DESC
             `;
 
-            // Execute parameterized SQL query
-            const result = await db.query(query, [search]);
+            const result = redTeamMode
+                ? await db.query(query)
+                : await db.query(query, [search]);
 
             res.json({
                 success: true,
@@ -74,17 +91,15 @@ class MenuController {
         }
     }
 
-    // Add menu items (future functionality)
+    // Add menu items
     static addToCart(req, res) {
         try {
-            // Implementation for adding items to cart
             res.json({
                 success: true,
                 message: "Item added to cart"
             });
         } catch (error) {
             console.error("Error adding to cart:", error);
-
             res.status(500).json({
                 success: false,
                 message: "Failed to add item to cart"
