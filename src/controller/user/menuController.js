@@ -2,6 +2,8 @@
 import db from '../../database/db.js';
 
 class MenuController {
+
+    // Render Menu Page
     static async getMenu(req, res) {
         try {
             res.render("user/menu", {
@@ -10,15 +12,23 @@ class MenuController {
             });
         } catch (error) {
             console.error("Error rendering menu page:", error);
-            res.status(500).render("error", { message: "Internal Server Error" });
+            res.status(500).render("error", {
+                message: "Internal Server Error"
+            });
         }
     }
 
-    // Get all products with variants
+    // Get products with optional search
     static async getProducts(req, res) {
         try {
+            // Get search input from URL
+            const search =
+                typeof req.query.search === "string"
+                    ? req.query.search.trim()
+                    : "";
+
             const query = `
-                SELECT 
+                SELECT
                     p.id,
                     p.name,
                     p.description,
@@ -36,22 +46,30 @@ class MenuController {
                         ) ORDER BY pv.name
                     ) FILTER (WHERE pv.id IS NOT NULL) as variants
                 FROM products p
-                LEFT JOIN product_variant pv ON p.id = pv.product_id
+                LEFT JOIN product_variant pv
+                    ON p.id = pv.product_id
+                WHERE (
+                    $1::text = ''
+                    OR p.name ILIKE '%' || $1 || '%'
+                )
                 GROUP BY p.id
                 ORDER BY p.created_at DESC
             `;
 
-            const result = await db.query(query);
-            
-            res.json({ 
-                success: true, 
-                products: result.rows 
+            // Execute parameterized SQL query
+            const result = await db.query(query, [search]);
+
+            res.json({
+                success: true,
+                products: result.rows
             });
+
         } catch (error) {
             console.error("Error fetching products:", error);
-            res.status(500).json({ 
-                success: false, 
-                message: "Failed to fetch products" 
+
+            res.status(500).json({
+                success: false,
+                message: "Failed to fetch products"
             });
         }
     }
@@ -60,10 +78,17 @@ class MenuController {
     static addToCart(req, res) {
         try {
             // Implementation for adding items to cart
-            res.json({ success: true, message: "Item added to cart" });
+            res.json({
+                success: true,
+                message: "Item added to cart"
+            });
         } catch (error) {
             console.error("Error adding to cart:", error);
-            res.status(500).json({ success: false, message: "Failed to add item to cart" });
+
+            res.status(500).json({
+                success: false,
+                message: "Failed to add item to cart"
+            });
         }
     }
 }
