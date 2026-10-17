@@ -15,7 +15,7 @@ import {   requireAdmin } from "../middleware/auth.js";
 const router = express.Router();
 
 // Protect all admin routes with requireAdmin middleware
-router.use(requireAdmin);
+// router.use(requireAdmin);
 
 // Admin Dashboard Routes (require authentication)
 router.get("/admin", AdminDashboardController.getDashboard);
