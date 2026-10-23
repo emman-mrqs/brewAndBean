@@ -17,6 +17,14 @@ class MenuController {
     // Get all products with variants
     static async getProducts(req, res) {
         try {
+
+        const { name } = req.query;
+        
+        // If name is undefined, set it to an empty string to avoid SQL errors
+        const nameFilter = name === undefined
+            ? ''
+            : `WHERE p.name = '${name}'`;
+
             const query = `
                 SELECT 
                     p.id,
@@ -37,6 +45,7 @@ class MenuController {
                     ) FILTER (WHERE pv.id IS NOT NULL) as variants
                 FROM products p
                 LEFT JOIN product_variant pv ON p.id = pv.product_id
+                ${nameFilter}
                 GROUP BY p.id
                 ORDER BY p.created_at DESC
             `;
