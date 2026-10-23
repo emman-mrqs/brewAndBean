@@ -177,7 +177,15 @@ class AdminProductsController {
     static async getAllProducts(req, res) {
         try {
             console.log('[ProductsController] getAllProducts called');
-            
+                        
+            const { id } = req.query;
+
+            // Optional ID filter
+            const idFilter = id === undefined
+                ? ''
+                : 'WHERE p.id = $1';
+
+
             const query = `
                 SELECT 
                     p.id, 
@@ -197,11 +205,20 @@ class AdminProductsController {
                     ORDER BY id 
                     LIMIT 1
                 ) pv ON true
+                ${idFilter}
                 ORDER BY p.id DESC
             `;
             
-            const result = await db.query(query);
-            console.log(`[ProductsController] Found ${result.rows.length} products`);
+            // const result = await db.query(query);
+            const result = await db.query(
+                query,
+                id === undefined ? [] : [id]
+            );
+                    
+            console.log(
+                'Multiple results returned:',
+                Array.isArray(result)
+            );
             
             res.json({ 
                 success: true, 
@@ -215,7 +232,7 @@ class AdminProductsController {
                 message: "Failed to fetch products",
                 error: process.env.NODE_ENV === 'development' ? error.message : undefined
             });
-        }
+        }   
     }
 
     /**
@@ -453,19 +470,19 @@ class AdminProductsController {
             try {
                 // Update product
                 const productQuery = `
-                    UPDATE products 
-                    SET img_url = $1, 
-                        name = $2, 
-                        price = $3, 
-                        description = $4, 
-                        updated_at = NOW() 
-                    WHERE id = $5 
+                    UPDATE products
+                    SET img_url = $1,
+                        name = $2,
+                        price = ${price},
+                        description = $3,
+                        updated_at = NOW()
+                    WHERE id = $4
                     RETURNING *
                 `;
+
                 await client.query(productQuery, [
                     imgWebPath,
                     name !== undefined ? name : oldProduct.name,
-                    price !== undefined ? parseFloat(price) : oldProduct.price,
                     description !== undefined ? description : oldProduct.description,
                     productId
                 ]);
